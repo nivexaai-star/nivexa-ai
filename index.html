@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nivexa AI</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+    <img src="assets/images/logo.png" alt="Logo NIVEXA AI">
+</div>
+
+    <nav>
+        <a href="#">Beranda</a>
+        <a href="#">Fitur</a>
+        <a href="#">Tentang</a>
+    </nav>
+</header>
+
+<main class="hero">
+
+    <p class="label">AI PHOTO TO VIDEO</p>
+
+    <h1>
+        Ubah Foto Menjadi Video AI yang Menakjubkan
+    </h1>
+
+    <p class="description">
+        Buat foto menjadi video bergerak dengan teknologi AI yang cepat,
+        mudah, dan profesional.
+    </p>
+
+    <div class="buttons">
+
+        <input
+            type="file"
+            id="foto"
+            accept="image/*"
+            hidden
+        >
+
+        <label for="foto" class="primary">
+            Upload Foto
+        </label>
+
+        <button class="secondary" type="button">
+            Lihat Contoh
+        </button>
+
+    </div>
+
+    <section id="previewBox" class="preview-box" hidden>
+
+        <h2>Foto yang Dipilih</h2>
+
+        <img
+            id="previewFoto"
+            src=""
+            alt="Preview foto yang dipilih"
+        >
+
+        <p id="namaFile"></p>
+        <div class="prompt-box">
+    <label for="promptGerakan">
+        Perintah Gerakan Video
+    </label>
+
+    <textarea
+        id="promptGerakan"
+        rows="4"
+        placeholder="Contoh: Orang tersenyum dan melambaikan tangan, kamera bergerak perlahan."
+    ></textarea>
+</div>
+
+        <button
+            id="buatVideo"
+            class="primary"
+            type="button"
+        >
+            Buat Video AI
+        </button>
+
+    </section>
+
+</main>
+
+<script src="assets/js/script.js"></script>
+
+</body>
+</html>

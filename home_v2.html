@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NIVEXA AI - Photo to Video Generator</title>
+
+    <link rel="stylesheet" href="assets/css/home_v2.css">
+</head>
+
+<body>
+    <header class="v2-header">
+        <a href="#beranda" class="v2-brand">
+            <img src="assets/images/logo.png" alt="Logo NIVEXA AI">
+
+            <div class="v2-brand-text">
+                <strong>NIVEXA <span>AI</span></strong>
+                <small>AI Photo to Video</small>
+            </div>
+        </a>
+
+        <nav class="v2-nav" aria-label="Navigasi utama">
+            <a href="#beranda">Beranda</a>
+            <a href="#generator">Fitur</a>
+            <a href="#cara-kerja">Cara Kerja</a>
+            <a href="#keunggulan">Keunggulan</a>
+        </nav>
+
+        <div class="v2-header-actions">
+            <a href="pages/login.html" class="v2-login-btn">Masuk</a>
+            <a href="#generator" class="v2-start-btn">✨ Mulai Gratis</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="beranda" class="v2-hero">
+            <div class="v2-hero-light v2-light-left"></div>
+            <div class="v2-hero-light v2-light-right"></div>
+
+            <div class="v2-hero-content">
+                <span class="v2-badge">
+                    ✨ AI PHOTO TO VIDEO GENERATOR
+                </span>
+
+                <h1>
+                    Ubah Foto Menjadi
+                    <span>Video AI</span>
+                    Menakjubkan
+                </h1>
+
+                <p>
+                    Cukup upload satu foto, tulis gerakan yang diinginkan,
+                    lalu NIVEXA AI akan membuat video secara otomatis.
+                </p>
+
+                <div class="v2-hero-buttons">
+                    <a href="#generator" class="v2-primary-btn">
+                        🚀 Mulai Gratis
+                    </a>
+
+                    <a href="#contoh" class="v2-secondary-btn">
+                        ▶️ Lihat Demo
+                    </a>
+                </div>
+
+                <div class="v2-trust">
+                    <span>★★★★★</span>
+                    <p>Mudah digunakan, cepat, dan cocok untuk HP</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="generator" class="v2-generator-section">
+            <div class="v2-generator-card">
+                <div class="v2-generator-top">
+                    <div>
+                        <span class="v2-generator-label">
+                            ✨ AI PHOTO TO VIDEO GENERATOR
+                        </span>
+
+                        <h2>Buat Video AI Sekarang</h2>
+
+                        <p>
+                            Pilih foto, tulis gerakan, lalu mulai proses pembuatan video.
+                        </p>
+                    </div>
+
+                    <span class="v2-secure-badge">
+                        🛡️ Aman & Privat
+                    </span>
+                </div>
+
+                <div class="v2-generator-grid">
+                    <div class="v2-upload-column">
+                        <div class="v2-step-title">
+                            <span>1</span>
+                            <h3>Upload Foto</h3>
+                        </div>
+
+                        <label class="v2-upload-box" for="v2FotoInput">
+                            <div class="v2-upload-icon">☁️</div>
+
+                            <strong>Drag & drop foto di sini</strong>
+
+                            <p>atau klik untuk memilih foto</p>
+
+                            <small>JPG, PNG, WEBP • Maksimal 10 MB</small>
+
+                            <span class="v2-choose-btn">
+                                🖼️ Pilih Foto
+                            </span>
+                        </label>
+
+                        <input
+                            type="file"
+                            id="v2FotoInput"
+                            accept="image/*"
+                            hidden
+                        >
+
+                        <div id="v2PreviewBox" class="v2-preview-box" hidden>
+                            <img
+                                id="v2PreviewFoto"
+                                src=""
+                                alt="Preview foto yang dipilih"
+                            >
+
+                            <p id="v2NamaFile"></p>
+                        </div>
+                    </div>
+
+                    <div class="v2-settings-column">
+                        <div class="v2-step-title">
+                            <span>2</span>
+                            <h3>Prompt Gerakan</h3>
+                        </div>
+
+                        <textarea
+                            id="v2Prompt"
+                            maxlength="500"
+                            placeholder="Contoh: Orang tersenyum, mengedipkan mata, lalu menoleh perlahan ke samping..."
+                        ></textarea>
+
+                        <div class="v2-character-count">
+                            <span id="v2CharacterCount">0</span>/500
+                        </div>
+
+                        <div class="v2-options-box">
+                            <div class="v2-option-group">
+                                <div class="v2-option-title">
+                                    <span>3</span>
+                                    <h3>Durasi Video</h3>
+                                </div>
+
+                                <div class="v2-duration-options">
+                                    <button
+                                        type="button"
+                                        class="v2-duration-btn active"
+                                        data-duration="5"
+                                    >
+                                        5 Detik
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="v2-duration-btn"
+                                        data-duration="10"
+                                    >
+                                        10 Detik
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="v2-duration-btn"
+                                        data-duration="15"
+                                    >
+                                        15 Detik
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="v2-option-group">
+                                <label for="v2Quality">Kualitas Video</label>
+
+                                <select id="v2Quality">
+                                    <option value="720p">HD (720p)</option>
+                                    <option value="1080p">Full HD (1080p)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    id="v2GenerateBtn"
+                    class="v2-generate-btn"
+                >
+                    ✨ Buat Video AI Sekarang
+                </button>
+
+                <p id="v2Status" class="v2-status"></p>
+            </div>
+        </section>
+
+        <section id="cara-kerja" class="v2-info-section">
+            <div class="v2-section-heading">
+                <span>CARA KERJA</span>
+                <h2>Tiga Langkah Mudah</h2>
+            </div>
+
+            <div class="v2-info-grid">
+                <article class="v2-info-card">
+                    <div class="v2-info-icon">📷</div>
+                    <h3>1. Pilih Foto</h3>
+                    <p>Gunakan foto yang jelas agar hasil video terlihat lebih baik.</p>
+                </article>
+
+                <article class="v2-info-card">
+                    <div class="v2-info-icon">✍️</div>
+                    <h3>2. Tulis Gerakan</h3>
+                    <p>Jelaskan gerakan yang ingin dibuat dengan kalimat sederhana.</p>
+                </article>
+
+                <article class="v2-info-card">
+                    <div class="v2-info-icon">🎬</div>
+                    <h3>3. Buat Video</h3>
+                    <p>Klik tombol generate dan tunggu hasil videonya selesai.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="keunggulan" class="v2-benefits-section">
+            <article>
+                <span>🤖</span>
+                <div>
+                    <h3>AI Canggih</h3>
+                    <p>Teknologi AI untuk menghidupkan foto.</p>
+                </div>
+            </article>
+
+            <article>
+                <span>✨</span>
+                <div>
+                    <h3>Hasil Realistis</h3>
+                    <p>Gerakan dibuat lebih alami dan menarik.</p>
+                </div>
+            </article>
+
+            <article>
+                <span>⚡</span>
+                <div>
+                    <h3>Cepat & Mudah</h3>
+                    <p>Tidak membutuhkan kemampuan editing.</p>
+                </div>
+            </article>
+
+            <article>
+                <span>🛡️</span>
+                <div>
+                    <h3>Privasi Aman</h3>
+                    <p>Foto pengguna diproses dengan aman.</p>
+                </div>
+            </article>
+        </section>
+
+        <section id="contoh" class="v2-demo-section">
+            <div class="v2-section-heading">
+                <span>CONTOH HASIL</span>
+                <h2>Lihat Video Demo NIVEXA AI</h2>
+            </div>
+
+            <div class="v2-demo-card">
+                <video controls preload="metadata">
+                    <source src="generated/demo.mp4" type="video/mp4">
+                    Browser Anda belum mendukung pemutar video.
+                </video>
+            </div>
+        </section>
+    </main>
+
+    <footer class="v2-footer">
+        <div class="v2-footer-brand">
+            <img src="assets/images/logo.png" alt="Logo NIVEXA AI">
+
+            <div>
+                <strong>NIVEXA AI</strong>
+                <p>Ubah foto menjadi video dengan bantuan AI.</p>
+            </div>
+        </div>
+
+        <p>© 2026 NIVEXA AI. Semua hak dilindungi.</p>
+    </footer>
+
+    <script>
+        const fotoInput = document.getElementById("v2FotoInput");
+        const previewBox = document.getElementById("v2PreviewBox");
+        const previewFoto = document.getElementById("v2PreviewFoto");
+        const namaFile = document.getElementById("v2NamaFile");
+        const promptInput = document.getElementById("v2Prompt");
+        const characterCount = document.getElementById("v2CharacterCount");
+        const statusText = document.getElementById("v2Status");
+        const generateButton = document.getElementById("v2GenerateBtn");
+        const durationButtons = document.querySelectorAll(".v2-duration-btn");
+
+        let selectedDuration = 5;
+
+        fotoInput.addEventListener("change", function () {
+            const file = fotoInput.files[0];
+
+            if (!file) {
+                previewBox.hidden = true;
+                previewFoto.src = "";
+                namaFile.textContent = "";
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                statusText.textContent = "File yang dipilih harus berupa gambar.";
+                fotoInput.value = "";
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                statusText.textContent = "Ukuran foto maksimal 10 MB.";
+                fotoInput.value = "";
+                return;
+            }
+
+            previewFoto.src = URL.createObjectURL(file);
+            namaFile.textContent = file.name;
+            previewBox.hidden = false;
+            statusText.textContent = "Foto berhasil dipilih.";
+        });
+
+        promptInput.addEventListener("input", function () {
+            characterCount.textContent = promptInput.value.length;
+        });
+
+        durationButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                durationButtons.forEach(function (item) {
+                    item.classList.remove("active");
+                });
+
+                button.classList.add("active");
+                selectedDuration = Number(button.dataset.duration);
+            });
+        });
+
+        generateButton.addEventListener("click", function () {
+            const file = fotoInput.files[0];
+            const prompt = promptInput.value.trim();
+
+            if (!file) {
+                statusText.textContent = "Silakan pilih foto terlebih dahulu.";
+                return;
+            }
+
+            if (!prompt) {
+                statusText.textContent = "Silakan isi prompt gerakan.";
+                promptInput.focus();
+                return;
+            }
+
+            window.location.href = "pages/loading.html";
+        });
+    </script>
+</body>
+</html>
