@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, rgba(93, 67, 255, 0.45), transparent 40%),
+        linear-gradient(135deg, #080b1a, #11152d, #171044);
+    color: white;
+    overflow: hidden;
+}
+
+.splash-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.splash-content {
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+    animation: muncul 1s ease;
+}
+
+.logo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 24px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #7b61ff, #21d4fd);
+    box-shadow: 0 20px 60px rgba(66, 115, 255, 0.35);
+}
+
+h1 {
+    font-size: clamp(38px, 8vw, 64px);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.tagline {
+    font-size: 18px;
+    color: #c9ccdf;
+    margin-bottom: 28px;
+}
+
+.loading-text {
+    font-size: 14px;
+    color: #aeb4d2;
+    margin-bottom: 14px;
+}
+
+.loading-bar {
+    width: 100%;
+    max-width: 320px;
+    height: 8px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+}
+
+.loading-progress {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #7b61ff, #21d4fd);
+    animation: memuat 3s ease forwards;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes memuat {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}

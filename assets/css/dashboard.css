@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Poppins", Arial, sans-serif;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(33, 212, 253, 0.18),
+            transparent 35%
+        ),
+        linear-gradient(135deg, #050816, #0b1733, #10194b);
+    color: #ffffff;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    padding: 30px 20px;
+    background: rgba(7, 14, 37, 0.94);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    margin-bottom: 38px;
+    padding: 0 14px;
+}
+
+.logo h2 {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #56ddff;
+    text-shadow: 0 0 25px rgba(86, 221, 255, 0.35);
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    margin-bottom: 10px;
+    padding: 14px 16px;
+    border-radius: 13px;
+    color: #cbd4ed;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.menu li:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(4px);
+}
+
+.menu li.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #5167ff, #21c9ed);
+    box-shadow: 0 10px 30px rgba(33, 201, 237, 0.22);
+}
+
+/* ISI DASHBOARD */
+
+.main {
+    min-height: 100vh;
+    margin-left: 260px;
+    padding: 34px 42px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    padding: 18px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.045);
+    backdrop-filter: blur(12px);
+}
+
+header h1 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.user {
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #dce7ff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 55px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 28px;
+    background:
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(33, 212, 253, 0.32),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(80, 67, 255, 0.22),
+            rgba(15, 26, 69, 0.72)
+        );
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    right: -70px;
+    top: -80px;
+    border-radius: 50%;
+    background: rgba(132, 76, 255, 0.25);
+    filter: blur(20px);
+}
+
+.hero h2 {
+    max-width: 680px;
+    position: relative;
+    font-size: clamp(35px, 5vw, 58px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    max-width: 680px;
+    position: relative;
+    color: #c5cee7;
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.mulaiBtn {
+    width: fit-content;
+    position: relative;
+    border: none;
+    border-radius: 14px;
+    padding: 15px 27px;
+    background: linear-gradient(135deg, #41dcff, #6173ff);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 35px rgba(48, 185, 255, 0.28);
+    transition: 0.25s ease;
+}
+
+.mulaiBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 42px rgba(48, 185, 255, 0.38);
+}
+
+/* TAMPILAN HP */
+
+@media (max-width: 800px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .logo {
+        margin-bottom: 18px;
+    }
+
+    .menu {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .menu li {
+        min-width: max-content;
+        margin-bottom: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    header {
+        align-items: flex-start;
+        gap: 14px;
+        flex-direction: column;
+    }
+
+    .hero {
+        min-height: 390px;
+        padding: 32px 24px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+}
