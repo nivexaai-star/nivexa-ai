@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NIVEXA AI - Hasil Video</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(
+                    circle at 50% 25%,
+                    rgba(39, 151, 255, 0.22),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    160deg,
+                    #020713,
+                    #071a38 55%,
+                    #020711
+                );
+            color: white;
+        }
+
+        .result-card {
+            width: min(900px, 100%);
+            padding: 38px;
+            border: 1px solid rgba(91, 183, 255, 0.25);
+            border-radius: 28px;
+            background: rgba(4, 15, 36, 0.86);
+            box-shadow:
+                0 30px 90px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 35px rgba(52, 204, 255, 0.28);
+        }
+
+        .success-badge {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 9px 16px;
+            border: 1px solid rgba(80, 230, 172, 0.32);
+            border-radius: 999px;
+            background: rgba(21, 123, 86, 0.14);
+            color: #69efbd;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            margin-top: 18px;
+            font-size: clamp(32px, 6vw, 48px);
+        }
+
+        .subtitle {
+            max-width: 620px;
+            margin: 12px auto 0;
+            color: #afbed2;
+            line-height: 1.7;
+        }
+
+        .video-box {
+            margin-top: 28px;
+            padding: 14px;
+            border: 1px solid rgba(75, 164, 255, 0.2);
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.32);
+        }
+
+        video {
+            width: 100%;
+            max-height: 520px;
+            display: block;
+            border-radius: 14px;
+            background: black;
+        }
+
+        .result-info {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .info-item {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.025);
+            text-align: center;
+        }
+
+        .info-item span {
+            display: block;
+            margin-bottom: 6px;
+            color: #7f92ab;
+            font-size: 13px;
+        }
+
+        .info-item strong {
+            color: #4fdbff;
+        }
+
+        .result-actions {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px;
+        }
+
+        .btn {
+            min-height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c44ff, #24ccff);
+            color: white;
+            box-shadow: 0 13px 30px rgba(49, 139, 255, 0.24);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(84, 185, 255, 0.45);
+            background: rgba(255, 255, 255, 0.025);
+            color: white;
+        }
+
+        .share-note {
+            margin-top: 20px;
+            color: #7f91aa;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .result-card {
+                padding: 26px 16px;
+                border-radius: 21px;
+            }
+
+            .result-info,
+            .result-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="result-card">
+        <header class="result-header">
+            <img
+                src="../assets/images/logo.png"
+                alt="Logo NIVEXA AI"
+                class="logo"
+            >
+
+            <div class="success-badge">
+                ✅ VIDEO BERHASIL DIBUAT
+            </div>
+
+            <h1>Video AI Anda Sudah Siap</h1>
+
+            <p class="subtitle">
+                NIVEXA AI telah selesai memproses foto dan membuat
+                video berdasarkan gerakan yang Anda minta.
+            </p>
+        </header>
+
+        <section class="video-box">
+            <video controls autoplay muted>
+                <source src="../generated/demo.mp4" type="video/mp4">
+                Browser Anda belum mendukung pemutar video.
+            </video>
+        </section>
+
+        <section class="result-info">
+            <div class="info-item">
+                <span>Durasi</span>
+                <strong>5 Detik</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Kualitas</span>
+                <strong>HD 720p</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Status</span>
+                <strong>Selesai</strong>
+            </div>
+        </section>
+
+        <section class="result-actions">
+            <a
+                href="../generated/demo.mp4"
+                download
+                class="btn btn-primary"
+            >
+                ⬇ Download Video
+            </a>
+
+            <a
+                href="../home_v2.html#generator"
+                class="btn btn-secondary"
+            >
+                🔁 Buat Video Lagi
+            </a>
+
+            <a
+                href="../home_v2.html"
+                class="btn btn-secondary"
+            >
+                🏠 Kembali ke Beranda
+            </a>
+        </section>
+
+        <p class="share-note">
+            Fitur membagikan video ke media sosial akan kita tambahkan berikutnya.
+        </p>
+    </main>
+</body>
+</html>
