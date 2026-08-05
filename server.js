@@ -477,7 +477,7 @@ app.post(
                     "dengan Fal.ai.",
 
                 imageUrl:
-                    alamatLokal,
+    `https://nivexa-ai-2.onrender.com${alamatLokal}`,
 
                 fileName:
                     namaFile
