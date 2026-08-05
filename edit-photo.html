@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Foto AI | NIVEXA AI</title>
+
+    <style>
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(74, 86, 255, 0.25),
+                    transparent 34%
+                ),
+                linear-gradient(
+                    135deg,
+                    #050816,
+                    #0b1430,
+                    #11194a
+                );
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        textarea {
+            font: inherit;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 18px 6%;
+            border-bottom: 1px solid
+                rgba(255, 255, 255, 0.1);
+            background: rgba(5, 9, 24, 0.85);
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 21px;
+        }
+
+        .brand-text small {
+            color: #8f9ab4;
+        }
+
+        .kembali {
+            padding: 10px 17px;
+            border: 1px solid
+                rgba(255, 255, 255, 0.22);
+            border-radius: 11px;
+            transition: 0.2s ease;
+        }
+
+        .kembali:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        main {
+            width: min(980px, 92%);
+            margin: 38px auto 60px;
+        }
+
+        .judul {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .judul h1 {
+            margin-bottom: 10px;
+            font-size: clamp(31px, 5vw, 50px);
+        }
+
+        .judul p {
+            color: #aeb9d1;
+            line-height: 1.7;
+        }
+
+        .editor-card {
+            padding: 24px;
+            border: 1px solid
+                rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            background: rgba(13, 21, 48, 0.88);
+            box-shadow: 0 24px 65px
+                rgba(0, 0, 0, 0.32);
+        }
+
+        .credit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+            padding: 14px 16px;
+            border: 1px solid
+                rgba(151, 102, 255, 0.25);
+            border-radius: 14px;
+            background: rgba(115, 72, 225, 0.12);
+        }
+
+        .credit-row strong {
+            color: #d7c8ff;
+        }
+
+        .credit-badge {
+            padding: 7px 12px;
+            border-radius: 999px;
+            color: #ffffff;
+            font-weight: bold;
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a4cff,
+                    #5862ff
+                );
+        }
+
+        .workspace {
+            min-height: 470px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            position: relative;
+            border: 2px dashed
+                rgba(116, 177, 255, 0.58);
+            border-radius: 20px;
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(83, 103, 255, 0.14),
+                    transparent 58%
+                ),
+                rgba(5, 11, 31, 0.62);
+        }
+
+        .workspace.clickable {
+            cursor: pointer;
+        }
+
+        .upload-state {
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .upload-icon {
+            margin-bottom: 16px;
+            font-size: 55px;
+        }
+
+        .upload-state h2 {
+            margin-bottom: 9px;
+            font-size: 23px;
+        }
+
+        .upload-state p {
+            color: #a8b6d1;
+            line-height: 1.7;
+        }
+
+        .workspace-image {
+            display: none;
+            width: 100%;
+            max-height: 520px;
+            object-fit: contain;
+        }
+
+        .processing-state {
+            display: none;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 18px;
+            border: 5px solid
+                rgba(255, 255, 255, 0.16);
+            border-top-color: #8d60ff;
+            border-radius: 50%;
+            animation: berputar 0.85s linear infinite;
+        }
+
+        @keyframes berputar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #fotoEdit {
+            display: none;
+        }
+
+        .controls {
+            margin-top: 22px;
+        }
+
+        .controls label {
+            display: block;
+            margin-bottom: 9px;
+            font-weight: bold;
+        }
+
+        .prompt-wrap {
+            position: relative;
+        }
+
+        #promptEdit {
+            width: 100%;
+            min-height: 135px;
+            resize: vertical;
+            padding: 16px 17px 38px;
+            border: 1px solid
+                rgba(255, 255, 255, 0.13);
+            border-radius: 15px;
+            outline: none;
+            color: #ffffff;
+            background: rgba(4, 10, 28, 0.72);
+        }
+
+        #promptEdit:focus {
+            border-color: #8064ff;
+            box-shadow: 0 0 0 3px
+                rgba(128, 100, 255, 0.14);
+        }
+
+        #jumlahKarakter {
+            position: absolute;
+            right: 13px;
+            bottom: 11px;
+            color: #7986a4;
+            font-size: 12px;
+        }
+
+        .contoh-prompt {
+            margin-top: 9px;
+            color: #8f9cb7;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        #editFotoBtn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background:
+                linear-gradient(
+                    135deg,
+                    #9c4dff,
+                    #5362ff
+                );
+            box-shadow: 0 15px 34px
+                rgba(105, 74, 255, 0.28);
+            transition: 0.22s ease;
+        }
+
+        #editFotoBtn:hover {
+            transform: translateY(-2px);
+        }
+
+        #editFotoBtn:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+            transform: none;
+        }
+
+        #statusEditFoto {
+            min-height: 24px;
+            margin-top: 13px;
+            text-align: center;
+            color: #c9d5ee;
+        }
+
+        .action-row {
+            display: none;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .action-row a,
+        .action-row button {
+            padding: 12px;
+            border: 1px solid
+                rgba(255, 255, 255, 0.16);
+            border-radius: 11px;
+            color: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 14px 4%;
+            }
+
+            .brand-text small {
+                display: none;
+            }
+
+            main {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .editor-card {
+                padding: 15px;
+            }
+
+            .workspace {
+                min-height: 390px;
+            }
+
+            .credit-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .action-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <img
+    src="../assets/images/logo.png"
+    alt="Logo NIVEXA AI"
+>
+            >
+
+            <div class="brand-text">
+                <strong>NIVEXA AI</strong>
+                <small>Creative AI Platform</small>
+            </div>
+        </div>
+
+        <a class="kembali" href="/pages/dashboard.html">
+            ← Beranda
+        </a>
+    </header>
+
+    <main>
+        <section class="judul">
+            <h1>Edit Foto AI</h1>
+
+            <p>
+                Upload foto lalu tulis perubahan yang kamu inginkan.
+                Foto asli, proses, dan hasil akan tetap berada
+                di kotak yang sama.
+            </p>
+        </section>
+
+        <section class="editor-card">
+            <div class="credit-row">
+                <div>
+                    <strong>Kredit Edit Foto Gratis</strong>
+                    <p>
+                        Setiap akun memperoleh maksimal 3 kali edit.
+                    </p>
+                </div>
+
+                <div class="credit-badge">
+                    Sisa <span id="sisaKredit">3</span>/3
+                </div>
+            </div>
+
+            <div
+                class="workspace clickable"
+                id="workspace"
+            >
+                <div
+                    class="upload-state"
+                    id="uploadState"
+                >
+                    <div class="upload-icon">☁️</div>
+
+                    <h2>Klik untuk memilih foto</h2>
+
+                    <p>
+                        JPG, JPEG, PNG, atau WEBP
+                        <br>
+                        Maksimal 10 MB
+                    </p>
+                </div>
+
+                <img
+                    class="workspace-image"
+                    id="workspaceImage"
+                    alt="Foto yang sedang diedit"
+                >
+
+                <div
+                    class="processing-state"
+                    id="processingState"
+                >
+                    <div class="spinner"></div>
+
+                    <h2>AI sedang mengedit foto...</h2>
+
+                    <p>
+                        Mohon tunggu dan jangan tutup halaman.
+                    </p>
+                </div>
+            </div>
+
+            <input
+                type="file"
+                id="fotoEdit"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+            <div class="controls">
+                <label for="promptEdit">
+                    Jelaskan perubahan yang diinginkan
+                </label>
+<div class="quick-tools">
+    <button
+        type="button"
+        class="quick-tool"
+        data-prompt="Ganti background foto menjadi pantai yang indah saat matahari terbenam. Pertahankan wajah, pose, tubuh, pakaian, dan pencahayaan orang tetap sama."
+    >
+        🏖️ Pantai
+    </button>
+
+    <button
+        type="button"
+        class="quick-tool"
+        data-prompt="Ganti background foto menjadi pegunungan hijau dengan air terjun yang indah. Pertahankan wajah, pose, tubuh, dan pakaian tetap sama."
+    >
+        🏔️ Pegunungan
+    </button>
+
+    <button
+        type="button"
+        class="quick-tool"
+        data-prompt="Ganti background foto menjadi studio foto profesional dengan pencahayaan lembut. Pertahankan wajah, pose, tubuh, dan pakaian tetap sama."
+    >
+        📸 Studio
+    </button>
+
+    <button
+        type="button"
+        class="quick-tool"
+        data-prompt="Ganti background foto menjadi taman bunga yang indah dan alami. Pertahankan wajah, pose, tubuh, dan pakaian tetap sama."
+    >
+        🌸 Taman
+    </button>
+</div>
+                <div class="prompt-wrap">
+                    <textarea
+                        id="promptEdit"
+                        maxlength="500"
+                        placeholder="Contoh: Ganti bajunya menjadi jas hitam, ubah background menjadi pegunungan, dan pertahankan wajah tetap sama."
+                    ></textarea>
+
+                    <span id="jumlahKarakter">0/500</span>
+                </div>
+
+                <p class="contoh-prompt">
+                    Tulis permintaan secara jelas. Contoh:
+                    “Ganti warna baju menjadi merah, lengan pendek,
+                    wajah tetap sama.”
+                </p>
+
+                <button
+                    type="button"
+                    id="editFotoBtn"
+                >
+                    ✨ Edit Foto AI
+                </button>
+
+                <p id="statusEditFoto"></p>
+                <div
+    class="action-row"
+    id="actionRow"
+>
+
+                <button
+    type="button"
+    id="editLagiBtn"
+>
+    🔄 Edit Lagi
+</button>
+
+<a
+    id="unduhHasil"
+    href="#"
+    download
+    class="quick-tool"
+>
+    ⬇️ Download HD
+</a>
+</div>
+                >
+                    <button
+                        type="button"
+                        id="editLagiBtn"
+                    >
+                        Edit Lagi
+                    </button>
+<a
+    id="unduhHasil"
+    href="#"
+    download
+    class="quick-tool"
+>
+    Download
+</a>
+                    <a
+                        id="unduhHasil"
+                        download="hasil-edit-nivexa.png"
+                    >
+                        Unduh Hasil
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const BATAS_KREDIT = 3;
+
+        const inputFoto =
+            document.getElementById("fotoEdit");
+
+        const workspace =
+            document.getElementById("workspace");
+
+        const uploadState =
+            document.getElementById("uploadState");
+
+        const workspaceImage =
+            document.getElementById("workspaceImage");
+            const tombolDownload =
+    document.getElementById("tombolDownload");
+
+        const processingState =
+            document.getElementById("processingState");
+
+        const promptEdit =
+            document.getElementById("promptEdit");
+
+        const jumlahKarakter =
+            document.getElementById("jumlahKarakter");
+
+        const tombolEdit =
+            document.getElementById("editFotoBtn");
+
+        const statusEdit =
+            document.getElementById("statusEditFoto");
+
+        const sisaKreditElement =
+            document.getElementById("sisaKredit");
+
+        const actionRow =
+            document.getElementById("actionRow");
+
+        const editLagiBtn =
+            document.getElementById("editLagiBtn");
+
+        const unduhHasil =
+            document.getElementById("unduhHasil");
+
+        let fotoTerpilih = null;
+        let hasilTerakhir = "";
+
+        function ambilKunciKredit() {
+            const user =
+                JSON.parse(
+                    localStorage.getItem("nivexaUser")
+                );
+
+            const identitas =
+                user && user.email
+                    ? user.email.toLowerCase()
+                    : "pengguna-tanpa-email";
+
+            return "nivexa-edit-photo-used-" + identitas;
+        }
+
+        function jumlahTerpakai() {
+            const nilai = Number(
+                localStorage.getItem(
+                    ambilKunciKredit()
+                )
+            );
+
+            return Number.isFinite(nilai)
+                ? nilai
+                : 0;
+        }
+
+        function sisaKredit() {
+            return Math.max(
+                0,
+                BATAS_KREDIT - jumlahTerpakai()
+            );
+        }
+
+        function tampilkanKredit() {
+            const sisa = sisaKredit();
+
+            sisaKreditElement.textContent = sisa;
+
+            if (sisa <= 0) {
+                tombolEdit.disabled = true;
+
+                tombolEdit.textContent =
+                    "Kredit Gratis Habis";
+
+                statusEdit.textContent =
+                    "Jatah 3 kali edit foto telah habis. Upgrade ke Premium untuk melanjutkan.";
+            }
+        }
+function ambilKunciRiwayatFoto() {
+    const user = JSON.parse(
+        localStorage.getItem("nivexaUser") || "{}"
+    );
+
+    const identitas =
+        user.email
+            ? user.email.toLowerCase()
+            : "pengguna-tanpa-email";
+
+    return "nivexa-riwayat-foto-" + identitas;
+}
+
+function simpanRiwayatFoto(url, prompt, namaFile) {
+    let riwayat = [];
+
+    try {
+        riwayat = JSON.parse(
+            localStorage.getItem(
+                ambilKunciRiwayatFoto()
+            ) || "[]"
+        );
+
+        if (!Array.isArray(riwayat)) {
+            riwayat = [];
+        }
+    } catch (error) {
+        riwayat = [];
+    }
+
+    const dataBaru = {
+        id: Date.now(),
+        type: "foto",
+        url: url,
+        prompt: prompt,
+        fileName:
+            namaFile || "hasil-nivexa-ai.png",
+        createdAt: new Date().toISOString()
+    };
+
+    riwayat.unshift(dataBaru);
+
+    // Simpan maksimal 10 hasil terbaru.
+    riwayat = riwayat.slice(0, 10);
+
+    localStorage.setItem(
+        ambilKunciRiwayatFoto(),
+        JSON.stringify(riwayat)
+    );
+
+    // Simpan hasil terakhir agar mudah ditampilkan di dashboard.
+    localStorage.setItem(
+        "nivexa-hasil-foto-terakhir",
+        JSON.stringify(dataBaru)
+    );
+}
+        function kurangiKredit() {
+            const terpakai = jumlahTerpakai();
+
+            localStorage.setItem(
+                ambilKunciKredit(),
+                String(terpakai + 1)
+            );
+
+            tampilkanKredit();
+        }
+
+        function tampilkanUpload() {
+            uploadState.style.display = "block";
+            workspaceImage.style.display = "none";
+            processingState.style.display = "none";
+            workspace.classList.add("clickable");
+            workspace.classList.add("clickable");
+        }
+
+        function tampilkanFoto(url) {
+            uploadState.style.display = "none";
+            processingState.style.display = "none";
+
+            workspaceImage.src = url;
+            workspaceImage.style.display = "block";
+            unduhHasil.href = url;
+unduhHasil.style.display = "inline-flex";
+
+            workspace.classList.add("clickable");
+        }
+
+        function tampilkanProses() {
+            uploadState.style.display = "none";
+            workspaceImage.style.display = "none";
+            processingState.style.display = "block";
+actionRow.style.display = "none";
+            workspace.classList.remove("clickable");
+        }
+
+        workspace.addEventListener(
+            "click",
+            function () {
+                if (
+                    tombolEdit.disabled &&
+                    sisaKredit() <= 0
+                ) {
+                    return;
+                }
+
+                if (
+                    processingState.style.display ===
+                    "block"
+                ) {
+                    return;
+                }
+
+                inputFoto.click();
+            }
+        );
+
+        inputFoto.addEventListener(
+            "change",
+            function () {
+                const file = inputFoto.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    alert(
+                        "Ukuran foto maksimal 10 MB."
+                    );
+
+                    inputFoto.value = "";
+                    return;
+                }
+
+                fotoTerpilih = file;
+                hasilTerakhir = "";
+
+                const previewUrl =
+                    URL.createObjectURL(file);
+
+                tampilkanFoto(previewUrl);
+
+                statusEdit.textContent =
+                    "Foto siap diedit.";
+
+                actionRow.style.display = "none";
+            }
+        );
+const quickTools =
+    document.querySelectorAll(".quick-tool");
+
+quickTools.forEach(function (tombol) {
+    tombol.addEventListener("click", function () {
+        promptEdit.value =
+            tombol.dataset.prompt || "";
+
+        jumlahKarakter.textContent =
+            promptEdit.value.length + "/500";
+
+        promptEdit.focus();
+
+        statusEdit.textContent =
+            "Prompt background sudah dipilih. Silakan klik Edit Foto AI.";
+    });
+});
+        promptEdit.addEventListener(
+            "input",
+            function () {
+                jumlahKarakter.textContent =
+                    promptEdit.value.length + "/500";
+            }
+        );
+
+        tombolEdit.addEventListener(
+            "click",
+            async function () {
+                const prompt =
+                    promptEdit.value.trim();
+
+                if (sisaKredit() <= 0) {
+                    alert(
+                        "Jatah 3 kali edit foto gratis telah habis."
+                    );
+                    return;
+                }
+
+                if (!fotoTerpilih) {
+                    alert(
+                        "Silakan pilih foto terlebih dahulu."
+                    );
+                    return;
+                }
+
+                if (!prompt) {
+                    alert(
+                        "Silakan tulis perubahan yang diinginkan."
+                    );
+
+                    promptEdit.focus();
+                    return;
+                }
+
+                const dataFoto = new FormData();
+
+                dataFoto.append(
+                    "photo",
+                    fotoTerpilih
+                );
+
+                dataFoto.append(
+                    "prompt",
+                    prompt
+                );
+
+                try {
+                    tombolEdit.disabled = true;
+                    tombolEdit.textContent =
+                        "Sedang memproses...";
+
+                    statusEdit.textContent =
+                        "Permintaan sedang dikirim ke AI...";
+
+                    actionRow.style.display = "none";
+
+                    tampilkanProses();
+
+                    const response = await fetch(
+                        "/edit-photo",
+                        {
+                            method: "POST",
+                            body: dataFoto
+                        }
+                    );
+
+                    const tipe =
+                        response.headers.get(
+                            "content-type"
+                        ) || "";
+
+                    let hasil;
+
+                    if (
+                        tipe.includes(
+                            "application/json"
+                        )
+                    ) {
+                        hasil = await response.json();
+                    } else {
+                        const teks =
+                            await response.text();
+
+                        throw new Error(
+                            teks ||
+                            "Server tidak mengirim respons JSON."
+                        );
+                    }
+
+                    if (
+                        !response.ok ||
+                        !hasil.success
+                    ) {
+                        throw new Error(
+                            hasil.message ||
+                            "Edit foto gagal."
+                        );
+                    }
+
+                    hasilTerakhir =
+                        hasil.imageUrl;
+
+                    tampilkanFoto(
+                        hasilTerakhir
+                    );
+
+                    unduhHasil.href =
+                        hasilTerakhir;
+
+                    actionRow.style.display =
+                        "grid";
+
+                    statusEdit.textContent =
+                        "Foto berhasil diedit.";
+statusEdit.textContent =
+    "Foto berhasil diedit.";
+
+unduhHasil.href = hasilTerakhir;
+
+unduhHasil.download =
+    hasil.fileName ||
+    "hasil-nivexa-ai.png";
+
+actionRow.style.display = "grid";
+
+simpanRiwayatFoto(
+    hasilTerakhir,
+    prompt,
+    hasil.fileName
+);
+
+kurangiKredit();
+                } catch (error) {
+                    console.error(error);
+
+                    statusEdit.textContent =
+                        "Gagal: " + error.message;
+
+                    const previewUrl =
+                        URL.createObjectURL(
+                            fotoTerpilih
+                        );
+
+                    tampilkanFoto(previewUrl);
+
+                    alert(
+                        "Edit foto gagal:\n" +
+                        error.message
+                    );
+                } finally {
+                    if (sisaKredit() > 0) {
+                        tombolEdit.disabled = false;
+
+                        tombolEdit.textContent =
+                            "✨ Edit Foto AI";
+                    }
+                }
+            }
+        );
+
+        editLagiBtn.addEventListener(
+            "click",
+            function () {
+                if (sisaKredit() <= 0) {
+                    alert(
+                        "Kredit gratis telah habis."
+                    );
+                    return;
+                }
+
+                promptEdit.focus();
+
+                statusEdit.textContent =
+                    "Silakan ubah prompt lalu proses kembali.";
+            }
+        );
+
+        tampilkanUpload();
+        tampilkanKredit();
+    </script>
+</body>
+</html>
