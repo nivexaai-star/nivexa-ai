@@ -3,10 +3,22 @@ const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-const { File } = require("node:buffer");
-
 require("dotenv").config();
+let falClient = null;
 
+async function dapatkanFalClient() {
+    if (!falClient) {
+        const { fal } = await import("@fal-ai/client");
+
+        fal.config({
+            credentials: process.env.FAL_KEY
+        });
+
+        falClient = fal;
+    }
+
+    return falClient;
+}
 const app = express();
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -17,50 +29,23 @@ const HF_SPACE =
 const HF_SPACE_URL =
     "https://mediasynthesismuseum-stable-video-diffusion.hf.space";
 
-const folderHasil = path.join(
-    __dirname,
-    "generated"
-);
+const folderVideo = path.join(__dirname, "generated");
 
-/* ========================================
-   KONFIGURASI DASAR SERVER
-======================================== */
-
-app.use(
-    cors({
-        origin: true,
-        methods: [
-            "GET",
-            "POST",
-            "OPTIONS"
-        ]
-    })
-);
-
+app.use(cors());
 app.use(express.json());
-
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "pages", "login.html"));
+});
 
 app.use(express.static(__dirname));
 
-if (!fs.existsSync(folderHasil)) {
-    fs.mkdirSync(folderHasil, {
+if (!fs.existsSync(folderVideo)) {
+    fs.mkdirSync(folderVideo, {
         recursive: true
     });
 }
 
-app.use(
-    "/generated",
-    express.static(folderHasil)
-);
-
-/* ========================================
-   KONFIGURASI UPLOAD FOTO
-======================================== */
+app.use("/generated", express.static(folderVideo));
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -72,42 +57,13 @@ const upload = multer({
     fileFilter(req, file, callback) {
         if (!file.mimetype.startsWith("image/")) {
             return callback(
-                new Error(
-                    "File harus berupa gambar."
-                )
+                new Error("File harus berupa gambar.")
             );
         }
 
         callback(null, true);
     }
 });
-
-/* ========================================
-   CLIENT FAL.AI
-======================================== */
-
-let falClient = null;
-
-async function dapatkanFalClient() {
-    if (!falClient) {
-        const { fal } =
-            await import("@fal-ai/client");
-
-        fal.config({
-            credentials:
-                process.env.FAL_KEY
-        });
-
-        falClient = fal;
-    }
-
-    return falClient;
-}
-
-/* ========================================
-   FUNGSI BANTU VIDEO
-======================================== */
-
 function cariUrlVideo(data) {
     if (!data) {
         return null;
@@ -127,8 +83,7 @@ function cariUrlVideo(data) {
 
     if (Array.isArray(data)) {
         for (const item of data) {
-            const hasil =
-                cariUrlVideo(item);
+            const hasil = cariUrlVideo(item);
 
             if (hasil) {
                 return hasil;
@@ -145,25 +100,17 @@ function cariUrlVideo(data) {
             data.download_url
         ];
 
-        for (
-            const kandidat
-            of kandidatLangsung
-        ) {
+        for (const kandidat of kandidatLangsung) {
             if (
-                typeof kandidat ===
-                    "string" &&
+                typeof kandidat === "string" &&
                 kandidat.length > 0
             ) {
                 return kandidat;
             }
         }
 
-        for (
-            const nilai
-            of Object.values(data)
-        ) {
-            const hasil =
-                cariUrlVideo(nilai);
+        for (const nilai of Object.values(data)) {
+            const hasil = cariUrlVideo(nilai);
 
             if (hasil) {
                 return hasil;
@@ -182,27 +129,19 @@ function buatUrlLengkap(url) {
         return url;
     }
 
-    return new URL(
-        url,
-        HF_SPACE_URL
-    ).href;
+    return new URL(url, HF_SPACE_URL).href;
 }
 
-async function unduhFile(
-    url,
-    lokasiTujuan
-) {
+async function unduhVideo(url, lokasiTujuan) {
     const respons = await fetch(url);
 
     if (!respons.ok) {
         throw new Error(
-            "Gagal mengunduh hasil AI " +
-            `(${respons.status}).`
+            `Gagal mengunduh video hasil AI (${respons.status}).`
         );
     }
 
-    const arrayBuffer =
-        await respons.arrayBuffer();
+    const arrayBuffer = await respons.arrayBuffer();
 
     fs.writeFileSync(
         lokasiTujuan,
@@ -210,141 +149,59 @@ async function unduhFile(
     );
 }
 
-/* ========================================
-   HALAMAN UTAMA
-======================================== */
-
-app.get("/", function (req, res) {
-    const halamanLogin = path.join(
-        __dirname,
-        "pages",
-        "login.html"
-    );
-
-    if (fs.existsSync(halamanLogin)) {
-        return res.sendFile(
-            halamanLogin
-        );
-    }
-
-    return res.json({
+app.get("/status", function (req, res) {
+    res.json({
         success: true,
-        message:
-            "NIVEXA AI Server aktif."
+        message: "Server NIVEXA AI aktif.",
+        huggingFaceToken: Boolean(process.env.HF_TOKEN),
+        falKey: Boolean(process.env.FAL_KEY),
+        space: HF_SPACE
     });
 });
-
-/* ========================================
-   STATUS SERVER
-======================================== */
-
-app.get(
-    "/status",
-    function (req, res) {
-        res.json({
-            success: true,
-
-            message:
-                "Server NIVEXA AI aktif.",
-
-            falKey:
-                Boolean(
-                    process.env.FAL_KEY
-                ),
-
-            huggingFaceToken:
-                Boolean(
-                    process.env.HF_TOKEN
-                ),
-
-            space: HF_SPACE
-        });
-    }
-);
-
-/* ========================================
-   EDIT FOTO DENGAN FAL.AI
-======================================== */
-
 app.post(
     "/edit-photo",
-
     upload.single("photo"),
 
     async function (req, res) {
         try {
             if (!process.env.FAL_KEY) {
-                return res
-                    .status(500)
-                    .json({
-                        success: false,
-
-                        message:
-                            "FAL_KEY belum terbaca " +
-                            "di server Render."
-                    });
+                return res.status(500).json({
+                    success: false,
+                    message:
+                        "FAL_KEY belum terbaca dari file .env."
+                });
             }
 
             if (!req.file) {
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Foto belum dipilih."
-                    });
+                return res.status(400).json({
+                    success: false,
+                    message: "Foto belum dipilih."
+                });
             }
 
-            const prompt = String(
-                req.body.prompt || ""
-            ).trim();
+            const prompt =
+                String(req.body.prompt || "").trim();
 
             if (!prompt) {
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Tuliskan perubahan " +
-                            "foto yang diinginkan."
-                    });
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Tuliskan perubahan foto yang diinginkan."
+                });
             }
 
             console.log("");
-            console.log(
-                "================================"
-            );
-            console.log(
-                "MEMULAI EDIT FOTO FAL.AI"
-            );
-            console.log(
-                "Nama foto:",
-                req.file.originalname
-            );
-            console.log(
-                "Ukuran:",
-                req.file.size,
-                "bytes"
-            );
-            console.log(
-                "Prompt:",
-                prompt
-            );
-            console.log(
-                "================================"
-            );
+            console.log("==============================");
+            console.log("Memulai Edit Foto fal.ai");
+            console.log("Foto:", req.file.originalname);
+            console.log("Prompt:", prompt);
+            console.log("==============================");
 
-            const fal =
-                await dapatkanFalClient();
+            const fal = await dapatkanFalClient();
 
             const fileFoto = new File(
                 [req.file.buffer],
-
-                req.file.originalname ||
-                    "foto.jpg",
-
+                req.file.originalname || "foto.jpg",
                 {
                     type:
                         req.file.mimetype ||
@@ -353,116 +210,100 @@ app.post(
             );
 
             console.log(
-                "Mengunggah foto ke fal.ai..."
+                "Mengunggah foto ke penyimpanan fal.ai..."
             );
 
             const imageUrl =
-                await fal.storage.upload(
-                    fileFoto
-                );
+                await fal.storage.upload(fileFoto);
 
             console.log(
-                "Foto berhasil diunggah."
+                "Foto berhasil diunggah:",
+                imageUrl
             );
 
             console.log(
-                "Memproses edit foto..."
+                "Mengirim permintaan Edit Foto ke fal.ai..."
             );
 
-            const hasil =
-                await fal.subscribe(
-                    "fal-ai/flux-kontext/dev",
-                    {
-                        input: {
-                            image_url:
-                                imageUrl,
+            const hasil = await fal.subscribe(
+                "fal-ai/flux-kontext/dev",
+                {
+                    input: {
+                        image_url: imageUrl,
+                        prompt: prompt,
+                        output_format: "png"
+                    },
 
-                            prompt:
-                                prompt,
+                    logs: true,
 
-                            output_format:
-                                "png"
-                        },
-
-                        logs: true,
-
-                        onQueueUpdate(
-                            update
+                    onQueueUpdate: function (update) {
+                        if (
+                            update.status === "IN_PROGRESS" &&
+                            Array.isArray(update.logs)
                         ) {
-                            if (
-                                update.status ===
-                                    "IN_PROGRESS" &&
-                                Array.isArray(
-                                    update.logs
-                                )
-                            ) {
-                                update.logs
-                                    .forEach(
-                                        function (
-                                            log
-                                        ) {
-                                            if (
-                                                log.message
-                                            ) {
-                                                console.log(
-                                                    "fal.ai:",
-                                                    log.message
-                                                );
-                                            }
-                                        }
+                            update.logs.forEach(function (log) {
+                                if (log.message) {
+                                    console.log(
+                                        "fal.ai:",
+                                        log.message
                                     );
-                            }
+                                }
+                            });
                         }
                     }
-                );
+                }
+            );
 
             const hasilData =
                 hasil?.data || hasil;
 
             const urlHasil =
-                hasilData
-                    ?.images?.[0]?.url ||
-                hasilData
-                    ?.image?.url ||
-                hasilData
-                    ?.image?.image_url;
+                hasilData?.images?.[0]?.url ||
+                hasilData?.image?.url ||
+                hasilData?.image?.image_url;
 
             if (!urlHasil) {
                 console.log(
-                    "Respons Fal.ai:",
-                    JSON.stringify(
-                        hasilData,
-                        null,
-                        2
-                    )
+                    "Respons fal.ai:",
+                    JSON.stringify(hasilData, null, 2)
                 );
 
                 throw new Error(
-                    "URL hasil Edit Foto " +
-                    "tidak ditemukan."
+                    "URL hasil Edit Foto tidak ditemukan."
                 );
             }
 
             const namaFile =
-                `nivexa-edit-${Date.now()}.png`;
+                "nivexa-edit-" +
+                Date.now() +
+                ".png";
 
-            const lokasiFile =
-                path.join(
-                    folderHasil,
-                    namaFile
-                );
+            const lokasiFile = path.join(
+                folderVideo,
+                namaFile
+            );
 
             console.log(
                 "Mengunduh hasil Edit Foto..."
             );
 
-            await unduhFile(
-                urlHasil,
-                lokasiFile
+            const responseGambar =
+                await fetch(urlHasil);
+
+            if (!responseGambar.ok) {
+                throw new Error(
+                    "Gagal mengunduh hasil Edit Foto."
+                );
+            }
+
+            const bufferHasil = Buffer.from(
+                await responseGambar.arrayBuffer()
             );
 
-            const alamatLokal =
-                `/generated/${namaFile}`;
+            fs.writeFileSync(
+                lokasiFile,
+                bufferHasil
+            );
 
             console.log(
                 "Edit Foto berhasil:",
@@ -470,22 +311,19 @@ app.post(
             );
 
             return res.json({
-                success: true,
+    success: true,
+    message:
+        "Foto berhasil diedit dengan fal.ai.",
 
-                message:
-                    "Foto berhasil diedit " +
-                    "dengan Fal.ai.",
+    imageUrl:
+        `https://nivexa-ai-2.onrender.com/generated/${namaFile}`,
 
-                imageUrl:
-    `https://nivexa-ai-2.onrender.com${alamatLokal}`,
-
-                fileName:
-                    namaFile
-            });
+    fileName: namaFile
+});
         } catch (error) {
             console.error("");
             console.error(
-                "Kesalahan Edit Foto:",
+                "Kesalahan Edit Foto fal.ai:",
                 error
             );
 
@@ -494,243 +332,166 @@ app.post(
                 error?.message ||
                 "Edit Foto gagal diproses.";
 
-            if (
-                typeof pesan !== "string"
-            ) {
-                pesan =
-                    JSON.stringify(pesan);
+            if (typeof pesan !== "string") {
+                pesan = JSON.stringify(pesan);
             }
 
             const pesanKecil =
                 pesan.toLowerCase();
 
             if (
-                pesanKecil.includes(
-                    "credit"
-                ) ||
-                pesanKecil.includes(
-                    "billing"
-                ) ||
-                pesanKecil.includes(
-                    "payment"
-                )
+                pesanKecil.includes("credit") ||
+                pesanKecil.includes("billing") ||
+                pesanKecil.includes("payment")
             ) {
                 pesan =
-                    "Saldo Fal.ai tidak " +
-                    "tersedia atau tidak mencukupi.";
+                    "Saldo fal.ai belum tersedia atau tidak mencukupi.";
             }
 
             if (
-                pesanKecil.includes(
-                    "unauthorized"
-                ) ||
-                pesanKecil.includes(
-                    "invalid key"
-                ) ||
+                pesanKecil.includes("unauthorized") ||
+                pesanKecil.includes("invalid key") ||
                 pesanKecil.includes("401")
             ) {
                 pesan =
-                    "FAL_KEY tidak valid " +
-                    "atau belum terbaca.";
+                    "FAL_KEY tidak valid atau belum terbaca.";
             }
 
-            return res
-                .status(500)
-                .json({
-                    success: false,
-                    message: pesan
-                });
+            return res.status(500).json({
+                success: false,
+                message: pesan
+            });
         }
     }
 );
-
-/* ========================================
-   GENERATE VIDEO DENGAN HUGGING FACE
-======================================== */
-
 app.post(
     "/generate-video",
-
     upload.single("photo"),
 
     async function (req, res) {
         try {
             const prompt =
-                typeof req.body.prompt ===
-                "string"
+                typeof req.body.prompt === "string"
                     ? req.body.prompt.trim()
                     : "";
 
             if (!process.env.HF_TOKEN) {
-                return res
-                    .status(500)
-                    .json({
-                        success: false,
-
-                        message:
-                            "HF_TOKEN belum " +
-                            "terbaca di server."
-                    });
+                return res.status(500).json({
+                    success: false,
+                    message:
+                        "HF_TOKEN belum terbaca dari file .env."
+                });
             }
 
             if (!req.file) {
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Foto belum dipilih."
-                    });
+                return res.status(400).json({
+                    success: false,
+                    message: "Foto belum dipilih."
+                });
             }
 
             if (!prompt) {
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Prompt gerakan " +
-                            "belum diisi."
-                    });
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Prompt gerakan belum diisi."
+                });
             }
 
             console.log("");
-            console.log(
-                "================================"
-            );
-            console.log(
-                "MEMULAI PEMBUATAN VIDEO"
-            );
-            console.log(
-                "Foto:",
-                req.file.originalname
-            );
-            console.log(
-                "Ukuran:",
-                req.file.size,
-                "bytes"
-            );
-            console.log(
-                "Prompt:",
-                prompt
-            );
-            console.log(
-                "================================"
-            );
+            console.log("================================");
+            console.log("Memulai pembuatan video NIVEXA AI");
+            console.log("Foto:", req.file.originalname);
+            console.log("Ukuran:", req.file.size, "bytes");
+            console.log("Prompt:", prompt);
+            console.log("================================");
 
             const {
                 Client,
                 handle_file
-            } =
-                await import(
-                    "@gradio/client"
-                );
+            } = await import("@gradio/client");
 
             console.log(
-                "Menghubungkan ke " +
-                "Hugging Face Space..."
+                "Menghubungkan ke Hugging Face Space..."
             );
 
-            const gradioApp =
-                await Client.connect(
-                    HF_SPACE,
-                    {
-                        token:
-                            process.env
-                                .HF_TOKEN
-                    }
-                );
+            const gradioApp = await Client.connect(
+                HF_SPACE,
+                {
+                    token: process.env.HF_TOKEN
+                }
+            );
 
-            const seed =
-                Math.floor(
-                    Math.random() *
-                        2147483647
-                );
+            const seed = Math.floor(
+                Math.random() * 2147483647
+            );
 
             const randomizeSeed = true;
+
+            // Nilai umum Stable Video Diffusion.
             const motionBucketId = 127;
+
+            // Space menghasilkan sekitar 25 frame.
             const framesPerSecond = 6;
 
-            const imageBlob =
-                new Blob(
-                    [req.file.buffer],
-                    {
-                        type:
-                            req.file
-                                .mimetype
-                    }
-                );
+            const imageBlob = new Blob(
+                [req.file.buffer],
+                {
+                    type: req.file.mimetype
+                }
+            );
 
             console.log(
                 "Foto dikirim ke endpoint /video..."
             );
 
-            const hasil =
-                await gradioApp.predict(
-                    "/video",
-                    [
-                        handle_file(
-                            imageBlob
-                        ),
-
-                        seed,
-                        randomizeSeed,
-                        motionBucketId,
-                        framesPerSecond
-                    ]
-                );
+            const hasil = await gradioApp.predict(
+                "/video",
+                [
+                    handle_file(imageBlob),
+                    seed,
+                    randomizeSeed,
+                    motionBucketId,
+                    framesPerSecond
+                ]
+            );
 
             console.log(
                 "Respons Gradio diterima."
             );
 
-            const urlMentah =
-                cariUrlVideo(
-                    hasil.data
-                );
+            const urlMentah = cariUrlVideo(hasil.data);
 
             if (!urlMentah) {
                 console.log(
                     "Isi respons:",
-                    JSON.stringify(
-                        hasil.data,
-                        null,
-                        2
-                    )
+                    JSON.stringify(hasil.data, null, 2)
                 );
 
                 throw new Error(
-                    "URL video tidak ditemukan " +
-                    "dalam respons AI."
+                    "URL video tidak ditemukan dalam respons AI."
                 );
             }
 
             const urlVideoAI =
-                buatUrlLengkap(
-                    urlMentah
-                );
+                buatUrlLengkap(urlMentah);
 
             const namaVideo =
                 `nivexa-${Date.now()}.mp4`;
 
             const lokasiVideo =
-                path.join(
-                    folderHasil,
-                    namaVideo
-                );
+                path.join(folderVideo, namaVideo);
 
             console.log(
                 "Mengunduh video hasil AI..."
             );
 
-            await unduhFile(
+            await unduhVideo(
                 urlVideoAI,
                 lokasiVideo
             );
 
-            const alamatVideo =
+            const alamatVideoLokal =
                 `/generated/${namaVideo}`;
 
             console.log(
@@ -740,22 +501,16 @@ app.post(
 
             return res.json({
                 success: true,
-
                 message:
                     "Video AI berhasil dibuat.",
-
-                videoUrl:
-                    alamatVideo,
-
-                fileName:
-                    namaVideo,
-
+                videoUrl: alamatVideoLokal,
+                fileName: namaVideo,
                 demo: false,
 
                 info:
-                    "Stable Video Diffusion " +
-                    "menggerakkan foto tanpa " +
-                    "membaca prompt secara langsung."
+                    "Model Stable Video Diffusion saat ini " +
+                    "menggerakkan foto tanpa membaca prompt " +
+                    "secara langsung."
             });
         } catch (error) {
             console.error("");
@@ -772,134 +527,77 @@ app.post(
                 pesanAsli.toLowerCase();
 
             if (
-                pesanKecil.includes(
-                    "queue"
-                ) ||
-                pesanKecil.includes(
-                    "busy"
-                ) ||
-                pesanKecil.includes(
-                    "capacity"
-                ) ||
-                pesanKecil.includes(
-                    "rate limit"
-                ) ||
-                pesanKecil.includes(
-                    "429"
-                )
+                pesanKecil.includes("queue") ||
+                pesanKecil.includes("busy") ||
+                pesanKecil.includes("capacity") ||
+                pesanKecil.includes("rate limit") ||
+                pesanKecil.includes("429")
             ) {
-                return res
-                    .status(503)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Server AI gratis " +
-                            "sedang penuh atau antre. " +
-                            "Silakan coba lagi."
-                    });
-            }
-
-            if (
-                pesanKecil.includes(
-                    "401"
-                ) ||
-                pesanKecil.includes(
-                    "unauthorized"
-                ) ||
-                pesanKecil.includes(
-                    "token"
-                )
-            ) {
-                return res
-                    .status(401)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Token Hugging Face " +
-                            "tidak valid."
-                    });
-            }
-
-            if (
-                pesanKecil.includes(
-                    "sleep"
-                ) ||
-                pesanKecil.includes(
-                    "starting"
-                )
-            ) {
-                return res
-                    .status(503)
-                    .json({
-                        success: false,
-
-                        message:
-                            "Mesin AI sedang " +
-                            "dinyalakan. Tunggu " +
-                            "sebentar lalu coba lagi."
-                    });
-            }
-
-            return res
-                .status(500)
-                .json({
+                return res.status(503).json({
                     success: false,
-                    message: pesanAsli
-                });
-        }
-    }
-);
-
-/* ========================================
-   PENANGANAN ERROR
-======================================== */
-
-app.use(
-    function (
-        error,
-        req,
-        res,
-        next
-    ) {
-        console.error(
-            "Kesalahan server:",
-            error
-        );
-
-        if (
-            error instanceof
-                multer.MulterError &&
-            error.code ===
-                "LIMIT_FILE_SIZE"
-        ) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-
                     message:
-                        "Ukuran foto maksimal " +
-                        "10 MB."
+                        "Server AI gratis sedang penuh atau " +
+                        "antre. Silakan coba lagi beberapa saat."
                 });
-        }
+            }
 
-        return res
-            .status(500)
-            .json({
+            if (
+                pesanKecil.includes("401") ||
+                pesanKecil.includes("unauthorized") ||
+                pesanKecil.includes("token")
+            ) {
+                return res.status(401).json({
+                    success: false,
+                    message:
+                        "Token Hugging Face tidak valid atau " +
+                        "belum memiliki izin."
+                });
+            }
+
+            if (
+                pesanKecil.includes("sleep") ||
+                pesanKecil.includes("starting")
+            ) {
+                return res.status(503).json({
+                    success: false,
+                    message:
+                        "Mesin AI sedang dinyalakan. " +
+                        "Tunggu sebentar lalu coba lagi."
+                });
+            }
+
+            return res.status(500).json({
                 success: false,
-
-                message:
-                    error.message ||
-                    "Terjadi masalah pada server."
+                message: pesanAsli
             });
+        }
     }
 );
 
-/* ========================================
-   MENJALANKAN SERVER
-======================================== */
+app.use(function (error, req, res, next) {
+    console.error(
+        "Kesalahan server:",
+        error
+    );
+
+    if (
+        error instanceof multer.MulterError &&
+        error.code === "LIMIT_FILE_SIZE"
+    ) {
+        return res.status(400).json({
+            success: false,
+            message:
+                "Ukuran foto maksimal 10 MB."
+        });
+    }
+
+    return res.status(500).json({
+        success: false,
+        message:
+            error.message ||
+            "Terjadi masalah pada server."
+    });
+});
 
 app.listen(
     PORT,
@@ -907,15 +605,9 @@ app.listen(
 
     function () {
         console.log("");
-        console.log(
-            "================================"
-        );
-        console.log(
-            "NIVEXA AI SERVER AKTIF"
-        );
-        console.log(
-            "================================"
-        );
+        console.log("================================");
+        console.log("NIVEXA AI SERVER AKTIF");
+        console.log("================================");
 
         console.log(
             "HF token:",
@@ -925,23 +617,14 @@ app.listen(
         );
 
         console.log(
-            "FAL key:",
-            process.env.FAL_KEY
-                ? "sudah terbaca"
-                : "belum terbaca"
+            `Server laptop: http://localhost:${PORT}`
         );
 
         console.log(
-            `Server: http://localhost:${PORT}`
+            `Tes status: http://localhost:${PORT}/status`
         );
 
-        console.log(
-            `Status: http://localhost:${PORT}/status`
-        );
-
-        console.log(
-            "================================"
-        );
+        console.log("================================");
         console.log("");
     }
 );
