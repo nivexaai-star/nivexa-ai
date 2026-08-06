@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paket Kredit - NIVEXA AI</title>
+
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+
+<style>
+body{
+background:#090b17;
+color:white;
+font-family:Arial,sans-serif;
+margin:0;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+font-size:40px;
+}
+
+.subtitle{
+text-align:center;
+opacity:.8;
+margin-bottom:40px;
+font-size:18px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.card{
+background:linear-gradient(180deg,#1b2142,#10162f);
+border-radius:22px;
+padding:30px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+transition:.3s;
+position:relative;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.badge{
+position:absolute;
+top:18px;
+right:18px;
+background:#ffb300;
+color:#111;
+padding:6px 14px;
+border-radius:30px;
+font-size:12px;
+font-weight:bold;
+}
+
+.card h2{
+font-size:42px;
+margin:0;
+}
+
+.nama{
+font-size:22px;
+margin-top:10px;
+font-weight:bold;
+}
+
+.price{
+font-size:30px;
+margin:20px 0;
+font-weight:bold;
+color:#7dd3fc;
+}
+
+ul{
+text-align:left;
+padding-left:20px;
+line-height:32px;
+margin-bottom:25px;
+}
+
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+font-size:17px;
+cursor:pointer;
+background:#5b7cff;
+color:white;
+font-weight:bold;
+}
+
+button:hover{
+opacity:.9;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💳 Paket Kredit NIVEXA AI</h1>
+
+<p class="subtitle">
+Pilih paket yang paling sesuai dengan kebutuhanmu.
+</p>
+
+<div class="grid">
+
+<!-- BASIC -->
+<div class="card">
+
+<h2>30</h2>
+
+<div class="nama">
+🥉 BASIC
+</div>
+
+<div class="price">
+Rp50.000
+</div>
+
+<ul>
+<li>30 Kredit AI</li>
+<li>Edit Foto AI</li>
+<li>Video AI</li>
+<li>Semua fitur AI</li>
+</ul>
+
+<button onclick="pilihPaket('Basic',50000,30)">
+Beli Sekarang
+</button>
+
+</div>
+
+<!-- PRO -->
+<div class="card">
+
+<div class="badge">
+⭐ PALING POPULER
+</div>
+
+<h2>120</h2>
+
+<div class="nama">
+🥈 PRO
+</div>
+
+<div class="price">
+Rp150.000
+</div>
+
+<ul>
+<li>120 Kredit AI</li>
+<li>Edit Foto AI</li>
+<li>Video AI</li>
+<li>Semua fitur AI</li>
+</ul>
+
+<button onclick="pilihPaket('Pro',150000,120)">
+Beli Sekarang
+</button>
+
+</div>
+
+<!-- PREMIUM -->
+<div class="card">
+
+<div class="badge">
+👑 TERBAIK
+</div>
+
+<h2>250</h2>
+
+<div class="nama">
+💎 PREMIUM
+</div>
+
+<div class="price">
+Rp250.000
+</div>
+
+<ul>
+<li>250 Kredit AI</li>
+<li>Edit Foto AI</li>
+<li>Video AI</li>
+<li>Semua fitur AI</li>
+</ul>
+
+<button onclick="pilihPaket('Premium',250000,250)">
+Beli Sekarang
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+function pilihPaket(nama,harga,kredit){
+
+const paket={
+nama,
+harga,
+kredit
+};
+
+localStorage.setItem(
+"nivexaPaketDipilih",
+JSON.stringify(paket)
+);
+
+window.location.href="konfirmasi-pembelian.html";
+
+}
+</script>
+
+</body>
+</html>

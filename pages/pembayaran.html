@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pembayaran | NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 28px 16px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(83, 104, 255, 0.28),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #070b18,
+                    #101a3a,
+                    #171b4a
+                );
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .container {
+            width: min(850px, 100%);
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            margin-bottom: 22px;
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 0.85;
+        }
+
+        .card {
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            background: rgba(15, 23, 52, 0.9);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: clamp(30px, 5vw, 44px);
+        }
+
+        .subtitle {
+            margin-bottom: 25px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.6;
+        }
+
+        .package-box {
+            padding: 18px;
+            margin-bottom: 24px;
+            border-radius: 17px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .package-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .package-row:last-child {
+            border-bottom: none;
+        }
+
+        .package-row span {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .section-title {
+            margin: 26px 0 13px;
+            font-size: 20px;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 13px;
+        }
+
+        .payment-option {
+            min-height: 110px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #ffffff;
+            cursor: pointer;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            transition: 0.2s ease;
+        }
+
+        .payment-option:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .payment-option.active {
+            border-color: #6f7cff;
+            background: rgba(96, 105, 255, 0.18);
+            box-shadow: 0 0 0 3px rgba(96, 105, 255, 0.12);
+        }
+
+        .payment-option strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 17px;
+        }
+
+        .detail-box {
+            display: none;
+            margin-top: 17px;
+            padding: 18px;
+            border-radius: 16px;
+            line-height: 1.7;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .detail-box.show {
+            display: block;
+        }
+
+        .payment-number {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 13px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        .copy-button {
+            flex-shrink: 0;
+            padding: 9px 12px;
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            cursor: pointer;
+            background: #596cff;
+        }
+
+        .qris-placeholder {
+            display: grid;
+            place-items: center;
+            min-height: 230px;
+            margin-top: 13px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: rgba(255, 255, 255, 0.65);
+            text-align: center;
+        }
+
+        .upload-box {
+            margin-top: 14px;
+            padding: 20px;
+            border: 2px dashed rgba(110, 167, 255, 0.55);
+            border-radius: 17px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(49, 85, 180, 0.08);
+        }
+
+        #buktiPembayaran {
+            display: none;
+        }
+
+        #previewBukti {
+            display: none;
+            width: 100%;
+            max-height: 420px;
+            margin-top: 16px;
+            border-radius: 14px;
+            object-fit: contain;
+        }
+
+        #namaFile {
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .submit-button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+            background:
+                linear-gradient(
+                    135deg,
+                    #6b5cff,
+                    #3d8dff
+                );
+        }
+
+        .submit-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        #statusPembayaran {
+            min-height: 24px;
+            margin-top: 14px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 650px) {
+            .card {
+                padding: 20px;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .package-row,
+            .payment-number {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <a
+            class="back-link"
+            href="konfirmasi-pembelian.html"
+        >
+            ← Kembali ke Konfirmasi
+        </a>
+
+        <section class="card">
+            <h1>💳 Pembayaran NIVEXA AI</h1>
+
+            <p class="subtitle">
+                Pilih metode pembayaran, lakukan pembayaran,
+                lalu unggah bukti transfer.
+            </p>
+
+            <div class="package-box">
+                <div class="package-row">
+                    <span>Nama Paket</span>
+                    <strong id="namaPaket">-</strong>
+                </div>
+
+                <div class="package-row">
+                    <span>Jumlah Kredit</span>
+                    <strong id="jumlahKredit">-</strong>
+                </div>
+
+                <div class="package-row">
+                    <span>Total Pembayaran</span>
+                    <strong id="hargaPaket">-</strong>
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                Pilih Metode Pembayaran
+            </h2>
+
+            <div class="payment-grid">
+                <button
+                    type="button"
+                    class="payment-option"
+                    data-metode="qris"
+                >
+                    🟢
+                    <strong>QRIS</strong>
+                </button>
+
+                <button
+                    type="button"
+                    class="payment-option"
+                    data-metode="dana"
+                >
+                    💙
+                    <strong>DANA</strong>
+                </button>
+
+                <button
+                    type="button"
+                    class="payment-option"
+                    data-metode="bank"
+                >
+                    🏦
+                    <strong>Transfer Bank</strong>
+                </button>
+            </div>
+
+            <div
+                class="detail-box"
+                id="detailQris"
+            >
+                <strong>Bayar dengan QRIS</strong>
+
+                <p>
+                    Scan kode QRIS menggunakan aplikasi pembayaranmu.
+                </p>
+
+                <div class="qris-placeholder">
+    <img
+        src="../assets/images/qris.png.jpg"
+        alt="QRIS NIVEXA AI"
+        style="
+            width:100%;
+            max-width:300px;
+            border-radius:16px;
+        "
+    >
+</div>
+
+            <div
+                class="detail-box"
+                id="detailDana"
+            >
+                <strong>Bayar melalui DANA</strong>
+
+                <div class="payment-number">
+                    <span id="nomorDana">
+                        08xxxxxxxxxx
+                    </span>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-copy="08xxxxxxxxxx"
+                    >
+                        Salin
+                    </button>
+                </div>
+
+                <p>
+                    Atas nama: <strong>Nico</strong>
+                </p>
+            </div>
+
+            <div
+                class="detail-box"
+                id="detailBank"
+            >
+                <strong>Bayar melalui Transfer Bank</strong>
+
+                <p>
+                    Bank: <strong>Isi nama bank</strong>
+                </p>
+
+                <div class="payment-number">
+                    <span id="nomorRekening">
+                        xxxxxxxxxxxx
+                    </span>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-copy="xxxxxxxxxxxx"
+                    >
+                        Salin
+                    </button>
+                </div>
+
+                <p>
+                    Atas nama: <strong>Nico</strong>
+                </p>
+            </div>
+
+            <h2 class="section-title">
+                Unggah Bukti Pembayaran
+            </h2>
+
+            <label
+                class="upload-box"
+                for="buktiPembayaran"
+            >
+                📷 Klik untuk memilih bukti pembayaran
+                <br>
+                <small>JPG, PNG, atau WEBP — maksimal 10 MB</small>
+            </label>
+
+            <input
+                type="file"
+                id="buktiPembayaran"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+            <p id="namaFile">
+                Belum ada file yang dipilih.
+            </p>
+
+            <img
+                id="previewBukti"
+                alt="Preview bukti pembayaran"
+            >
+
+            <button
+                type="button"
+                class="submit-button"
+                id="kirimPembayaran"
+            >
+                Kirim Bukti Pembayaran
+            </button>
+
+            <p id="statusPembayaran"></p>
+        </section>
+    </main>
+
+    <script>
+        let dataPaket = null;
+        let metodeDipilih = "";
+        let buktiDipilih = null;
+
+        try {
+            dataPaket = JSON.parse(
+                localStorage.getItem(
+                    "nivexaPaketDipilih"
+                ) || "null"
+            );
+        } catch (error) {
+            console.error(
+                "Data paket rusak:",
+                error
+            );
+        }
+
+        if (!dataPaket) {
+            alert(
+                "Paket belum dipilih. Silakan pilih paket terlebih dahulu."
+            );
+
+            window.location.href =
+                "paket-kredit.html";
+        } else {
+            document.getElementById(
+                "namaPaket"
+            ).textContent =
+                String(
+                    dataPaket.nama
+                ).toUpperCase();
+
+            document.getElementById(
+                "jumlahKredit"
+            ).textContent =
+                Number(
+                    dataPaket.kredit
+                ) + " Kredit AI";
+
+            document.getElementById(
+                "hargaPaket"
+            ).textContent =
+                new Intl.NumberFormat(
+                    "id-ID",
+                    {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }
+                ).format(
+                    Number(
+                        dataPaket.harga
+                    )
+                );
+        }
+
+        const pilihanPembayaran =
+            document.querySelectorAll(
+                ".payment-option"
+            );
+
+        const semuaDetail = {
+            qris:
+                document.getElementById(
+                    "detailQris"
+                ),
+            dana:
+                document.getElementById(
+                    "detailDana"
+                ),
+            bank:
+                document.getElementById(
+                    "detailBank"
+                )
+        };
+
+        pilihanPembayaran.forEach(
+            function (tombol) {
+                tombol.addEventListener(
+                    "click",
+                    function () {
+                        metodeDipilih =
+                            tombol.dataset.metode;
+
+                        pilihanPembayaran.forEach(
+                            function (item) {
+                                item.classList.remove(
+                                    "active"
+                                );
+                            }
+                        );
+
+                        Object.values(
+                            semuaDetail
+                        ).forEach(
+                            function (detail) {
+                                detail.classList.remove(
+                                    "show"
+                                );
+                            }
+                        );
+
+                        tombol.classList.add(
+                            "active"
+                        );
+
+                        semuaDetail[
+                            metodeDipilih
+                        ].classList.add(
+                            "show"
+                        );
+                    }
+                );
+            }
+        );
+
+        document.querySelectorAll(
+            ".copy-button"
+        ).forEach(
+            function (tombol) {
+                tombol.addEventListener(
+                    "click",
+                    async function () {
+                        try {
+                            await navigator.clipboard.writeText(
+                                tombol.dataset.copy
+                            );
+
+                            tombol.textContent =
+                                "Tersalin";
+
+                            setTimeout(
+                                function () {
+                                    tombol.textContent =
+                                        "Salin";
+                                },
+                                1500
+                            );
+                        } catch (error) {
+                            alert(
+                                "Nomor belum bisa disalin otomatis."
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+        const inputBukti =
+            document.getElementById(
+                "buktiPembayaran"
+            );
+
+        const previewBukti =
+            document.getElementById(
+                "previewBukti"
+            );
+
+        const namaFile =
+            document.getElementById(
+                "namaFile"
+            );
+
+        inputBukti.addEventListener(
+            "change",
+            function () {
+                const file =
+                    inputBukti.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const jenisDiizinkan = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp"
+                ];
+
+                if (
+                    !jenisDiizinkan.includes(
+                        file.type
+                    )
+                ) {
+                    alert(
+                        "Bukti pembayaran harus berupa JPG, PNG, atau WEBP."
+                    );
+
+                    inputBukti.value = "";
+                    return;
+                }
+
+                if (
+                    file.size >
+                    10 * 1024 * 1024
+                ) {
+                    alert(
+                        "Ukuran bukti pembayaran maksimal 10 MB."
+                    );
+
+                    inputBukti.value = "";
+                    return;
+                }
+
+                buktiDipilih = file;
+
+                namaFile.textContent =
+                    file.name;
+
+                previewBukti.src =
+                    URL.createObjectURL(
+                        file
+                    );
+
+                previewBukti.style.display =
+                    "block";
+            }
+        );
+
+        const kirimPembayaran =
+            document.getElementById(
+                "kirimPembayaran"
+            );
+
+        const statusPembayaran =
+            document.getElementById(
+                "statusPembayaran"
+            );
+
+        kirimPembayaran.addEventListener(
+            "click",
+            function () {
+                if (!metodeDipilih) {
+                    alert(
+                        "Silakan pilih metode pembayaran."
+                    );
+                    return;
+                }
+
+                if (!buktiDipilih) {
+                    alert(
+                        "Silakan unggah bukti pembayaran."
+                    );
+                    return;
+                }
+
+                const dataTransaksi = {
+                    id:
+                        "NVX-" +
+                        Date.now(),
+                    paket:
+                        dataPaket.nama,
+                    kredit:
+                        dataPaket.kredit,
+                    harga:
+                        dataPaket.harga,
+                    metode:
+                        metodeDipilih,
+                    status:
+                        "menunggu-verifikasi",
+                    dibuat:
+                        new Date().toISOString()
+                };
+
+                localStorage.setItem(
+                    "nivexaPembayaranTerakhir",
+                    JSON.stringify(
+                        dataTransaksi
+                    )
+                );
+
+                statusPembayaran.textContent =
+                    "✅ Bukti pembayaran berhasil dicatat. Menunggu verifikasi admin.";
+
+                alert(
+                    "Bukti pembayaran berhasil dicatat.\n\nAdmin akan memverifikasi pembayaranmu."
+                );
+            }
+        );
+    </script>
+</body>
+</html>

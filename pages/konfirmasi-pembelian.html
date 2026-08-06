@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Konfirmasi Pembelian | NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 28px 16px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(83, 104, 255, 0.28),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #070b18,
+                    #101a3a,
+                    #171b4a
+                );
+        }
+
+        .container {
+            width: min(720px, 100%);
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 0.85;
+        }
+
+        .card {
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            background: rgba(15, 23, 52, 0.88);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(14px);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: clamp(28px, 5vw, 42px);
+        }
+
+        .subtitle {
+            margin-bottom: 26px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .package-box {
+            padding: 20px;
+            margin-bottom: 24px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .package-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .package-row:last-child {
+            border-bottom: none;
+        }
+
+        .package-row span {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .benefits {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .benefit {
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .message {
+            padding: 18px;
+            border-radius: 16px;
+            line-height: 1.7;
+            background: rgba(72, 103, 255, 0.12);
+        }
+
+        .secure-note {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            line-height: 1.6;
+            background: rgba(35, 197, 122, 0.1);
+        }
+
+        .button-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 26px;
+        }
+
+        .button-area a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 52px;
+            padding: 12px;
+            border-radius: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-pay {
+            background:
+                linear-gradient(
+                    135deg,
+                    #6b5cff,
+                    #3d8dff
+                );
+        }
+
+        .team {
+            margin-top: 18px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 560px) {
+            .card {
+                padding: 20px;
+            }
+
+            .button-area {
+                grid-template-columns: 1fr;
+            }
+
+            .package-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <a
+            class="back-link"
+            href="paket-kredit.html"
+        >
+            ← Kembali ke Paket
+        </a>
+
+        <section class="card">
+            <h1>👑 Konfirmasi Pembelian</h1>
+
+            <p class="subtitle">
+                Pastikan paket yang dipilih sudah benar.
+            </p>
+
+            <div class="package-box">
+                <div class="package-row">
+                    <span>Nama Paket</span>
+                    <strong id="namaPaket">-</strong>
+                </div>
+
+                <div class="package-row">
+                    <span>Jumlah Kredit</span>
+                    <strong id="jumlahKredit">-</strong>
+                </div>
+
+                <div class="package-row">
+                    <span>Total Pembayaran</span>
+                    <strong id="hargaPaket">-</strong>
+                </div>
+            </div>
+
+            <div class="benefits">
+                <div class="benefit">✨ Bayar sekali</div>
+                <div class="benefit">♾️ Kredit tanpa batas waktu</div>
+                <div class="benefit">📱 Gunakan kapan saja</div>
+                <div class="benefit">🎁 Selama saldo kredit masih tersedia</div>
+            </div>
+
+            <div class="message">
+                💙 Terima kasih atas kepercayaan Anda kepada NIVEXA AI.
+                Pastikan nama paket, jumlah kredit, dan total pembayaran
+                sudah sesuai sebelum melanjutkan.
+            </div>
+
+            <div class="secure-note">
+                🔒 Untuk sementara, pembayaran akan diproses melalui
+                QRIS, DANA, atau transfer bank dan diverifikasi oleh admin.
+            </div>
+
+            <p class="team">
+                <strong>— Tim NIVEXA AI</strong>
+            </p>
+
+            <div class="button-area">
+                <a
+                    class="btn-back"
+                    href="paket-kredit.html"
+                >
+                    ← Kembali
+                </a>
+
+               <a
+    class="btn-pay"
+    href="pembayaran.html"
+    id="lanjutBayar"
+>
+    💳 Lanjut ke Pembayaran
+</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let dataPaket = null;
+
+        try {
+            dataPaket = JSON.parse(
+                localStorage.getItem(
+                    "nivexaPaketDipilih"
+                ) || "null"
+            );
+        } catch (error) {
+            console.error(
+                "Data paket rusak:",
+                error
+            );
+        }
+
+        if (!dataPaket) {
+            alert(
+                "Paket belum dipilih. Silakan pilih paket terlebih dahulu."
+            );
+
+            window.location.href =
+                "paket-kredit.html";
+        } else {
+            const namaPaket =
+                document.getElementById(
+                    "namaPaket"
+                );
+
+            const jumlahKredit =
+                document.getElementById(
+                    "jumlahKredit"
+                );
+
+            const hargaPaket =
+                document.getElementById(
+                    "hargaPaket"
+                );
+
+            const lanjutBayar =
+                document.getElementById(
+                    "lanjutBayar"
+                );
+
+            namaPaket.textContent =
+                String(
+                    dataPaket.nama
+                ).toUpperCase();
+
+            jumlahKredit.textContent =
+                Number(
+                    dataPaket.kredit
+                ) + " Kredit AI";
+
+            hargaPaket.textContent =
+                new Intl.NumberFormat(
+                    "id-ID",
+                    {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }
+                ).format(
+                    Number(
+                        dataPaket.harga
+                    )
+                );
+
+            lanjutBayar.href = "pembayaran.html";
+                "click",
+                function (event) {
+                    event.preventDefault();
+
+                    alert(
+                        "Selanjutnya kita akan memasang pilihan pembayaran QRIS, DANA, dan Transfer Bank."
+                    );
+                }
+        }
+    </script>
+</body>
+</html>
