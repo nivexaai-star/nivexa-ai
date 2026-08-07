@@ -47,7 +47,7 @@ loginForm.addEventListener("submit", function (event) {
         );
 
         // Pindah ke halaman utama
-        window.location.href = "../index.html";
+        window.location.href ="dashboard.html";
     }, 900);
 });
 
