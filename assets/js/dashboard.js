@@ -22,3 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("nivexaUser");
+        window.location.href = "login.html";
+    });
+}
