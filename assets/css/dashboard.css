@@ -1648,14 +1648,28 @@ a {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: start;
-    gap: 20px;
+    gap: 0px;
 }
 
 .welcome-area {
     grid-column: 2;
     text-align: center;
+    .premium-info {
+    grid-column: 3;
+    justify-self: end;
+    align-self: start;
+    margin-right: 14px;
+}
 }
 @media (max-width: 600px) {
+    .topbar {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+}
+
+.premium-info {
+    margin-right: 12px;
+}
     .premium-button {
         min-height: 36px;
         padding: 0 8px;
