@@ -38,12 +38,16 @@ loginForm.addEventListener("submit", function (event) {
     tombolLogin.textContent = "MEMPROSES...";
 
     setTimeout(function () {
+        const akunUser = JSON.parse(
+    localStorage.getItem("nivexaAccount") || "{}"
+);
         localStorage.setItem(
             "nivexaUser",
             JSON.stringify({
-                email: email,
-                loginAt: new Date().toISOString()
-            })
+    nama: akunUser.nama || "",
+    email: email,
+    loginAt: new Date().toISOString()
+})
         );
 
         // Pindah ke halaman utama
