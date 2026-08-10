@@ -643,7 +643,7 @@ a {
     }
 
     .brand {
-        padding-bottom: 14px;
+        padding-bottom: 6px;
     }
 
     .sidebar-menu {
@@ -681,8 +681,11 @@ a {
 }
 
     .premium-button {
-        width: 100%;
-        text-align: center;
+       width: auto;
+       min-width: 120px;padding: 8px 16px;
+       font-size: 13px;
+       font-weight: 600;
+       height: 38px;
     }
 
     .hero-card {
