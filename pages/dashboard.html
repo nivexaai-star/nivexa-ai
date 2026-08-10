@@ -13,71 +13,133 @@
 
     <div class="dashboard-layout">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+       <!-- TOMBOL GARIS TIGA -->
+<button
+    type="button"
+    class="menu-toggle"
+    id="menuToggle"
+    aria-label="Buka menu"
+>
+    ☰
+</button>
 
-            <div class="brand">
-                <div class="brand-logo">N</div>
 
-                <div class="brand-text">
-                    <h2>NIVEXA AI</h2>
-                    <span>AI Creative Studio</span>
-                </div>
+<!-- SIDEBAR / MENU NIVEXA -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                N
             </div>
 
-            <nav class="sidebar-menu">
-
-                <a href="dashboard.html" class="menu-item active">
-                    <span class="menu-icon">⌂</span>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="edit-foto.html" class="menu-item">
-                    <span class="menu-icon">✦</span>
-                    <span>Edit Foto AI</span>
-                </a>
-
-                <a href="../home_v2.html" class="menu-item">
-                    <span class="menu-icon">▶</span>
-                    <span>Buat Video AI</span>
-                </a>
-
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">▣</span>
-                    <span>Gambar AI</span>
-                </a>
-
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">☷</span>
-                    <span>Riwayat</span>
-                </a>
-
-            </nav>
-
-            <div class="sidebar-bottom">
-
-                <div class="sidebar-user">
-                    <div class="user-avatar">
-                        N
-                    </div>
-
-                    <div class="user-info">
-                        <span class="user-label">Akun NIVEXA</span>
-                        <strong id="sidebarEmail">Memuat...</strong>
-                    </div>
-                </div>
-
-                <button
-                    type="button"
-                    class="logout-button"
-                    id="logoutBtn"
-                >
-                    Keluar
-                </button>
-
+            <div class="brand-text">
+                <h2>NIVEXA AI</h2>
+                <span>AI Creative Studio</span>
             </div>
 
-        </aside>
+        </div>
+
+        <button
+            type="button"
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Tutup menu"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+        <a
+            href="dashboard.html"
+            class="menu-item active"
+        >
+            <span class="menu-icon">⌂</span>
+            <span>Dashboard</span>
+        </a>
+
+
+        <a
+            href="edit-photo.html"
+            class="menu-item"
+        >
+            <span class="menu-icon">✦</span>
+            <span>Edit Foto AI</span>
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            <span class="menu-icon">▣</span>
+            <span>Edit Foto</span>
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            <span class="menu-icon">▶</span>
+            <span>Edit Foto Bergerak</span>
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            <span class="menu-icon">🎬</span>
+            <span>Edit Video</span>
+        </a>
+
+
+        <a
+            href="hapus-background.html"
+            class="menu-item"
+        >
+            <span class="menu-icon">▦</span>
+            <span>Hapus Background</span>
+        </a>
+
+
+        <div class="menu-divider"></div>
+
+
+        <a
+            href="riwayat.html"
+            class="menu-item"
+        >
+            <span class="menu-icon">☷</span>
+            <span>Riwayat</span>
+        </a>
+
+
+        <a
+            href="akun.html"
+            class="menu-item"
+        >
+            <span class="menu-icon">♟</span>
+            <span>Akun</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- LAPISAN GELAP SAAT MENU TERBUKA -->
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
 
 
         <!-- MAIN CONTENT -->
@@ -104,13 +166,18 @@
                         teknologi AI NIVEXA.
                     </p>
                 </div>
+<div class="premium-info">
+    <a
+        href="paket-kredit.html"
+        class="premium-button"
+    >
+        ✦ Upgrade Premium
+    </a>
 
-                <a
-    href="paket-kredit.html"
-    class="premium-button"
->
-    ✦ Upgrade Premium
-</a>
+    <div class="credit-balance">
+        💎 Kredit: <strong id="saldoKredit">0</strong>
+    </div>
+</div>
 
             </header>
 
@@ -125,7 +192,7 @@
                     </span>
 
                     <h2>
-                        Buat karya luar biasa
+                        Buat karya anda jadi luar biasa
                         <span>dengan AI.</span>
                     </h2>
 
@@ -137,7 +204,7 @@
                     <div class="hero-actions">
 
                         <a
-                            href="edit-foto.html"
+                            href="edit-photo.html"
                             class="primary-button"
                         >
                             ✦ Mulai Edit Foto
@@ -174,346 +241,65 @@
             </section>
 
 
-            <!-- STATISTICS -->
-            <section class="stats-grid">
+          <!-- PREMIUM -->
+<section class="premium-section" id="paket">
 
-                <article class="stat-card">
+    <div class="premium-content">
 
-                    <div class="stat-icon purple">
-                        ✦
-                    </div>
+        <span class="premium-label">
+            NIVEXA PREMIUM
+        </span>
 
-                    <div class="stat-info">
-                        <span>Kredit Gratis</span>
+        <h3>
+            Buka lebih banyak kreativitas tanpa batas.
+        </h3>
 
-                        <strong id="kreditGratis">
-                            3
-                        </strong>
+        <p class="premium-desc">
+            Tingkatkan pengalamanmu bersama NIVEXA AI dan nikmati
+            lebih banyak fitur untuk membuat karya yang semakin luar biasa.
+        </p>
 
-                        <small>
-                            Edit foto tersedia
-                        </small>
-                    </div>
+        <div class="premium-benefits">
 
-                </article>
+            <div class="premium-benefit">
+                <span>✓</span>
+                <p>Kredit lebih banyak untuk Edit Foto AI</p>
+            </div>
 
+            <div class="premium-benefit">
+                <span>✓</span>
+                <p>Akses ke fitur premium NIVEXA</p>
+            </div>
 
-                <article class="stat-card">
+            <div class="premium-benefit">
+                <span>✓</span>
+                <p>Lebih bebas berkreasi tanpa batasan fitur gratis</p>
+            </div>
 
-                    <div class="stat-icon blue">
-                        ☷
-                    </div>
+        </div>
 
-                    <div class="stat-info">
-                        <span>Riwayat</span>
+        <a
+            href="paket-kredit.html"
+            class="premium-button"
+        >
+            ✦ Upgrade ke Premium Sekarang
+        </a>
 
-                        <strong id="jumlahRiwayat">
-                            0
-                        </strong>
+    </div>
 
-                        <small>
-                            Hasil tersimpan
-                        </small>
-                    </div>
 
-                </article>
+    <div class="premium-decoration">
 
+        <div class="premium-circle">
+            💎
+        </div>
 
-                <article class="stat-card">
+        <span class="premium-small-star star-one">✦</span>
+        <span class="premium-small-star star-two">✦</span>
 
-                    <div class="stat-icon green">
-                        ✓
-                    </div>
+    </div>
 
-                    <div class="stat-info">
-                        <span>Status Akun</span>
-
-                        <strong>
-                            Aktif
-                        </strong>
-
-                        <small>
-                            NIVEXA Free
-                        </small>
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- FEATURES -->
-            <section class="dashboard-section">
-
-                <div class="section-heading">
-
-                    <div>
-                        <span class="section-label">
-                            ALAT AI
-                        </span>
-
-                        <h3>
-                            Apa yang ingin kamu buat?
-                        </h3>
-                    </div>
-
-                </div>
-
-
-                <div class="feature-grid">
-
-                    <!-- EDIT FOTO -->
-                    <article class="feature-card featured">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon purple">
-                                ✦
-                            </div>
-
-                            <span class="feature-status ready">
-                                Siap Digunakan
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Edit Foto AI
-                        </h4>
-
-                        <p>
-                            Edit foto menggunakan perintah teks.
-                            Ubah background, suasana, warna,
-                            dan berbagai detail foto dengan AI.
-                        </p>
-
-                        <a
-                            href="edit-foto.html"
-                            class="feature-button primary"
-                        >
-                            Mulai Edit
-                        </a>
-
-                    </article>
-
-
-                    <!-- VIDEO AI -->
-                    <article class="feature-card">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon blue">
-                                ▶
-                            </div>
-
-                            <span class="feature-status ready">
-                                Siap Digunakan
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Buat Video AI
-                        </h4>
-
-                        <p>
-                            Ubah sebuah foto menjadi video
-                            menggunakan teknologi AI NIVEXA.
-                        </p>
-
-                        <a
-                            href="../home_v2.html"
-                            class="feature-button"
-                        >
-                            Buat Video
-                        </a>
-
-                    </article>
-
-
-                    <!-- BACKGROUND -->
-                    <article class="feature-card">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon green">
-                                ▣
-                            </div>
-
-                            <span class="feature-status soon">
-                                Segera Hadir
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Ganti Background
-                        </h4>
-
-                        <p>
-                            Ganti background foto secara instan
-                            dengan berbagai pilihan suasana.
-                        </p>
-
-                        <button
-                            class="feature-button disabled"
-                            type="button"
-                            disabled
-                        >
-                            Segera Hadir
-                        </button>
-
-                    </article>
-
-
-                    <!-- GANTI BAJU -->
-                    <article class="feature-card">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon cyan">
-                                ♙
-                            </div>
-
-                            <span class="feature-status soon">
-                                Segera Hadir
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Ganti Baju
-                        </h4>
-
-                        <p>
-                            Coba berbagai warna dan gaya pakaian
-                            dengan bantuan AI.
-                        </p>
-
-                        <button
-                            class="feature-button disabled"
-                            type="button"
-                            disabled
-                        >
-                            Segera Hadir
-                        </button>
-
-                    </article>
-
-
-                    <!-- HALUSKAN WAJAH -->
-                    <article class="feature-card">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon purple">
-                                ☺
-                            </div>
-
-                            <span class="feature-status soon">
-                                Segera Hadir
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Haluskan Wajah
-                        </h4>
-
-                        <p>
-                            Tingkatkan kualitas wajah agar terlihat
-                            lebih bersih dan natural.
-                        </p>
-
-                        <button
-                            class="feature-button disabled"
-                            type="button"
-                            disabled
-                        >
-                            Segera Hadir
-                        </button>
-
-                    </article>
-
-
-                    <!-- GAMBAR AI -->
-                    <article class="feature-card">
-
-                        <div class="feature-top">
-
-                            <div class="feature-icon pink">
-                                ◈
-                            </div>
-
-                            <span class="feature-status soon">
-                                Segera Hadir
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            Gambar AI
-                        </h4>
-
-                        <p>
-                            Buat gambar baru hanya dengan
-                            menuliskan deskripsi yang kamu inginkan.
-                        </p>
-
-                        <button
-                            class="feature-button disabled"
-                            type="button"
-                            disabled
-                        >
-                            Segera Hadir
-                        </button>
-
-                    </article>
-
-                </div>
-
-            </section>
-
-
-            <!-- PREMIUM -->
-            <section
-                class="premium-section"
-                id="paket"
-            >
-
-                <div class="premium-content">
-
-                    <span class="premium-label">
-                        NIVEXA PREMIUM
-                    </span>
-
-                    <h3>
-                        Lebih banyak kreativitas.
-                        Lebih banyak kemungkinan.
-                    </h3>
-
-                    <p>
-                        Paket premium NIVEXA AI sedang kami siapkan.
-                        Untuk sekarang kamu masih bisa mencoba
-                        fitur gratis yang tersedia.
-                    </p>
-
-                    <button
-                        class="premium-coming-button"
-                        type="button"
-                    >
-                        Paket Premium Segera Hadir
-                    </button>
-
-                </div>
-
-                <div class="premium-decoration">
-                    <div class="premium-circle">
-                        ✦
-                    </div>
-                </div>
-
-            </section>
+</section>
 
 
             <!-- FOOTER -->

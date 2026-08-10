@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Akun - NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at top right, #173b7a, transparent 38%),
+                radial-gradient(circle at bottom left, #182b70, transparent 40%),
+                linear-gradient(135deg, #071126, #101b43 55%, #101936);
+        }
+
+        .page {
+            width: min(760px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 40px 0 60px;
+        }
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #dbeafe;
+            text-decoration: none;
+            padding: 10px 16px;
+            margin-bottom: 26px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(255,255,255,.07);
+        }
+
+        .title {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #aebbd8;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            padding: 28px;
+            border-radius: 24px;
+            background: rgba(24, 39, 84, .75);
+            border: 1px solid rgba(255,255,255,.12);
+            box-shadow: 0 20px 60px rgba(0,0,0,.25);
+            backdrop-filter: blur(14px);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,.10);
+        }
+
+        .avatar {
+            width: 62px;
+            height: 62px;
+            display: grid;
+            place-items: center;
+            border-radius: 18px;
+            font-size: 27px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #5577ff, #42d7ec);
+        }
+
+        .profile small {
+            display: block;
+            color: #9caed2;
+            margin-bottom: 5px;
+        }
+
+        #emailAkun {
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #c8d3ed;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            color: white;
+            outline: none;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(5, 13, 38, .55);
+        }
+
+        input:focus {
+            border-color: #5fc9ff;
+            box-shadow: 0 0 0 3px rgba(95,201,255,.12);
+        }
+
+        .save {
+            width: 100%;
+            border: 0;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #536dff, #35c9ed);
+        }
+
+        #pesan {
+            min-height: 22px;
+            margin-top: 14px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .logout-area {
+            margin-top: 25px;
+            padding-top: 23px;
+            border-top: 1px solid rgba(255,255,255,.10);
+        }
+
+        .logout {
+            width: 100%;
+            padding: 14px;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffb5b5;
+            border: 1px solid rgba(255,100,100,.35);
+            background: rgba(255,75,75,.10);
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                width: min(100% - 22px, 760px);
+                padding-top: 22px;
+            }
+
+            .title {
+                font-size: 30px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <a href="dashboard.html" class="back">
+            ← Dashboard
+        </a>
+
+        <h1 class="title">Akun NIVEXA</h1>
+        <p class="subtitle">
+            Kelola akun dan keamanan kamu.
+        </p>
+
+        <section class="card">
+
+            <div class="profile">
+                <div class="avatar">N</div>
+
+                <div>
+                    <small>Akun NIVEXA</small>
+                    <strong id="emailAkun">Memuat...</strong>
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                Ganti Password
+            </h2>
+
+            <form id="formPassword">
+
+                <div class="field">
+                    <label>Password Saat Ini</label>
+                    <input
+                        type="password"
+                        id="passwordLama"
+                        placeholder="Masukkan password saat ini"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Password Baru</label>
+                    <input
+                        type="password"
+                        id="passwordBaru"
+                        placeholder="Minimal 6 karakter"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Konfirmasi Password Baru</label>
+                    <input
+                        type="password"
+                        id="konfirmasiPassword"
+                        placeholder="Ulangi password baru"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <button class="save" type="submit">
+                    Simpan Password Baru
+                </button>
+
+                <div id="pesan"></div>
+            </form>
+
+            <div class="logout-area">
+                <button
+                    type="button"
+                    class="logout"
+                    id="keluarBtn"
+                >
+                    Keluar dari Akun
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const user = JSON.parse(
+            localStorage.getItem("nivexaUser") || "null"
+        );
+
+        const account = JSON.parse(
+            localStorage.getItem("nivexaAccount") || "null"
+        );
+
+        if (!user || !user.email) {
+            window.location.href = "login.html";
+        } else {
+            document.getElementById("emailAkun").textContent =
+                user.email;
+        }
+
+        const formPassword =
+            document.getElementById("formPassword");
+
+        const pesan =
+            document.getElementById("pesan");
+
+        formPassword.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const passwordLama =
+                document.getElementById("passwordLama").value;
+
+            const passwordBaru =
+                document.getElementById("passwordBaru").value;
+
+            const konfirmasi =
+                document.getElementById("konfirmasiPassword").value;
+
+            pesan.style.color = "#ffb5b5";
+
+            if (!account) {
+                pesan.textContent =
+                    "Data akun tidak ditemukan.";
+                return;
+            }
+
+            if (passwordLama !== account.password) {
+                pesan.textContent =
+                    "Password saat ini salah.";
+                return;
+            }
+
+            if (passwordBaru.length < 6) {
+                pesan.textContent =
+                    "Password baru minimal 6 karakter.";
+                return;
+            }
+
+            if (passwordBaru !== konfirmasi) {
+                pesan.textContent =
+                    "Konfirmasi password baru tidak sama.";
+                return;
+            }
+
+            account.password = passwordBaru;
+
+            localStorage.setItem(
+                "nivexaAccount",
+                JSON.stringify(account)
+            );
+
+            pesan.style.color = "#7ef0b5";
+            pesan.textContent =
+                "Password berhasil diganti.";
+
+            formPassword.reset();
+        });
+
+        document
+            .getElementById("keluarBtn")
+            .addEventListener("click", function () {
+
+                localStorage.removeItem("nivexaUser");
+
+                window.location.href = "login.html";
+            });
+    </script>
+
+</body>
+</html>

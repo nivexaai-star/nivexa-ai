@@ -395,14 +395,14 @@
         <section class="editor-card">
             <div class="credit-row">
                 <div>
-                    <strong>Kredit Edit Foto Gratis</strong>
+                    <strong>Kredit Edit Foto</strong>
                     <p>
-                        Setiap akun memperoleh maksimal 3 kali edit.
+                        Saldo kredit akun kamu untuk menggunakan fitur NIVEXA AI.
                     </p>
                 </div>
 
                 <div class="credit-badge">
-                    Sisa <span id="sisaKredit">3</span>/3
+                    💎 Kredit: <span id="sisaKredit">0</span>
                 </div>
             </div>
 
@@ -533,34 +533,14 @@
     ⬇️ Download HD
 </a>
 </div>
-                >
-                    <button
-                        type="button"
-                        id="editLagiBtn"
-                    >
-                        Edit Lagi
-                    </button>
-<a
-    id="unduhHasil"
-    href="#"
-    download
-    class="quick-tool"
->
-    Download
-</a>
-                    <a
-                        id="unduhHasil"
-                        download="hasil-edit-nivexa.png"
-                    >
-                        Unduh Hasil
-                    </a>
+                   
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-        const BATAS_KREDIT = 3;
+        let saldoKreditServer = 0;
 
         const inputFoto =
             document.getElementById("fotoEdit");
@@ -605,7 +585,41 @@
 
         let fotoTerpilih = null;
         let hasilTerakhir = "";
+unduhHasil.addEventListener("click", async function (event) {
+    event.preventDefault();
 
+    if (!hasilTerakhir) {
+        alert("Belum ada hasil foto untuk diunduh.");
+        return;
+    }
+
+    try {
+        const response = await fetch(hasilTerakhir);
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil file foto.");
+        }
+
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = blobUrl;
+        link.download = "hasil-nivexa-ai.png";
+
+        document.body.appendChild(link);
+
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(blobUrl);
+
+    } catch (error) {
+        console.error("Download gagal:", error);
+        alert("Download gagal. Silakan coba lagi.");
+    }
+});
         function ambilKunciKredit() {
             const user =
                 JSON.parse(
@@ -633,27 +647,76 @@
         }
 
         function sisaKredit() {
-            return Math.max(
-                0,
-                BATAS_KREDIT - jumlahTerpakai()
-            );
+    return saldoKreditServer;
+}
+function tampilkanKredit() {
+    const sisa = sisaKredit();
+
+    sisaKreditElement.textContent = sisa;
+
+    if (sisa <= 0) {
+        tombolEdit.disabled = true;
+        tombolEdit.textContent = "Kredit Habis";
+        statusEdit.textContent =
+            "Kredit kamu telah habis. Silakan Upgrade Premium untuk menambah kredit.";
+    } else {
+        tombolEdit.disabled = false;
+        tombolEdit.textContent = "Edit Foto";
+        statusEdit.textContent = "";
+    }
+}
+function tampilkanKredit() {
+    const sisa = sisaKredit();
+
+    sisaKreditElement.textContent = sisa;
+
+    if (sisa <= 0) {
+        tombolEdit.disabled = true;
+        tombolEdit.textContent = "Kredit Habis";
+        statusEdit.textContent =
+            "Kredit kamu telah habis. Silakan Upgrade Premium untuk menambah kredit.";
+    } else {
+        tombolEdit.disabled = false;
+        tombolEdit.textContent = "Edit Foto";
+        statusEdit.textContent = "";
+    }
+}
+async function ambilSaldoKreditServer() {
+    const user = JSON.parse(
+        localStorage.getItem("nivexaUser") || "{}"
+    );
+
+    if (!user.email) {
+        saldoKreditServer = 0;
+        tampilkanKredit();
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "/saldo-kredit?email=" +
+            encodeURIComponent(user.email)
+        );
+
+        const hasil = await response.json();
+
+        if (hasil.success) {
+            saldoKreditServer =
+                Number(hasil.kredit || 0);
+        } else {
+            saldoKreditServer = 0;
         }
+    } catch (error) {
+        console.error(
+            "Gagal mengambil saldo kredit:",
+            error
+        );
 
-        function tampilkanKredit() {
-            const sisa = sisaKredit();
+        saldoKreditServer = 0;
+    }
 
-            sisaKreditElement.textContent = sisa;
-
-            if (sisa <= 0) {
-                tombolEdit.disabled = true;
-
-                tombolEdit.textContent =
-                    "Kredit Gratis Habis";
-
-                statusEdit.textContent =
-                    "Jatah 3 kali edit foto telah habis. Upgrade ke Premium untuk melanjutkan.";
-            }
-        }
+    tampilkanKredit();
+}
 function ambilKunciRiwayatFoto() {
     const user = JSON.parse(
         localStorage.getItem("nivexaUser") || "{}"
@@ -710,17 +773,40 @@ function simpanRiwayatFoto(url, prompt, namaFile) {
         JSON.stringify(dataBaru)
     );
 }
-        function kurangiKredit() {
-            const terpakai = jumlahTerpakai();
+        async function kurangiKredit() {
+    const user = JSON.parse(
+        localStorage.getItem("nivexaUser") || "{}"
+    );
 
-            localStorage.setItem(
-                ambilKunciKredit(),
-                String(terpakai + 1)
-            );
+    if (!user.email) {
+        throw new Error("Email pengguna tidak ditemukan.");
+    }
 
-            tampilkanKredit();
+    const response = await fetch(
+        "/kurangi-kredit",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: user.email,
+                jumlah: 1
+            })
         }
+    );
 
+    const hasil = await response.json();
+
+    if (!hasil.success) {
+        throw new Error(
+            hasil.message || "Gagal mengurangi kredit."
+        );
+    }
+
+    saldoKreditServer = Number(hasil.kredit || 0);
+    tampilkanKredit();
+}
         function tampilkanUpload() {
             uploadState.style.display = "block";
             workspaceImage.style.display = "none";
@@ -830,8 +916,31 @@ quickTools.forEach(function (tombol) {
         tombolEdit.addEventListener(
             "click",
             async function () {
-                const prompt =
-                    promptEdit.value.trim();
+                const promptUser = promptEdit.value.trim();
+
+const prompt = `
+${promptUser}
+
+Edit the uploaded photo realistically and naturally.
+
+IMPORTANT:
+- Preserve the person's identity and recognizable facial features.
+- Keep the result photorealistic.
+- Follow the user's requested background, location, or situation.
+- If the original pose does not naturally fit the requested scene, substantially change the person's full-body pose.
+- Do not preserve awkward or unsuitable arm and leg positions from the original photo.
+- Repose the body so the person naturally belongs in the requested environment.
+- Keep body balance, foot placement, posture, and anatomy realistic.
+- For standing outdoor scenes, place both feet naturally on the ground unless the user asks for another pose.
+- Preserve the face and identity, but allow major changes to body pose when needed.
+- Make the subject look naturally present in the new environment, not pasted onto the background.
+- Match lighting direction, brightness, shadows, perspective, depth, and color tone with the new environment.
+- Keep body proportions and anatomy natural and realistic.
+- Preserve important personal characteristics unless the user explicitly asks to change them.
+- Clothing may be naturally adjusted only when needed to fit the requested situation.
+- Avoid distorted hands, limbs, face, or unnatural body positions.
+- Produce one coherent, realistic photograph.
+`.trim();
 
                 if (sisaKredit() <= 0) {
                     alert(
@@ -847,7 +956,7 @@ quickTools.forEach(function (tombol) {
                     return;
                 }
 
-                if (!prompt) {
+                if (!promptUser) {
                     alert(
                         "Silakan tulis perubahan yang diinginkan."
                     );
@@ -953,7 +1062,7 @@ simpanRiwayatFoto(
     hasil.fileName
 );
 
-kurangiKredit();
+await kurangiKredit();
                 } catch (error) {
                     console.error(error);
 
@@ -1000,7 +1109,7 @@ kurangiKredit();
         );
 
         tampilkanUpload();
-        tampilkanKredit();
+ambilSaldoKreditServer();
     </script>
 </body>
 </html>

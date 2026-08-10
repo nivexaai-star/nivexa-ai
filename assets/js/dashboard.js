@@ -30,3 +30,123 @@ if (logoutBtn) {
         window.location.href = "login.html";
     });
 }
+document.addEventListener("DOMContentLoaded", async () => {
+    const user = JSON.parse(
+        localStorage.getItem("nivexaUser")
+    );
+
+    const saldoKredit =
+        document.getElementById("saldoKredit");
+
+    if (!user || !user.email || !saldoKredit) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "/saldo-kredit?email=" +
+            encodeURIComponent(user.email)
+        );
+
+        const hasil = await response.json();
+
+        if (hasil.success) {
+            saldoKredit.textContent =
+                Number(hasil.kredit || 0);
+                const kreditGratis = document.getElementById("KreditGratis");
+
+if (kreditGratis) {
+    kreditGratis.textContent = Number(hasil.kredit || 0);
+}
+        }
+    } catch (error) {
+        console.error(
+            "Gagal memuat saldo kredit:",
+            error
+        );
+    }
+});
+console.log("DASHBOARD JS BARU AKTIF");
+document.addEventListener("DOMContentLoaded", () => {
+    const user = JSON.parse(
+        localStorage.getItem("nivexaUser") || "{}"
+    );
+
+    const jumlahRiwayat =
+        document.getElementById("jumlahRiwayat");
+
+    if (!user.email || !jumlahRiwayat) {
+        return;
+    }
+
+    const keyRiwayat =
+        "nivexa-riwayat-foto-" + user.email.toLowerCase();
+
+    const riwayat = JSON.parse(
+        localStorage.getItem(keyRiwayat) || "[]"
+    );
+
+    jumlahRiwayat.textContent = riwayat.length;
+});
+// =============================================
+// MENU SIDEBAR NIVEXA
+// =============================================
+
+const menuToggle =
+    document.getElementById("menuToggle");
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const sidebarClose =
+    document.getElementById("sidebarClose");
+
+const sidebarOverlay =
+    document.getElementById("sidebarOverlay");
+
+
+function bukaSidebar() {
+    sidebar.classList.add("open");
+    sidebarOverlay.classList.add("show");
+}
+
+
+function tutupSidebar() {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("show");
+}
+
+
+if (menuToggle) {
+    menuToggle.addEventListener(
+        "click",
+        bukaSidebar
+    );
+}
+
+
+if (sidebarClose) {
+    sidebarClose.addEventListener(
+        "click",
+        tutupSidebar
+    );
+}
+
+
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener(
+        "click",
+        tutupSidebar
+    );
+}
+
+
+// Tekan ESC untuk menutup menu
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (event.key === "Escape") {
+            tutupSidebar();
+        }
+    }
+);

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(70, 120, 255, 0.35),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #10234b
+                );
+        }
+
+        .admin-container {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .admin-header {
+            margin-bottom: 28px;
+        }
+
+        .admin-header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .admin-header p {
+            margin: 0;
+            color: #b9c8e8;
+        }
+
+        .admin-card {
+            padding: 24px;
+            border-radius: 20px;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+        }
+
+        .admin-card h2 {
+            margin-top: 0;
+        }
+
+        #daftarPembayaran {
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            padding: 30px;
+            text-align: center;
+            color: #b9c8e8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="admin-container">
+
+        <header class="admin-header">
+            <h1>🛡️ Admin NIVEXA AI</h1>
+
+            <p>
+                Verifikasi pembayaran dan kelola kredit pengguna.
+            </p>
+        </header>
+
+        <section class="admin-card">
+
+            <h2>Pembayaran Menunggu Verifikasi</h2>
+
+            <div id="daftarPembayaran">
+
+                <div class="empty-state">
+                    Belum ada pembayaran yang menunggu verifikasi.
+                </div>
+
+            </div>
+
+        </section>
+<section class="admin-card" style="margin-top: 25px;">
+    <h2>🔻 Koreksi Kredit Pengguna</h2>
+
+    <p style="margin-bottom: 15px;">
+        Gunakan menu ini jika admin perlu menarik kredit yang
+        kelebihan masuk ke akun pengguna.
+    </p>
+
+    <div style="display: grid; gap: 12px;">
+
+        <input
+            type="email"
+            id="emailTarikKredit"
+            placeholder="Email pengguna"
+            style="
+                padding: 14px;
+                border-radius: 10px;
+                border: 1px solid #64748b;
+                font-size: 16px;
+            "
+        >
+
+        <input
+            type="number"
+            id="jumlahTarikKredit"
+            placeholder="Jumlah kredit yang ditarik, contoh: 30"
+            min="1"
+            style="
+                padding: 14px;
+                border-radius: 10px;
+                border: 1px solid #64748b;
+                font-size: 16px;
+            "
+        >
+
+        <button
+            type="button"
+            id="btnTarikKredit"
+            style="
+                padding: 14px;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                font-weight: 700;
+                font-size: 16px;
+            "
+        >
+            🔻 Tarik Kredit
+        </button>
+
+        <div id="hasilTarikKredit"></div>
+
+    </div>
+</section>
+    </main>
+<script>
+    const adminEmail = "nivexaai@gmail.com";
+
+let userAktif = null;
+
+try {
+    userAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+} catch (error) {
+    userAktif = null;
+}
+
+if (
+    !userAktif ||
+    String(userAktif.email || "").toLowerCase() !== adminEmail
+) {
+    alert("Akses ditolak. Halaman ini khusus Admin NIVEXA AI.");
+    window.location.href = "dashboard.html";
+}
+    const daftarPembayaran =
+        document.getElementById(
+            "daftarPembayaran"
+        );
+
+    async function muatPembayaran() {
+        try {
+            daftarPembayaran.innerHTML =
+                '<div class="empty-state">Memuat pembayaran...</div>';
+
+            const response =
+                await fetch(
+                    "/admin/pembayaran"
+                );
+
+            const hasil =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    hasil.message ||
+                    "Gagal mengambil pembayaran."
+                );
+            }
+
+            const pembayaran =
+                Array.isArray(
+                    hasil.pembayaran
+                )
+                    ? hasil.pembayaran
+                    : [];
+
+            const menunggu =
+                pembayaran.filter(
+                    function (item) {
+                        return (
+                            item.status ===
+                            "menunggu-verifikasi"
+                        );
+                    }
+                );
+
+            if (menunggu.length === 0) {
+                daftarPembayaran.innerHTML =
+                    '<div class="empty-state">Belum ada pembayaran yang menunggu verifikasi.</div>';
+
+                return;
+            }
+
+            daftarPembayaran.innerHTML = "";
+
+            menunggu.forEach(
+                function (item) {
+                    const kartu =
+                        document.createElement(
+                            "div"
+                        );
+
+                    kartu.style.marginTop =
+                        "18px";
+
+                    kartu.style.padding =
+                        "18px";
+
+                    kartu.style.borderRadius =
+                        "16px";
+
+                    kartu.style.background =
+                        "rgba(255,255,255,0.06)";
+
+                    kartu.innerHTML = `
+                        <p>
+                            <strong>ID:</strong>
+                            ${item.id}
+                        </p>
+
+                        <p>
+                            <strong>Email:</strong>
+                            ${item.email}
+                        </p>
+
+                        <p>
+                            <strong>Paket:</strong>
+                            ${item.paket}
+                        </p>
+
+                        <p>
+                            <strong>Kredit:</strong>
+                            ${item.kredit}
+                        </p>
+
+                        <p>
+                            <strong>Harga:</strong>
+                            Rp${Number(
+                                item.harga
+                            ).toLocaleString(
+                                "id-ID"
+                            )}
+                        </p>
+
+                        <p>
+                            <strong>Metode:</strong>
+                            ${String(
+                                item.metode
+                            ).toUpperCase()}
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            Menunggu Verifikasi
+                        </p>
+
+                        <img
+                            src="${item.bukti}"
+                            alt="Bukti pembayaran"
+                            style="
+                                display:block;
+                                width:100%;
+                                max-width:360px;
+                                margin-top:14px;
+                                border-radius:14px;
+                            "
+                        >
+                        <button
+    type="button"
+    class="btn-setujui"
+    data-id="${item.id}"
+    style="
+        width:100%;
+        margin-top:16px;
+        padding:13px;
+        border:none;
+        border-radius:12px;
+        cursor:pointer;
+        font-weight:700;
+    "
+>
+    ✅ Setujui Pembayaran
+</button>
+                    `;
+kartu.dataset.transaksiId = item.id;
+
+const transaksiDicari =
+    new URLSearchParams(window.location.search)
+        .get("transaksi");
+
+if (transaksiDicari === item.id) {
+    kartu.style.border = "2px solid #22c55e";
+    kartu.style.boxShadow = "0 0 20px rgba(34,197,94,0.55)";
+
+    setTimeout(function () {
+        kartu.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    }, 300);
+}
+                    daftarPembayaran.appendChild(
+                        kartu
+                    );
+                }
+            );
+        } catch (error) {
+            console.error(
+                "Gagal memuat pembayaran:",
+                error
+            );
+
+            daftarPembayaran.innerHTML =
+                '<div class="empty-state">❌ Gagal memuat pembayaran.</div>';
+        }
+    }
+document.addEventListener(
+    "click",
+    async function (event) {
+        const tombol =
+            event.target.closest(".btn-setujui");
+
+        if (!tombol) {
+            return;
+        }
+
+        const id =
+            tombol.dataset.id;
+
+        const yakin = confirm(
+            "Setujui pembayaran ini?"
+        );
+
+        if (!yakin) {
+            return;
+        }
+
+        try {
+            tombol.disabled = true;
+            tombol.textContent =
+                "Memproses...";
+
+            const response =
+                await fetch(
+                    "/setujui-pembayaran/" +
+                    encodeURIComponent(id),
+                    {
+                        method: "POST"
+                    }
+                );
+
+            const hasil =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    hasil.message ||
+                    "Gagal menyetujui pembayaran."
+                );
+            }
+
+            alert(
+                "Pembayaran berhasil disetujui."
+            );
+
+            await muatPembayaran();
+        } catch (error) {
+            alert(error.message);
+
+            tombol.disabled = false;
+            tombol.textContent =
+                "✅ Setujui Pembayaran";
+        }
+    }
+);
+const emailTarikKredit =
+    document.getElementById("emailTarikKredit");
+
+const jumlahTarikKredit =
+    document.getElementById("jumlahTarikKredit");
+
+const btnTarikKredit =
+    document.getElementById("btnTarikKredit");
+
+const hasilTarikKredit =
+    document.getElementById("hasilTarikKredit");
+
+
+btnTarikKredit.addEventListener(
+    "click",
+    async function () {
+
+        const email =
+            emailTarikKredit.value
+                .trim()
+                .toLowerCase();
+
+        const jumlah =
+            Number(jumlahTarikKredit.value);
+
+        if (!email) {
+            alert("Masukkan email pengguna.");
+            return;
+        }
+
+        if (
+            !Number.isInteger(jumlah) ||
+            jumlah <= 0
+        ) {
+            alert(
+                "Masukkan jumlah kredit yang benar."
+            );
+            return;
+        }
+
+        const yakin = confirm(
+            "Tarik " +
+            jumlah +
+            " kredit dari akun " +
+            email +
+            "?"
+        );
+
+        if (!yakin) {
+            return;
+        }
+
+        try {
+            btnTarikKredit.disabled = true;
+            btnTarikKredit.textContent =
+                "Memproses...";
+
+            const response =
+                await fetch(
+                    "/admin/tarik-kredit",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            email: email,
+                            jumlah: jumlah
+                        })
+                    }
+                );
+
+            const hasil =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    hasil.message ||
+                    "Gagal menarik kredit."
+                );
+            }
+
+            hasilTarikKredit.innerHTML =
+                "✅ Berhasil menarik <b>" +
+                hasil.kreditDitarik +
+                "</b> kredit.<br>" +
+                "Kredit sebelumnya: <b>" +
+                hasil.kreditSebelumnya +
+                "</b><br>" +
+                "Kredit sekarang: <b>" +
+                hasil.kreditSekarang +
+                "</b>";
+
+            alert(
+                "Kredit berhasil ditarik."
+            );
+
+            jumlahTarikKredit.value = "";
+
+        } catch (error) {
+
+            alert(error.message);
+
+            hasilTarikKredit.textContent =
+                "❌ " + error.message;
+
+        } finally {
+
+            btnTarikKredit.disabled = false;
+
+            btnTarikKredit.textContent =
+                "🔻 Tarik Kredit";
+        }
+    }
+);
+    muatPembayaran();
+</script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hapus Background | NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(66, 89, 255, 0.24),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #081126,
+                    #101c3d 55%,
+                    #11152f
+                );
+        }
+
+        .page {
+            width: min(1100px, calc(100% - 32px));
+            margin: auto;
+            padding: 38px 0 60px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            color: white;
+            text-decoration: none;
+
+            padding: 11px 16px;
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .brand {
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hero {
+            margin-bottom: 24px;
+        }
+
+        .hero span {
+            color: #7fdcff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 {
+            margin-top: 10px;
+            font-size: clamp(32px, 5vw, 52px);
+        }
+
+        .hero p {
+            max-width: 720px;
+            margin-top: 12px;
+
+            color: rgba(255,255,255,0.72);
+            line-height: 1.7;
+        }
+
+        .workspace {
+            padding: 24px;
+            border-radius: 26px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(39, 59, 126, 0.78),
+                    rgba(31, 35, 87, 0.82)
+                );
+
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 20px 55px rgba(0,0,0,0.24);
+        }
+
+        .upload-box {
+            min-height: 390px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+            border: 2px dashed rgba(132, 201, 255, 0.42);
+
+            background: rgba(5, 14, 38, 0.35);
+
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .upload-icon {
+            font-size: 58px;
+            margin-bottom: 14px;
+        }
+
+        .upload-box h2 {
+            font-size: 24px;
+        }
+
+        .upload-box p {
+            margin-top: 8px;
+            color: rgba(255,255,255,0.62);
+        }
+
+        #preview {
+            max-width: 100%;
+            max-height: 520px;
+
+            display: none;
+
+            object-fit: contain;
+        }
+
+        #inputFoto {
+            display: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button,
+        .download-button {
+            flex: 1;
+
+            min-height: 54px;
+            padding: 0 20px;
+
+            border: none;
+            border-radius: 15px;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        #hapusBtn {
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #725cff,
+                    #42cfff
+                );
+        }
+
+        #hapusBtn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .download-button {
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+            color: white;
+
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+        }
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px 16px;
+            border-radius: 14px;
+
+            background: rgba(71, 255, 188, 0.08);
+            border: 1px solid rgba(71, 255, 188, 0.12);
+
+            color: rgba(255,255,255,0.78);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                width: min(100% - 20px, 1100px);
+                padding-top: 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .workspace {
+                padding: 14px;
+            }
+
+            .upload-box {
+                min-height: 330px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <div class="topbar">
+            <a href="dashboard.html" class="back-button">
+                ← Kembali
+            </a>
+
+            <div class="brand">
+                NIVEXA AI
+            </div>
+        </div>
+
+
+        <section class="hero">
+            <span>GRATIS • NIVEXA TOOLS</span>
+
+            <h1>Hapus Background Foto</h1>
+
+            <p>
+                Hapus latar belakang foto dengan cepat.
+                Hasil gambar nantinya dapat digunakan kembali
+                untuk digabungkan dengan background atau foto lain di NIVEXA.
+            </p>
+        </section>
+
+
+        <section class="workspace">
+
+            <label class="upload-box" id="uploadBox">
+
+                <input
+                    type="file"
+                    id="inputFoto"
+                    accept="image/*"
+                >
+
+                <div id="uploadInfo">
+                    <div class="upload-icon">🖼️</div>
+
+                    <h2>Pilih Foto</h2>
+
+                    <p>
+                        Klik di sini untuk mengambil foto dari perangkat.
+                    </p>
+                </div>
+
+                <img
+                    id="preview"
+                    alt="Preview Foto"
+                >
+
+            </label>
+
+
+            <div class="actions">
+
+                <button
+                    id="hapusBtn"
+                    type="button"
+                    disabled
+                >
+                    ✨ Hapus Background
+                </button>
+
+                <a
+                    id="downloadBtn"
+                    class="download-button"
+                    download="nivexa-background-transparan.png"
+                >
+                    ⬇ Download PNG
+                </a>
+
+            </div>
+
+
+            <div class="note">
+                💡 Fitur ini kita siapkan sebagai fitur gratis.
+                Untuk sekarang halaman dan alurnya kita selesaikan dulu,
+                lalu berikutnya kita sambungkan ke mesin penghapus background.
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+        const inputFoto =
+            document.getElementById("inputFoto");
+
+        const preview =
+            document.getElementById("preview");
+
+        const uploadInfo =
+            document.getElementById("uploadInfo");
+
+        const hapusBtn =
+            document.getElementById("hapusBtn");
+            const downloadBtn =
+    document.getElementById("downloadBtn");
+
+        inputFoto.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    inputFoto.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const url =
+                    URL.createObjectURL(file);
+
+                preview.src = url;
+
+                preview.style.display =
+                    "block";
+
+                uploadInfo.style.display =
+                    "none";
+
+                hapusBtn.disabled =
+                    false;
+            }
+        );
+
+
+        hapusBtn.addEventListener(
+    "click",
+    async function () {
+
+        const file = inputFoto.files[0];
+
+        if (!file) {
+            alert("Silakan pilih foto terlebih dahulu.");
+            return;
+        }
+
+        try {
+            hapusBtn.disabled = true;
+            hapusBtn.textContent = "⏳ Menghapus Background...";
+
+            const formData = new FormData();
+
+            formData.append(
+                "photo",
+                file
+            );
+
+            const response = await fetch(
+                "/hapus-background",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            if (!response.ok) {
+
+                let pesan =
+                    "Hapus Background gagal diproses.";
+
+                try {
+                    const dataError =
+                        await response.json();
+
+                    pesan =
+                        dataError.message || pesan;
+
+                } catch (error) {
+                }
+
+                throw new Error(pesan);
+            }
+
+            const hasilBlob =
+                await response.blob();
+
+            const hasilUrl =
+                URL.createObjectURL(hasilBlob);
+             const urlPermanen =
+    response.headers.get("X-Result-Url");
+
+const urlRiwayat =
+    urlPermanen || hasilUrl;
+            preview.src = hasilUrl;
+            preview.style.display = "block";
+            const user = JSON.parse(
+    localStorage.getItem("nivexaUser") || "{}"
+);
+
+const email = String(user.email || "")
+    .trim()
+    .toLowerCase();
+
+if (email) {
+    const kunciRiwayat =
+        "nivexa-riwayat-foto-" + email;
+
+    let riwayat = [];
+
+    try {
+        riwayat = JSON.parse(
+            localStorage.getItem(kunciRiwayat) || "[]"
+        );
+    } catch (error) {
+        riwayat = [];
+    }
+
+    riwayat.unshift({
+        url: urlRiwayat,
+        prompt: "Hapus Background",
+        namaFile: "nivexa-background-transparan.png",
+        waktu: Date.now()
+    });
+
+    riwayat = riwayat.slice(0, 10);
+
+    localStorage.setItem(
+        kunciRiwayat,
+        JSON.stringify(riwayat)
+    );
+}
+
+            downloadBtn.href = hasilUrl;
+            downloadBtn.style.display = "flex";
+
+            hapusBtn.textContent =
+                "✅ Background Berhasil Dihapus";
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                error.message ||
+                "Hapus Background gagal."
+            );
+
+            hapusBtn.textContent =
+                "✨ Hapus Background";
+
+        } finally {
+
+            hapusBtn.disabled = false;
+
+        }
+    }
+);
+    </script>
+
+</body>
+</html>

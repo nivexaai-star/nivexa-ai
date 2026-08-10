@@ -2,12 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Nivexa AI - Login</title>
 
-    <link rel="stylesheet" href="../assets/css/login.css">
+    <link
+        rel="stylesheet"
+        href="../assets/css/login.css"
+    >
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 55px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 38px;
+            height: 38px;
+
+            padding: 0;
+            margin: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: transparent;
+            border: none;
+
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .toggle-password:hover {
+            background: transparent;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,12 +93,26 @@
 
             <label>Password</label>
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Masukkan Password"
-                required
-            >
+            <div class="password-wrapper">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Masukkan Password"
+                    required
+                >
+
+                <button
+                    type="button"
+                    id="togglePassword"
+                    class="toggle-password"
+                    aria-label="Tampilkan password"
+                    title="Tampilkan password"
+                >
+                    👁️
+                </button>
+
+            </div>
 
             <div class="options">
 
@@ -72,7 +137,10 @@
             OR
         </div>
 
-        <button class="google-btn">
+        <button
+            type="button"
+            class="google-btn"
+        >
             Continue with Google
         </button>
 
@@ -89,6 +157,53 @@
     </div>
 
 </div>
+
+<script>
+    const passwordInput =
+        document.getElementById("password");
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+    togglePassword.addEventListener(
+        "click",
+        function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                togglePassword.textContent = "🙈";
+
+                togglePassword.setAttribute(
+                    "aria-label",
+                    "Sembunyikan password"
+                );
+
+                togglePassword.setAttribute(
+                    "title",
+                    "Sembunyikan password"
+                );
+
+            } else {
+
+                passwordInput.type = "password";
+
+                togglePassword.textContent = "👁️";
+
+                togglePassword.setAttribute(
+                    "aria-label",
+                    "Tampilkan password"
+                );
+
+                togglePassword.setAttribute(
+                    "title",
+                    "Tampilkan password"
+                );
+            }
+        }
+    );
+</script>
 
 <script src="../assets/js/login.js"></script>
 

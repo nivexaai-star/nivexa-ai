@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Riwayat - NIVEXA AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at top left, #243b80 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #143b70 0%, transparent 35%),
+                #080d1d;
+        }
+
+        .container {
+            width: min(1200px, 92%);
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .back {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        h1 {
+            font-size: 38px;
+        }
+
+        .subtitle {
+            color: #aebbd6;
+            margin-top: 8px;
+        }
+
+        .count {
+            background: linear-gradient(135deg, #5d65ff, #36c7ff);
+            padding: 11px 17px;
+            border-radius: 999px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        #riwayatGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .history-card {
+            overflow: hidden;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .history-card img {
+            display: block;
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            background: #10172c;
+        }
+
+        .history-info {
+            padding: 16px;
+        }
+
+        .history-info p {
+            line-height: 1.5;
+            color: #d9e2f4;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .history-info small {
+            color: #8998b8;
+        }
+
+        .download {
+            display: block;
+            margin-top: 15px;
+            padding: 11px;
+            text-align: center;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: linear-gradient(135deg, #5965ff, #27bdf3);
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 70px 20px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #aebbd6;
+        }
+
+        @media (max-width: 850px) {
+            #riwayatGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .container {
+                width: 94%;
+                padding-top: 25px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            #riwayatGrid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-card img {
+                height: auto;
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div>
+            <a class="back" href="dashboard.html">
+                ← Dashboard
+            </a>
+
+            <h1 style="margin-top:20px;">
+                Riwayat NIVEXA AI
+            </h1>
+
+            <p class="subtitle">
+                Hasil edit foto akun kamu tersimpan di sini.
+            </p>
+        </div>
+
+        <div class="count">
+            Riwayat: <span id="jumlahRiwayat">0</span>
+        </div>
+
+    </div>
+
+    <div id="riwayatGrid"></div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let user = null;
+
+    try {
+        user = JSON.parse(localStorage.getItem("nivexaUser"));
+    } catch (error) {
+        user = null;
+    }
+
+    if (!user || !user.email) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const email = String(user.email)
+        .trim()
+        .toLowerCase();
+
+    const kunciRiwayat =
+        "nivexa-riwayat-foto-" + email;
+
+    let riwayat = [];
+
+    try {
+        riwayat =
+            JSON.parse(localStorage.getItem(kunciRiwayat)) || [];
+    } catch (error) {
+        riwayat = [];
+    }
+
+    const grid =
+        document.getElementById("riwayatGrid");
+
+    const jumlah =
+        document.getElementById("jumlahRiwayat");
+
+    jumlah.textContent = riwayat.length;
+
+    if (riwayat.length === 0) {
+
+        grid.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">🖼️</div>
+
+                <h2>Belum ada riwayat</h2>
+
+                <p>
+                    Setelah kamu selesai mengedit foto,
+                    hasilnya akan muncul di halaman ini.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    riwayat.forEach(function (item) {
+
+        const card =
+            document.createElement("article");
+
+        card.className = "history-card";
+
+        const gambar =
+            item.url ||
+            item.imageUrl ||
+            item.hasil ||
+            item.src ||
+            "";
+
+        const prompt =
+            item.prompt ||
+            "Hasil Edit Foto NIVEXA AI";
+
+        const waktu =
+            item.waktu ||
+            item.tanggal ||
+            item.createdAt ||
+            "";
+
+        card.innerHTML = `
+            <img src="${gambar}" alt="Hasil NIVEXA AI">
+
+            <div class="history-info">
+
+                <p>${prompt}</p>
+
+                ${
+                    waktu
+                    ? `<small>${waktu}</small>`
+                    : ""
+                }
+
+                <button
+    type="button"
+    class="download"
+    data-url="${gambar}"
+>
+    ⬇ Download Hasil
+</button>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+});
+document.addEventListener("click", async function (event) {
+    const tombol = event.target.closest(".download");
+
+    if (!tombol) {
+        return;
+    }
+
+    event.preventDefault();
+
+    const url = tombol.dataset.url;
+
+    if (!url) {
+        alert("File hasil tidak ditemukan.");
+        return;
+    }
+
+    try {
+        tombol.textContent = "Mengunduh...";
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil file.");
+        }
+
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = blobUrl;
+        link.download = "hasil-nivexa-ai.png";
+
+        document.body.appendChild(link);
+
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(blobUrl);
+
+        tombol.textContent = "⬇ Download Hasil";
+
+    } catch (error) {
+        console.error("Download gagal:", error);
+
+        tombol.textContent = "⬇ Download Hasil";
+
+        alert("Download gagal. Silakan coba lagi.");
+    }
+});
+</script>
+
+</body>
+</html>

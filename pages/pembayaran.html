@@ -185,15 +185,38 @@
         }
 
         .upload-box {
-            margin-top: 14px;
-            padding: 20px;
-            border: 2px dashed rgba(110, 167, 255, 0.55);
-            border-radius: 17px;
-            text-align: center;
-            cursor: pointer;
-            background: rgba(49, 85, 180, 0.08);
-        }
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 
+    margin-top: 14px;
+    padding: 24px 20px;
+
+    border: 2px dashed rgba(110, 167, 255, 0.55);
+    border-radius: 17px;
+
+    text-align: center;
+    line-height: 1.7;
+
+    cursor: pointer;
+    background: rgba(49, 85, 180, 0.08);
+}
+.upload-icon {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 28px;
+}
+
+.upload-text {
+    display: block;
+    width: 100%;
+    line-height: 1.4;
+}
+
+.upload-box small {
+    display: block;
+    margin-top: 8px;
+}
         #buktiPembayaran {
             display: none;
         }
@@ -241,21 +264,84 @@
             line-height: 1.5;
         }
 
-        @media (max-width: 650px) {
-            .card {
-                padding: 20px;
-            }
+        @media(max-width: 650px) {
+    body {
+        padding: 18px 10px;
+    }
 
-            .payment-grid {
-                grid-template-columns: 1fr;
-            }
+    .card {
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
 
-            .package-row,
-            .payment-number {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
+    h1 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .package-box {
+        padding: 14px;
+    }
+
+    .package-row {
+        gap: 6px;
+    }
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .payment-option {
+        min-height: 82px;
+        padding: 12px;
+    }
+
+    .detail-box {
+        padding: 14px;
+    }
+
+    .qris-placeholder {
+        min-height: auto;
+        padding: 12px;
+    }
+
+    .qris-placeholder img {
+        width: 100% !important;
+        max-width: 260px !important;
+        height: auto;
+    }
+
+    .upload-box {
+        padding: 18px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        word-break: normal;
+    }
+
+    .upload-box small {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .submit-button {
+        padding: 15px 12px;
+        font-size: 15px;
+    }
+
+    .package-row,
+    .payment-number {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
     </style>
 </head>
 
@@ -267,7 +353,6 @@
         >
             ← Kembali ke Konfirmasi
         </a>
-
         <section class="card">
             <h1>💳 Pembayaran NIVEXA AI</h1>
 
@@ -347,7 +432,7 @@
         "
     >
 </div>
-
+</div>
             <div
                 class="detail-box"
                 id="detailDana"
@@ -407,13 +492,19 @@
             </h2>
 
             <label
-                class="upload-box"
-                for="buktiPembayaran"
-            >
-                📷 Klik untuk memilih bukti pembayaran
-                <br>
-                <small>JPG, PNG, atau WEBP — maksimal 10 MB</small>
-            </label>
+    class="upload-box"
+    for="buktiPembayaran"
+>
+    <span class="upload-icon">📷</span>
+
+    <strong class="upload-text">
+        Klik untuk memilih bukti pembayaran
+    </strong>
+
+    <small>
+        JPG, PNG, atau WEBP — maksimal 10 MB
+    </small>
+</label>
 
             <input
                 type="file"
@@ -437,7 +528,49 @@
             >
                 Kirim Bukti Pembayaran
             </button>
+<div id="konfirmasiWhatsapp" style="
+    display: none;
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 14px;
+    background: rgba(37, 211, 102, 0.10);
+    border: 1px solid rgba(37, 211, 102, 0.35);
+    text-align: center;
+">
+    <p style="
+        margin: 0 0 10px;
+        font-weight: 700;
+        color: white;
+    ">
+        Sudah melakukan pembayaran?
+    </p>
 
+    <p style="
+        margin: 0 0 14px;
+        color: #cbd5e1;
+        font-size: 14px;
+        line-height: 1.5;
+    ">
+        Setelah mengirim bukti pembayaran, silakan konfirmasi ke Admin NIVEXA AI melalui WhatsApp.
+    </p>
+
+        <a
+    id="linkWhatsapp"
+    href="https://wa.me/6285778888476"
+    target="_blank"
+    style="
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+        "
+    >
+        💬 Konfirmasi via WhatsApp
+    </a>
+</div>
             <p id="statusPembayaran"></p>
         </section>
     </main>
@@ -674,55 +807,160 @@
             );
 
         kirimPembayaran.addEventListener(
-            "click",
-            function () {
-                if (!metodeDipilih) {
-                    alert(
-                        "Silakan pilih metode pembayaran."
-                    );
-                    return;
-                }
+    "click",
+    async function () {
+        if (!metodeDipilih) {
+            alert(
+                "Silakan pilih metode pembayaran."
+            );
+            return;
+        }
 
-                if (!buktiDipilih) {
-                    alert(
-                        "Silakan unggah bukti pembayaran."
-                    );
-                    return;
-                }
+        if (!buktiDipilih) {
+            alert(
+                "Silakan unggah bukti pembayaran."
+            );
+            return;
+        }
 
-                const dataTransaksi = {
-                    id:
-                        "NVX-" +
-                        Date.now(),
-                    paket:
-                        dataPaket.nama,
-                    kredit:
-                        dataPaket.kredit,
-                    harga:
-                        dataPaket.harga,
-                    metode:
-                        metodeDipilih,
-                    status:
-                        "menunggu-verifikasi",
-                    dibuat:
-                        new Date().toISOString()
-                };
+        let emailUser = "";
 
-                localStorage.setItem(
-                    "nivexaPembayaranTerakhir",
-                    JSON.stringify(
-                        dataTransaksi
-                    )
+        try {
+            const user = JSON.parse(
+                localStorage.getItem(
+                    "nivexaUser"
+                ) || "null"
+            );
+
+            emailUser =
+                user?.email || "";
+        } catch (error) {
+            console.error(
+                "Gagal membaca email user:",
+                error
+            );
+        }
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "bukti",
+            buktiDipilih
+        );
+
+        formData.append(
+            "email",
+            emailUser
+        );
+
+        formData.append(
+            "paket",
+            dataPaket.nama
+        );
+
+        formData.append(
+            "kredit",
+            dataPaket.kredit
+        );
+
+        formData.append(
+            "harga",
+            dataPaket.harga
+        );
+
+        formData.append(
+            "metode",
+            metodeDipilih
+        );
+         const pesanWhatsapp =
+    "Halo Admin NIVEXA AI, saya sudah melakukan pembayaran upgrade.\n\n" +
+    "Email: " + emailUser + "\n" +
+    "Paket: " + dataPaket.nama + "\n" +
+    "Kredit: " + dataPaket.kredit + " Kredit AI\n" +
+    "Harga: Rp" + Number(dataPaket.harga).toLocaleString("id-ID") + "\n" +
+    "Metode: " + metodeDipilih + "\n\n" +
+    "Bukti pembayaran sudah saya kirim. Mohon diverifikasi.";
+
+document.getElementById("linkWhatsapp").href =
+    "https://wa.me/6285778888476?text=" +
+    encodeURIComponent(pesanWhatsapp);
+        try {
+            kirimPembayaran.disabled =
+                true;
+
+            kirimPembayaran.textContent =
+                "Mengirim...";
+
+            statusPembayaran.textContent =
+                "Mengirim bukti pembayaran...";
+
+            const response =
+                await fetch(
+                    "/kirim-pembayaran",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
                 );
 
-                statusPembayaran.textContent =
-                    "✅ Bukti pembayaran berhasil dicatat. Menunggu verifikasi admin.";
+            const hasil =
+                await response.json();
 
-                alert(
-                    "Bukti pembayaran berhasil dicatat.\n\nAdmin akan memverifikasi pembayaranmu."
+            if (!response.ok) {
+                throw new Error(
+                    hasil.message ||
+                    "Pembayaran gagal dikirim."
                 );
             }
+
+            localStorage.setItem(
+                "nivexaPembayaranTerakhir",
+                JSON.stringify(
+                    hasil.transaksi
+                )
+            );
+           
+          const pesanWhatsappFinal =
+    "Halo Admin NIVEXA AI, saya sudah melakukan pembayaran upgrade.\n\n" +
+    "ID Transaksi: " + hasil.transaksi.id + "\n" +
+    "Email: " + emailUser + "\n" +
+    "Paket: " + dataPaket.nama + "\n" +
+    "Kredit: " + dataPaket.kredit + " Kredit AI\n" +
+    "Harga: Rp" + Number(dataPaket.harga).toLocaleString("id-ID") + "\n" +
+   "Metode: " + metodeDipilih + "\n\n" +
+"Bukti pembayaran sudah saya kirim. Mohon diverifikasi.";
+
+document.getElementById("linkWhatsapp").href =
+    "https://wa.me/6285778888476?text=" +
+    encodeURIComponent(pesanWhatsappFinal);
+            statusPembayaran.textContent =
+                "✅ Bukti pembayaran berhasil dikirim. Menunggu verifikasi admin.";
+            document.getElementById("konfirmasiWhatsapp").style.display = "block";
+            alert(
+                "Bukti pembayaran berhasil dikirim.\n\nAdmin akan memverifikasi pembayaranmu."
+            );
+
+            kirimPembayaran.textContent =
+                "Bukti Pembayaran Terkirim";
+        } catch (error) {
+            console.error(
+                "Gagal mengirim pembayaran:",
+                error
+            );
+
+            statusPembayaran.textContent =
+                "❌ " + error.message;
+
+            kirimPembayaran.disabled =
+                false;
+
+            kirimPembayaran.textContent =
+                "Kirim Bukti Pembayaran";
+        }
+    }
         );
+
     </script>
 </body>
 </html>

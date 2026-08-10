@@ -196,7 +196,22 @@ a {
     gap: 24px;
     margin-bottom: 28px;
 }
+.premium-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.welcome-area {
+    text-align: center;
+    width: 100%;
+}
 
+.welcome-area p {
+    margin-left: auto;
+    margin-right: auto;
+}
 .welcome-small,
 .section-label,
 .premium-label {
@@ -704,4 +719,913 @@ a {
         flex-direction: column;
         text-align: center;
     }
+}
+/* =========================================================
+   SIDEBAR MENU TOGGLE NIVEXA
+========================================================= */
+
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1200;
+
+    width: 52px;
+    height: 52px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+
+    background: rgba(9, 18, 38, 0.88);
+    color: white;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
+}
+
+
+/* Sidebar awalnya disembunyikan */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 290px;
+    height: 100vh;
+
+    z-index: 1300;
+
+    padding: 22px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(7, 16, 35, 0.98),
+            rgba(12, 25, 54, 0.98)
+        );
+
+    border-right:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+
+    overflow-y: auto;
+}
+
+
+/* Saat menu dibuka */
+.sidebar.open {
+    transform: translateX(0);
+}
+
+
+/* Header sidebar */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+
+/* Tombol X */
+.sidebar-close {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+/* Garis pemisah */
+.menu-divider {
+    height: 1px;
+    margin: 16px 0;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+}
+
+
+/* Overlay gelap */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1250;
+
+    background: rgba(0, 0, 0, 0.58);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+
+/* Overlay aktif */
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Main content tidak lagi terdorong sidebar */
+.main-content {
+    width: 100%;
+    margin-left: 0 !important;
+}
+
+
+/* HP */
+@media (max-width: 760px) {
+
+    .menu-toggle {
+        top: 14px;
+        left: 14px;
+
+        width: 46px;
+        height: 46px;
+
+        font-size: 24px;
+    }
+
+    .sidebar {
+        width: min(290px, 86vw);
+    }
+}
+/* =========================================
+   RAPikan SCROLLBAR SIDEBAR NIVEXA
+   ========================================= */
+
+.sidebar {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+/* Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+/* =========================================
+   NIVEXA PREMIUM - TAMPILAN BARU
+   ========================================= */
+
+.premium-section {
+    position: relative;
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 30px;
+
+    margin-top: 38px;
+    padding: 42px;
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(126, 87, 255, 0.28),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(50, 74, 170, 0.85),
+            rgba(56, 39, 120, 0.88)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Isi kiri */
+.premium-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Tulisan kecil NIVEXA PREMIUM */
+.premium-label {
+    display: inline-block;
+    margin-bottom: 14px;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+
+    color: #d9ddff;
+}
+
+
+/* Judul besar */
+.premium-content h3 {
+    max-width: 700px;
+
+    margin: 0 0 16px;
+
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.08;
+}
+
+
+/* Deskripsi */
+.premium-desc {
+    max-width: 720px;
+
+    margin-bottom: 24px;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* Daftar keuntungan */
+.premium-benefits {
+    display: grid;
+    gap: 12px;
+
+    margin-bottom: 26px;
+}
+
+
+.premium-benefit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.premium-benefit span {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: rgba(80, 255, 184, 0.16);
+    color: #76ffc4;
+
+    font-weight: 900;
+}
+
+
+.premium-benefit p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.90);
+}
+
+
+/* Tombol upgrade */
+.premium-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+    padding: 0 24px;
+
+    border-radius: 15px;
+
+    text-decoration: none;
+
+    font-weight: 800;
+    font-size: 15px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            90deg,
+            #745dff,
+            #39c9ff
+        );
+
+    box-shadow:
+        0 12px 30px rgba(70, 121, 255, 0.30);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.premium-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 34px rgba(70, 121, 255, 0.40);
+}
+
+
+/* Bagian berlian kanan */
+.premium-decoration {
+    position: relative;
+
+    min-height: 260px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.premium-circle {
+    width: 180px;
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 76px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(105, 213, 255, 0.28),
+            rgba(211, 101, 255, 0.34)
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.18);
+
+    box-shadow:
+        0 0 70px rgba(130, 107, 255, 0.35);
+}
+
+
+/* Bintang kecil */
+.premium-small-star {
+    position: absolute;
+
+    color: #d9c8ff;
+
+    font-size: 24px;
+}
+
+
+.star-one {
+    top: 32px;
+    right: 30px;
+}
+
+
+.star-two {
+    bottom: 30px;
+    left: 20px;
+
+    font-size: 16px;
+}
+
+
+/* HP */
+@media (max-width: 760px) {
+
+    .premium-section {
+        grid-template-columns: 1fr;
+
+        padding: 28px 22px;
+    }
+
+    .premium-decoration {
+        min-height: 180px;
+    }
+
+    .premium-circle {
+        width: 135px;
+        height: 135px;
+
+        font-size: 58px;
+    }
+
+    .premium-button {
+        width: 100%;
+    }
+}
+/* =========================================================
+   NIVEXA PREMIUM - VERSI LEBIH MEWAH
+   Tempel paling bawah dashboard.css
+========================================================= */
+
+.premium-section {
+    position: relative;
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    align-items: center;
+    gap: 28px;
+
+    margin-top: 38px;
+    padding: 48px 50px;
+
+    border-radius: 30px;
+
+    background:
+        radial-gradient(
+            circle at 88% 22%,
+            rgba(121, 92, 255, 0.40),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(40, 199, 255, 0.19),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #253a90 0%,
+            #30276f 48%,
+            #171d46 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* Efek cahaya belakang */
+.premium-section::before {
+    content: "";
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -150px;
+    top: -170px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(172, 122, 255, 0.24),
+            transparent 68%
+        );
+
+    pointer-events: none;
+}
+
+
+.premium-section::after {
+    content: "";
+    position: absolute;
+
+    width: 360px;
+    height: 360px;
+
+    left: -180px;
+    bottom: -240px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(45, 211, 255, 0.20),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Bagian isi */
+.premium-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Label atas */
+.premium-label {
+    display: inline-flex;
+    align-items: center;
+
+    margin-bottom: 18px;
+
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2.5px;
+
+    color: #ddd7ff;
+}
+
+
+/* Judul */
+.premium-content h3 {
+    max-width: 720px;
+
+    margin: 0 0 20px;
+
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.03;
+    letter-spacing: -1.5px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 6px 24px rgba(0, 0, 0, 0.20);
+}
+
+
+/* Deskripsi */
+.premium-desc {
+    max-width: 690px;
+
+    margin: 0 0 28px;
+
+    font-size: 17px;
+    line-height: 1.75;
+
+    color: rgba(239, 242, 255, 0.80);
+}
+
+
+/* Checklist */
+.premium-benefits {
+    display: grid;
+    gap: 14px;
+
+    margin-bottom: 32px;
+}
+
+
+.premium-benefit {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+
+.premium-benefit span {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 31px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(89, 255, 190, 0.28),
+            rgba(55, 220, 255, 0.18)
+        );
+
+    border: 1px solid rgba(127, 255, 207, 0.18);
+
+    color: #86ffd0;
+
+    font-size: 16px;
+    font-weight: 900;
+
+    box-shadow:
+        0 0 22px rgba(72, 255, 190, 0.14);
+}
+
+
+.premium-benefit p {
+    margin: 0;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    color: rgba(255, 255, 255, 0.92);
+}
+
+
+/* Tombol */
+.premium-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 56px;
+
+    padding: 0 30px;
+
+    border-radius: 16px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 900;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            #785dff 0%,
+            #a05cff 45%,
+            #37cfff 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    box-shadow:
+        0 15px 35px rgba(80, 84, 255, 0.38),
+        0 0 28px rgba(126, 92, 255, 0.18);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.premium-button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 20px 42px rgba(80, 84, 255, 0.48),
+        0 0 34px rgba(126, 92, 255, 0.25);
+}
+
+
+/* Bagian kanan */
+.premium-decoration {
+    position: relative;
+
+    min-height: 320px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 2;
+}
+
+
+/* Lingkaran diamond */
+.premium-circle {
+    position: relative;
+
+    width: 220px;
+    height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 92px;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(255, 255, 255, 0.20),
+            rgba(109, 91, 230, 0.28) 45%,
+            rgba(53, 41, 123, 0.36) 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    box-shadow:
+        0 0 0 18px rgba(122, 97, 255, 0.05),
+        0 0 80px rgba(138, 94, 255, 0.55),
+        0 25px 55px rgba(0, 0, 0, 0.22);
+
+    animation:
+        premiumFloat 4s ease-in-out infinite;
+}
+
+
+/* Glow diamond */
+.premium-circle::before {
+    content: "";
+
+    position: absolute;
+    inset: 18px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(88, 225, 255, 0.16),
+            transparent 68%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Bintang */
+.premium-small-star {
+    position: absolute;
+
+    color: #f1e8ff;
+
+    text-shadow:
+        0 0 18px rgba(208, 178, 255, 0.9);
+
+    animation:
+        premiumTwinkle 2.2s ease-in-out infinite;
+}
+
+
+.star-one {
+    top: 35px;
+    right: 16px;
+
+    font-size: 28px;
+}
+
+
+.star-two {
+    bottom: 46px;
+    left: 5px;
+
+    font-size: 19px;
+
+    animation-delay: 0.7s;
+}
+
+
+/* Gerakan halus */
+@keyframes premiumFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+@keyframes premiumTwinkle {
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: scale(0.85);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
+
+
+/* Tablet */
+@media (max-width: 1050px) {
+
+    .premium-section {
+        grid-template-columns: 1.2fr 0.8fr;
+        padding: 40px 34px;
+    }
+
+    .premium-circle {
+        width: 185px;
+        height: 185px;
+
+        font-size: 76px;
+    }
+}
+
+
+/* HP */
+@media (max-width: 760px) {
+
+    .premium-section {
+        grid-template-columns: 1fr;
+
+        padding: 30px 22px;
+        border-radius: 24px;
+    }
+
+    .premium-content h3 {
+        font-size: 36px;
+    }
+
+    .premium-desc {
+        font-size: 15px;
+    }
+
+    .premium-decoration {
+        min-height: 210px;
+    }
+
+    .premium-circle {
+        width: 150px;
+        height: 150px;
+
+        font-size: 62px;
+    }
+
+    .premium-button {
+        width: 100%;
+    }
+}
+/* ===== HERO TENGAH ===== */
+
+.hero-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-content h2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-content p {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-actions {
+    justify-content: center;
+    width: 100%;
+}
+/* ===== WELCOME BAGIAN ATAS TENGAH ===== */
+
+.welcome-area {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome-area h1 {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.welcome-area p {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 800px;
+}
+
+.welcome-small {
+    text-align: center;
+}
+.topbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 20px;
+}
+
+.welcome-area {
+    grid-column: 2;
+    text-align: center;
 }
