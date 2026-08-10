@@ -673,9 +673,12 @@ a {
         padding: 20px 14px 30px;
     }
 
-    .topbar {
-        flex-direction: column;
-    }
+   .topbar {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    overflow: hidden;
+}
 
     .premium-button {
         width: 100%;
@@ -684,13 +687,31 @@ a {
 
     .hero-card {
         min-height: auto;
-        padding: 28px 20px;
+        padding: 20px 16px;
         border-radius: 22px;
     }
 
     .hero-content h2 {
-        font-size: 38px;
+        font-size: 32px;
+        line-height: 1.08;
     }
+    .welcome-area,
+.hero-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+.welcome-area h1,
+.welcome-area h2,
+.welcome-area p,
+.hero-content h2,
+.hero-content p {
+    overflow-wrap: anywhere;
+}
+
+.hero-actions {
+    gap: 8px;
+}
 
     .hero-actions {
         flex-direction: column;
@@ -709,7 +730,7 @@ a {
     .premium-section {
         grid-template-columns: 1fr;
         padding: 26px 20px;
-        margin-top: -55;
+        margin-top: 0;
     }
 
     .premium-decoration {
