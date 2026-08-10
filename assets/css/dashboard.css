@@ -1654,12 +1654,13 @@ a {
 .welcome-area {
     grid-column: 2;
     text-align: center;
-    .premium-info {
+    transform: translateX(18px);
+}
+
+.premium-info {
     grid-column: 3;
     justify-self: end;
     align-self: start;
-    margin-right: 14px;
-}
 }
 @media (max-width: 600px) {
     .topbar {
