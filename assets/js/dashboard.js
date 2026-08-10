@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const namaUser = JSON.parse(localStorage.getItem("nivexaUser"));
+    const akunUser = JSON.parse(localStorage.getItem("nivexaAccount") || "{}");
 
     if (!namaUser) {
         window.location.href = "login.html";
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userElement = document.getElementById("namaUser");
 
     if (userElement) {
-        userElement.textContent = namaUser.email;
+        userElement.textContent = akunUser .nama || namaUser.email;
     }
 
     const tombolMulai = document.getElementById("mulaiBtn");
