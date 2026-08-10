@@ -557,7 +557,7 @@ a {
 .premium-section {
     position: relative;
     overflow: hidden;
-    margin-top: 40px;
+    margin-top: 10px;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
