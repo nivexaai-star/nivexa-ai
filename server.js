@@ -274,7 +274,9 @@ app.post("/register-user", function (req, res) {
         )
             .trim()
             .toLowerCase();
-
+const nama = String(
+    req.body.nama || ""
+).trim();
         if (!email) {
             return res.status(400).json({
                 success: false,
@@ -306,6 +308,7 @@ app.post("/register-user", function (req, res) {
         }
 
         dataUser.push({
+            nama: nama,
             email: email,
             kredit: 3
         });
