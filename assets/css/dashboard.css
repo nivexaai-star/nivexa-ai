@@ -1670,16 +1670,16 @@ a {
 }
 
 .premium-info {
-    margin-right: 12px;
+    margin-right: 2px;
 }
     .premium-button {
-        min-height: 36px;
-        padding: 0 10px;
-        font-size: 11px;
-        border-radius: 10px;
+        min-height: 29px;
+        padding: 0 8px;
+        font-size: 10px;
+        border-radius: 9px;
         white-space: nowrap;
-        max-width: 125px;
-        margin-right: 10px;
+        max-width: 115px;
+        margin-right: 0px;
     }
 }
 /* ===== FIX FINAL SIDEBAR HP NIVEXA ===== */
