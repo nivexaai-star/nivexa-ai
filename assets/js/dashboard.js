@@ -68,7 +68,7 @@ if (!user || !user.email) {
         );
 
         const hasil = await response.json();
-
+console.log("HASIL SALDO:", hasil);
         if (hasil.success) {
     const kredit = Number(hasil.kredit || 0);
 
