@@ -38,22 +38,56 @@ loginForm.addEventListener("submit", function (event) {
     tombolLogin.textContent = "MEMPROSES...";
 
     setTimeout(function () {
-        const akunUser = JSON.parse(
-    localStorage.getItem("nivexaAccount") || "{}"
-);
-        localStorage.setItem(
-            "nivexaUser",
-            JSON.stringify({
-    nama: akunUser.nama || "",
-    email: email,
-    loginAt: new Date().toISOString()
-})
+    const akunUser = JSON.parse(
+        localStorage.getItem("nivexaAccount") || "{}"
+    );
+
+    const emailTerdaftar = String(
+        akunUser.email || ""
+    ).trim().toLowerCase();
+
+    const passwordTerdaftar = String(
+        akunUser.password || ""
+    );
+
+    if (!emailTerdaftar) {
+        tombolLogin.disabled = false;
+        tombolLogin.textContent = "LOGIN";
+
+        tampilkanPesan(
+            "Akun belum terdaftar. Silakan daftar terlebih dahulu.",
+            true
         );
 
-        // Pindah ke halaman utama
-        window.location.href ="dashboard.html";
-    }, 900);
-});
+        return;
+    }
+
+    if (
+        email.toLowerCase() !== emailTerdaftar ||
+        password !== passwordTerdaftar
+    ) {
+        tombolLogin.disabled = false;
+        tombolLogin.textContent = "LOGIN";
+
+        tampilkanPesan(
+            "Email atau kata sandi salah.",
+            true
+        );
+
+        return;
+    }
+
+    localStorage.setItem(
+        "nivexaUser",
+        JSON.stringify({
+            nama: akunUser.nama || "",
+            email: akunUser.email,
+            loginAt: new Date().toISOString()
+        })
+    );
+
+    window.location.href = "dashboard.html";
+}, 900);
 
 tombolGoogle.addEventListener("click", function () {
     hapusPesan();
@@ -97,3 +131,4 @@ function hapusPesan() {
         tombolLogin.textContent = "LOGIN";
     }
 }
+});
