@@ -66,7 +66,22 @@ const fileDataPembayaran = path.join(
     folderPembayaran,
     "transaksi.json"
 );
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            "https://nivexaai.net",
+            "https://www.nivexaai.net"
+        ],
+        methods: [
+            "GET",
+            "POST",
+            "OPTIONS"
+        ],
+        allowedHeaders: [
+            "Content-Type"
+        ]
+    })
+);
 app.use(express.json());
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "pages", "login.html"));
