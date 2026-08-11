@@ -384,6 +384,22 @@ app.get("/saldo-kredit", function (req, res) {
         });
     }
 });
+app.get("/debug-data-user", function (req, res) {
+    try {
+        const dataUser = bacaDataUser();
+
+        return res.json({
+            success: true,
+            jumlahUser: dataUser.length,
+            dataUser: dataUser
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 app.post("/kurangi-kredit", function (req, res) {
     try {
         const email = String(
