@@ -63,9 +63,9 @@ if (!user || !user.email) {
 }
     try {
         const response = await fetch(
-            "/saldo-kredit?email=" +
-            encodeURIComponent(user.email)
-        );
+    "https://nivexa-ai-2.onrender.com/saldo-kredit?email=" +
+    encodeURIComponent(user.email)
+);
 
         const hasil = await response.json();
 console.log("HASIL SALDO:", hasil);
