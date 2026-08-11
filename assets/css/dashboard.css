@@ -1043,7 +1043,9 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
+width: 100%;
+max-width: 320px;
+box-sizing: border-box;
     min-height: 52px;
     padding: 0 24px;
 
@@ -1701,4 +1703,49 @@ a {
         width: 100% !important;
         grid-column: 1 !important;
     }
+}
+/* ===== SIDEBAR USER NIVEXA ===== */
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin: 8px 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-user-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 24px;
+}
+
+.sidebar-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+#sidebarNamaUser {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#sidebarKredit {
+    color: #9cff57;
+    font-size: 14px;
+    font-weight: 700;
 }

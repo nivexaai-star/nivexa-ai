@@ -13,6 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userElement) {
         userElement.textContent = akunUser .nama || namaUser.email;
     }
+    const sidebarNamaUser =
+    document.getElementById("sidebarNamaUser");
+
+if (sidebarNamaUser) {
+    sidebarNamaUser.textContent =
+        akunUser.nama || namaUser.email;
+}
 
     const tombolMulai = document.getElementById("mulaiBtn");
 
@@ -36,13 +43,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.getItem("nivexaUser")
     );
 
-    const saldoKredit =
-        document.getElementById("saldoKredit");
+   const sidebarKredit =
+    document.getElementById("sidebarKredit");
 
-    if (!user || !user.email || !saldoKredit) {
-        return;
-    }
+const sidebarSaldoKredit =
+    document.getElementById("sidebarSaldoKredit");
 
+if (!user || !user.email) {
+    return;
+}
     try {
         const response = await fetch(
             "/saldo-kredit?email=" +
@@ -52,14 +61,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         const hasil = await response.json();
 
         if (hasil.success) {
-            saldoKredit.textContent =
-                Number(hasil.kredit || 0);
-                const kreditGratis = document.getElementById("KreditGratis");
+    const kredit = Number(hasil.kredit || 0);
 
-if (kreditGratis) {
-    kreditGratis.textContent = Number(hasil.kredit || 0);
-}
+    if (sidebarSaldoKredit) {
+        sidebarSaldoKredit.textContent = kredit;
+    }
+
+    if (sidebarKredit) {
+        if (kredit > 0) {
+            sidebarKredit.style.display = "block";
+        } else {
+            sidebarKredit.style.display = "none";
         }
+    }
+
+    const kreditGratis =
+        document.getElementById("KreditGratis");
+
+    if (kreditGratis) {
+        kreditGratis.textContent = kredit;
+    }
+}
     } catch (error) {
         console.error(
             "Gagal memuat saldo kredit:",
