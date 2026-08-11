@@ -674,22 +674,7 @@ function tampilkanKredit() {
         statusEdit.textContent = "";
     }
 }
-function tampilkanKredit() {
-    const sisa = sisaKredit();
 
-    sisaKreditElement.textContent = sisa;
-
-    if (sisa <= 0) {
-        tombolEdit.disabled = true;
-        tombolEdit.textContent = "Kredit Habis";
-        statusEdit.textContent =
-            "Kredit kamu telah habis. Silakan Upgrade Premium untuk menambah kredit.";
-    } else {
-        tombolEdit.disabled = false;
-        tombolEdit.textContent = "Edit Foto";
-        statusEdit.textContent = "";
-    }
-}
 async function ambilSaldoKreditServer() {
     const user = JSON.parse(
         localStorage.getItem("nivexaUser") || "{}"
