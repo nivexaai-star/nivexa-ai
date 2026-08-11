@@ -1749,3 +1749,39 @@ box-sizing: border-box;
     font-size: 14px;
     font-weight: 700;
 }
+/* ===== RAPIIKAN PREMIUM DI HP ===== */
+@media (max-width: 600px) {
+    .premium-card {
+        padding: 24px 18px !important;
+        min-height: auto !important;
+    }
+
+    .premium-benefits {
+        gap: 16px !important;
+        margin-bottom: 22px !important;
+    }
+
+    .premium-benefit {
+        align-items: flex-start !important;
+    }
+
+    .premium-button {
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 48px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+        text-align: center !important;
+        justify-content: center !important;
+        white-space: normal !important;
+    }
+
+    .premium-visual {
+        margin-top: 24px !important;
+        min-height: 220px !important;
+    }
+
+    .premium-diamond-wrap {
+        transform: scale(0.82);
+    }
+}
