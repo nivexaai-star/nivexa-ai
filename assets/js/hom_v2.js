@@ -1,3 +1,12 @@
+window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("pages/login.html");
+    }
+});
 const fotoInput = document.getElementById("v2FotoInput");
 const previewFoto = document.getElementById("v2PreviewFoto");
 const previewBox = document.getElementById("v2PreviewBox");

@@ -576,6 +576,15 @@
     </main>
 
     <script>
+        window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("login.html");
+    }
+});
         let dataPaket = null;
         let metodeDipilih = "";
         let buktiDipilih = null;

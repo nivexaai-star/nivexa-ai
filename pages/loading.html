@@ -270,6 +270,15 @@
     </main>
 
     <script>
+        window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("login.html");
+    }
+});
         const progressBar = document.getElementById("progressBar");
         const percentageText = document.getElementById("percentageText");
         const statusText = document.getElementById("statusText");

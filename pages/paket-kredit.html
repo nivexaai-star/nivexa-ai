@@ -230,6 +230,15 @@ Beli Sekarang
 </div>
 
 <script>
+    window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("login.html");
+    }
+});
 function pilihPaket(nama,harga,kredit){
 
 const paket={

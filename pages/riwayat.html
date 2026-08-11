@@ -198,6 +198,15 @@
 </div>
 
 <script>
+    window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("login.html");
+    }
+});
 document.addEventListener("DOMContentLoaded", function () {
 
     let user = null;
@@ -209,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!user || !user.email) {
-        window.location.href = "login.html";
+        window.location.replace("login.html")
         return;
     }
 

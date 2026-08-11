@@ -255,5 +255,18 @@
             Fitur membagikan video ke media sosial akan kita tambahkan berikutnya.
         </p>
     </main>
+
+<script>
+    window.addEventListener("pageshow", function () {
+        const sesiAktif = JSON.parse(
+            localStorage.getItem("nivexaUser") || "null"
+        );
+
+        if (!sesiAktif || !sesiAktif.email) {
+            window.location.replace("login.html");
+        }
+    });
+</script>
+
 </body>
 </html>

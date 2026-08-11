@@ -1,10 +1,19 @@
+window.addEventListener("pageshow", function () {
+    const sesiAktif = JSON.parse(
+        localStorage.getItem("nivexaUser") || "null"
+    );
+
+    if (!sesiAktif || !sesiAktif.email) {
+        window.location.replace("login.html");
+    }
+});
 document.addEventListener("DOMContentLoaded", () => {
 
     const namaUser = JSON.parse(localStorage.getItem("nivexaUser"));
     const akunUser = JSON.parse(localStorage.getItem("nivexaAccount") || "{}");
 
     if (!namaUser) {
-        window.location.href = "login.html";
+        window.location.replace("login.html")
         return;
     }
 

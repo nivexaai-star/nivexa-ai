@@ -159,6 +159,28 @@
             text-align: center;
             font-size: 14px;
         }
+        .password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    width: 100%;
+    padding-right: 50px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+}
 
         .login-link {
             text-align: center;
@@ -237,28 +259,39 @@
             <div class="form-group">
                 <label for="password">Password</label>
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Minimal 6 karakter"
-                    minlength="6"
-                    required
-                >
+                <div class="password-box">
+    <input
+        type="password"
+        id="password"
+        placeholder="Minimal 6 karakter"
+        minlength="6"
+        required
+    >
+    <button type="button" class="toggle-password" data-target="password">👁️</button>
+</div>
             </div>
 
             <div class="form-group">
-                <label for="konfirmasiPassword">
-                    Konfirmasi Password
-                </label>
+    <label for="konfirmasiPassword">
+        Konfirmasi Password
+    </label>
 
-                <input
-                    type="password"
-                    id="konfirmasiPassword"
-                    placeholder="Ulangi password"
-                    minlength="6"
-                    required
-                >
-            </div>
+    <div class="password-box">
+        <input
+            type="password"
+            id="konfirmasiPassword"
+            placeholder="Ulangi password"
+            minlength="6"
+            required
+        >
+
+        <button
+            type="button"
+            class="toggle-password"
+            data-target="konfirmasiPassword"
+        >👁️</button>
+    </div>
+</div>
 
             <button
                 type="submit"
@@ -425,6 +458,22 @@ fetch("/register-user", {
                 ? "#75f0bd"
                 : "#ff9ca8";
     }
+    document.querySelectorAll(".toggle-password").forEach((tombol) => {
+    tombol.addEventListener("click", function () {
+        const targetId = this.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+
+        if (!input) return;
+
+        if (input.type === "password") {
+            input.type = "text";
+            this.textContent = "🙈";
+        } else {
+            input.type = "password";
+            this.textContent = "👁️";
+        }
+    });
+});
 </script>
 
 </body>
