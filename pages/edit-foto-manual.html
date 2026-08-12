@@ -385,37 +385,40 @@
     const uploadBox = document.querySelector(".upload-box");
 
     fotoInput.addEventListener("change", function () {
-        const file = this.files[0];
+    const file = fotoInput.files[0];
 
-        if (!file) {
-            return;
+    if (!file) {
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        alert("File harus berupa gambar.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        let foto = document.getElementById("fotoPreview");
+
+        if (!foto) {
+            foto = document.createElement("img");
+            foto.id = "fotoPreview";
+
+            foto.style.maxWidth = "100%";
+            foto.style.maxHeight = "430px";
+            foto.style.objectFit = "contain";
+            foto.style.borderRadius = "14px";
+
+            uploadBox.innerHTML = "";
+            uploadBox.appendChild(foto);
         }
 
-        if (!file.type.startsWith("image/")) {
-            alert("File harus berupa gambar.");
-            return;
-        }
+        foto.src = event.target.result;
+    };
 
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-            uploadBox.innerHTML = `
-                <img
-                    src="${event.target.result}"
-                    id="fotoPreview"
-                    alt="Foto yang akan diedit"
-                    style="
-                        max-width: 100%;
-                        max-height: 430px;
-                        object-fit: contain;
-                        border-radius: 14px;
-                    "
-                >
-            `;
-        };
-
-        reader.readAsDataURL(file);
-    });
+    reader.readAsDataURL(file);
+});
     let rotasi = 0;
 let balikX = 1;
 
