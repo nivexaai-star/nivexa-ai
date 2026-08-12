@@ -218,6 +218,24 @@
                 font-size: 24px;
             }
         }
+        .control-group {
+    background: #20283a;
+    padding: 12px 13px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.control-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 9px;
+    color: white;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
     </style>
 </head>
 
@@ -262,25 +280,55 @@
                 ✂️ Crop / Potong
             </button>
 
-            <button class="tool-btn">
-                ↻ Putar Foto
-            </button>
+            <button class="tool-btn" id="putarBtn">
+    ↻ Putar Foto
+</button>
 
-            <button class="tool-btn">
-                ↔️ Balik Foto
-            </button>
+            <button class="tool-btn" id="balikBtn">
+    ↔️ Balik Foto
+</button>
 
-            <button class="tool-btn">
-                ☀️ Kecerahan
-            </button>
+            <div class="control-group">
+    <label for="brightnessRange">
+        ☀️ Kecerahan
+    </label>
 
-            <button class="tool-btn">
-                ◐ Kontras
-            </button>
+    <input
+        type="range"
+        id="brightnessRange"
+        min="50"
+        max="150"
+        value="100"
+    >
+</div>
 
-            <button class="tool-btn">
-                🎨 Saturasi
-            </button>
+<div class="control-group">
+    <label for="contrastRange">
+        ◐ Kontras
+    </label>
+
+    <input
+        type="range"
+        id="contrastRange"
+        min="50"
+        max="150"
+        value="100"
+    >
+</div>
+
+<div class="control-group">
+    <label for="saturationRange">
+        🎨 Saturasi
+    </label>
+
+    <input
+        type="range"
+        id="saturationRange"
+        min="0"
+        max="200"
+        value="100"
+    >
+</div>
 
             <button class="tool-btn">
                 ✨ Filter
@@ -327,15 +375,129 @@
             </div>
 
 
-            <div class="info">
-                💎 Fitur Edit Foto manual ini gratis dan tidak mengurangi kredit NIVEXA AI.
-            </div>
-
         </section>
 
     </div>
 
 </main>
+<script>
+    const fotoInput = document.getElementById("fotoInput");
+    const uploadBox = document.querySelector(".upload-box");
 
+    fotoInput.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            alert("File harus berupa gambar.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            uploadBox.innerHTML = `
+                <img
+                    src="${event.target.result}"
+                    id="fotoPreview"
+                    alt="Foto yang akan diedit"
+                    style="
+                        max-width: 100%;
+                        max-height: 430px;
+                        object-fit: contain;
+                        border-radius: 14px;
+                    "
+                >
+            `;
+        };
+
+        reader.readAsDataURL(file);
+    });
+    let rotasi = 0;
+let balikX = 1;
+
+function updateTransformFoto() {
+    const foto = document.getElementById("fotoPreview");
+
+    if (!foto) return;
+
+    foto.style.transform =
+        `rotate(${rotasi}deg) scaleX(${balikX})`;
+
+    foto.style.transition = "transform 0.3s ease";
+}
+
+document
+    .getElementById("putarBtn")
+    .addEventListener("click", function () {
+
+        const foto = document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        rotasi = (rotasi + 90) % 360;
+        updateTransformFoto();
+    });
+
+document
+    .getElementById("balikBtn")
+    .addEventListener("click", function () {
+
+        const foto = document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        balikX *= -1;
+        updateTransformFoto();
+    });
+    const brightnessRange =
+    document.getElementById("brightnessRange");
+
+const contrastRange =
+    document.getElementById("contrastRange");
+
+const saturationRange =
+    document.getElementById("saturationRange");
+
+function updateFilterFoto() {
+    const foto =
+        document.getElementById("fotoPreview");
+
+    if (!foto) return;
+
+    const brightness = brightnessRange.value;
+    const contrast = contrastRange.value;
+    const saturation = saturationRange.value;
+
+    foto.style.filter =
+        `brightness(${brightness}%)
+         contrast(${contrast}%)
+         saturate(${saturation}%)`;
+}
+
+brightnessRange.addEventListener(
+    "input",
+    updateFilterFoto
+);
+
+contrastRange.addEventListener(
+    "input",
+    updateFilterFoto
+);
+
+saturationRange.addEventListener(
+    "input",
+    updateFilterFoto
+);
+</script>
 </body>
 </html>
