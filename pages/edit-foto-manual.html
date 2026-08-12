@@ -646,6 +646,7 @@ elemenTeks.className = "teks-tambahan";
         updateFilterFoto();
     });
     document
+    document
     .getElementById("downloadBtn")
     .addEventListener("click", function () {
 
@@ -657,14 +658,87 @@ elemenTeks.className = "teks-tambahan";
             return;
         }
 
-        const link = document.createElement("a");
-        link.href = foto.src;
-        link.download = "nivexa-edit-foto.jpg";
+        const canvas =
+            document.createElement("canvas");
 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    });ms
+        const ctx =
+            canvas.getContext("2d");
+
+        canvas.width = foto.naturalWidth;
+        canvas.height = foto.naturalHeight;
+
+        ctx.filter = foto.style.filter || "none";
+
+        ctx.save();
+
+        ctx.translate(
+            canvas.width / 2,
+            canvas.height / 2
+        );
+
+        ctx.rotate(
+            rotasi * Math.PI / 180
+        );
+
+        ctx.scale(
+            balikX,
+            1
+        );
+
+        ctx.drawImage(
+            foto,
+            -canvas.width / 2,
+            -canvas.height / 2,
+            canvas.width,
+            canvas.height
+        );
+
+        ctx.restore();
+
+        const teksTambahan =
+            foto.parentElement.querySelectorAll(
+                ".teks-tambahan"
+            );
+
+        teksTambahan.forEach(function (item) {
+
+            ctx.font = "bold 64px Arial";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 8;
+
+            ctx.fillText(
+                item.textContent,
+                canvas.width / 2,
+                canvas.height - 80
+            );
+        });
+
+        canvas.toBlob(function (blob) {
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+            link.download =
+                "nivexa-edit-foto.jpg";
+
+            document.body.appendChild(link);
+
+            link.click();
+            link.remove();
+
+            setTimeout(function () {
+                URL.revokeObjectURL(url);
+            }, 1000);
+
+        }, "image/jpeg", 0.95);
+    });
 </script>
 </body>
 </html>
