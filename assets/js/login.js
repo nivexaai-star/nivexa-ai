@@ -37,57 +37,49 @@ loginForm.addEventListener("submit", function (event) {
     tombolLogin.disabled = true;
     tombolLogin.textContent = "MEMPROSES...";
 
-    setTimeout(function () {
-    const akunUser = JSON.parse(
-        localStorage.getItem("nivexaAccount") || "{}"
-    );
+    fetch("/login-user", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        email: email,
+        password: password
+    })
+})
+    .then(async function (response) {
+        const data = await response.json();
 
-    const emailTerdaftar = String(
-        akunUser.email || ""
-    ).trim().toLowerCase();
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Login gagal."
+            );
+        }
 
-    const passwordTerdaftar = String(
-        akunUser.password || ""
-    );
+        return data;
+    })
+    .then(function (data) {
+        localStorage.setItem(
+            "nivexaUser",
+            JSON.stringify({
+                nama: data.nama || "",
+                email: data.email,
+                kredit: Number(data.kredit || 0),
+                loginAt: new Date().toISOString()
+            })
+        );
 
-    if (!emailTerdaftar) {
+        window.location.href = "dashboard.html";
+    })
+    .catch(function (error) {
         tombolLogin.disabled = false;
         tombolLogin.textContent = "LOGIN";
 
         tampilkanPesan(
-            "Akun belum terdaftar. Silakan daftar terlebih dahulu.",
+            error.message || "Login gagal.",
             true
         );
-
-        return;
-    }
-
-    if (
-        email.toLowerCase() !== emailTerdaftar ||
-        password !== passwordTerdaftar
-    ) {
-        tombolLogin.disabled = false;
-        tombolLogin.textContent = "LOGIN";
-
-        tampilkanPesan(
-            "Email atau kata sandi salah.",
-            true
-        );
-
-        return;
-    }
-
-    localStorage.setItem(
-        "nivexaUser",
-        JSON.stringify({
-            nama: akunUser.nama || "",
-            email: akunUser.email,
-            loginAt: new Date().toISOString()
-        })
-    );
-
-    window.location.href = "dashboard.html";
-}, 900);
+    });
 
 tombolGoogle.addEventListener("click", function () {
     hapusPesan();

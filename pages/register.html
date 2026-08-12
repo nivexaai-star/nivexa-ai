@@ -385,67 +385,56 @@
             }
 
 
-            const akun = {
-                nama: nama,
-                email: email,
-                password: password,
-
-                sisaGratis: 3,
-
-                dibuatPada:
-                    new Date().toISOString()
-            };
-
-
-            localStorage.setItem(
-                "nivexaAccount",
-                JSON.stringify(akun)
-            );
-
-
-            localStorage.setItem(
-                "nivexaUser",
-                JSON.stringify({
-                    nama: nama,
-                    email: email,
-                    loginAt:
-                        new Date().toISOString()
-                })
-            );
-
-fetch("/register-user", {
+            fetch("/register-user", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
         nama: nama,
-        email: email
+        email: email,
+        password: password
     })
 })
-.then(response => response.json())
-.then(data => {
-    console.log("Register server:", data);
+.then(async function (response) {
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+        throw new Error(
+            data.message || "Pendaftaran gagal."
+        );
+    }
+
+    return data;
 })
-.catch(error => {
-    console.error("Gagal register ke server:", error);
-});
-            tampilkanPesan(
-                "Akun berhasil dibuat. Kamu mendapat 3 kredit gratis.",
-                true
-            );
-
-
-            setTimeout(function () {
-
-                window.location.href =
-                    "dashboard.html";
-
-            }, 900);
-        }
+.then(function (data) {
+    localStorage.setItem(
+        "nivexaUser",
+        JSON.stringify({
+            nama: nama,
+            email: email,
+            kredit: Number(data.kredit || 1),
+            loginAt: new Date().toISOString()
+        })
     );
 
+    tampilkanPesan(
+        "Akun berhasil dibuat. Kamu mendapat 1 kredit gratis.",
+        true
+    );
 
+    setTimeout(function () {
+        window.location.href =
+            "dashboard.html";
+    }, 900);
+})
+.catch(function (error) {
+    tampilkanPesan(
+        error.message || "Pendaftaran gagal.",
+        false
+    );
+});
+        });
     function tampilkanPesan(
         text,
         berhasil

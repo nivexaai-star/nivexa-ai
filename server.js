@@ -3,6 +3,7 @@ const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 let falClient = null;
 
@@ -282,7 +283,7 @@ function simpanPembayaran(data) {
         JSON.stringify(data, null, 2)
     );
 }
-app.post("/register-user", function (req, res) {
+app.post("/register-user", async function (req, res) {
     try {
         const email = String(
             req.body.email || ""
@@ -292,6 +293,18 @@ app.post("/register-user", function (req, res) {
 const nama = String(
     req.body.nama || ""
 ).trim();
+const password = String(
+    req.body.password || ""
+).trim();
+
+if (password.length < 6) {
+    return res.status(400).json({
+        success: false,
+        message: "Password minimal 6 karakter."
+    });
+}
+
+const passwordHash = await bcrypt.hash(password, 10);
         if (!email) {
             return res.status(400).json({
                 success: false,
@@ -323,17 +336,18 @@ const nama = String(
         }
 
         dataUser.push({
-            nama: nama,
-            email: email,
-            kredit: 3
-        });
+    nama: nama,
+    email: email,
+    password: passwordHash,
+    kredit: 1
+});
 
         simpanDataUser(dataUser);
 
         return res.json({
             success: true,
             email: email,
-            kredit: 3,
+            kredit: 1,
             sudahAda: false
         });
 
@@ -346,6 +360,80 @@ const nama = String(
         return res.status(500).json({
             success: false,
             message: "Gagal membuat akun pengguna."
+        });
+    }
+});
+app.post("/login-user", async function (req, res) {
+    try {
+        const email = String(
+            req.body.email || ""
+        )
+            .trim()
+            .toLowerCase();
+
+        const password = String(
+            req.body.password || ""
+        );
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Email dan password wajib diisi."
+            });
+        }
+
+        const dataUser = bacaDataUser();
+
+        const user = dataUser.find(function (item) {
+            return String(
+                item.email || ""
+            )
+                .trim()
+                .toLowerCase() === email;
+        });
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Akun belum terdaftar."
+            });
+        }
+
+        if (!user.password) {
+            return res.status(401).json({
+                success: false,
+                message: "Akun lama perlu didaftarkan ulang."
+            });
+        }
+
+        const passwordBenar =
+            await bcrypt.compare(
+                password,
+                user.password
+            );
+
+        if (!passwordBenar) {
+            return res.status(401).json({
+                success: false,
+                message: "Email atau kata sandi salah."
+            });
+        }
+
+        return res.json({
+            success: true,
+            nama: user.nama || "",
+            email: user.email,
+            kredit: Number(user.kredit || 0)
+        });
+    } catch (error) {
+        console.error(
+            "Gagal login user:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Terjadi kesalahan saat login."
         });
     }
 });
