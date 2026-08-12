@@ -330,17 +330,17 @@
     >
 </div>
 
-            <button class="tool-btn">
-                ✨ Filter
-            </button>
+           <button class="tool-btn" id="filterBtn">
+    ✨ Filter
+</button>
 
-            <button class="tool-btn">
-                T Tambah Teks
-            </button>
+           <button class="tool-btn" id="textBtn">
+    T Tambah Teks
+</button>
 
-            <button class="tool-btn">
-                ↺ Reset
-            </button>
+            <button class="tool-btn" id="resetBtn">
+    ↻ Reset
+</button>
 
         </aside>
 
@@ -373,7 +373,9 @@
                 >
 
             </div>
-
+<button class="download-btn" id="downloadBtn" type="button">
+    ⬇️ Download Foto
+</button>
 
         </section>
 
@@ -447,7 +449,35 @@ document
         rotasi = (rotasi + 90) % 360;
         updateTransformFoto();
     });
+let filterIndex = 0;
 
+const daftarFilter = [
+    "none",
+    "grayscale(100%)",
+    "sepia(70%)",
+    "contrast(120%) saturate(130%)",
+    "brightness(110%) saturate(120%)"
+];
+
+document
+    .getElementById("filterBtn")
+    .addEventListener("click", function () {
+
+        const foto = document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        filterIndex++;
+
+        if (filterIndex >= daftarFilter.length) {
+            filterIndex = 0;
+        }
+
+        foto.style.filter = daftarFilter[filterIndex];
+    });
 document
     .getElementById("balikBtn")
     .addEventListener("click", function () {
@@ -470,7 +500,7 @@ const contrastRange =
 
 const saturationRange =
     document.getElementById("saturationRange");
-
+let filterTambahan = "";
 function updateFilterFoto() {
     const foto =
         document.getElementById("fotoPreview");
@@ -482,11 +512,35 @@ function updateFilterFoto() {
     const saturation = saturationRange.value;
 
     foto.style.filter =
-        `brightness(${brightness}%)
-         contrast(${contrast}%)
-         saturate(${saturation}%)`;
+    `brightness(${brightness}%)
+     contrast(${contrast}%)
+     saturate(${saturation}%)
+     ${filterTambahan}`;
 }
 
+document
+    .getElementById("filterBtn")
+    .addEventListener("click", function () {
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        filterIndex++;
+
+        if (filterIndex >= daftarFilter.length) {
+            filterIndex = 0;
+        }
+
+        filterTambahan =
+            daftarFilter[filterIndex];
+
+        updateFilterFoto();
+    });
 brightnessRange.addEventListener(
     "input",
     updateFilterFoto
@@ -501,6 +555,94 @@ saturationRange.addEventListener(
     "input",
     updateFilterFoto
 );
+document
+    .getElementById("textBtn")
+    .addEventListener("click", function () {
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        const teks = prompt("Masukkan teks:");
+
+        if (!teks) return;
+
+        const elemenTeks =
+            document.createElement("div");
+
+        elemenTeks.textContent = teks;
+elemenTeks.className = "teks-tambahan";
+        elemenTeks.style.position = "absolute";
+        elemenTeks.style.left = "50%";
+        elemenTeks.style.bottom = "30px";
+        elemenTeks.style.transform = "translateX(-50%)";
+        elemenTeks.style.color = "white";
+        elemenTeks.style.fontSize = "32px";
+        elemenTeks.style.fontWeight = "bold";
+        elemenTeks.style.textShadow = "0 2px 6px black";
+        elemenTeks.style.zIndex = "10";
+
+        foto.parentElement.style.position = "relative";
+        foto.parentElement.appendChild(elemenTeks);
+    });
+    document
+    .getElementById("resetBtn")
+    .addEventListener("click", function () {
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        rotasi = 0;
+        balikX = 1;
+
+        brightnessRange.value = 100;
+        contrastRange.value = 100;
+        saturationRange.value = 100;
+
+        filterTambahan = "";
+
+        foto.style.transform = "";
+        foto.style.filter = "";
+
+        const teksTambahan =
+    foto.parentElement.querySelectorAll(".teks-tambahan");
+
+        teksTambahan.forEach(function (item) {
+    item.remove();
+});
+
+        updateTransformFoto();
+        updateFilterFoto();
+    });
+    document
+    .getElementById("downloadBtn")
+    .addEventListener("click", function () {
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        const link = document.createElement("a");
+        link.href = foto.src;
+        link.download = "nivexa-edit-foto.jpg";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    });ms
 </script>
 </body>
 </html>
