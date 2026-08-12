@@ -943,7 +943,21 @@ app.post(
                         "Tuliskan perubahan foto yang diinginkan."
                 });
             }
+const promptAI = `
+${prompt}
 
+Pertahankan identitas dan wajah orang pada foto asli.
+Sesuaikan pose tubuh, posisi tangan, kaki, arah tubuh,
+dan komposisi orang secara natural dengan adegan baru
+yang diminta pengguna.
+
+Jika latar atau aktivitas berubah, buat posisi tubuh
+terlihat benar-benar berada dan berinteraksi secara
+alami dengan lingkungan baru.
+
+Pertahankan ciri wajah, warna kulit, dan identitas orang.
+Hasil harus realistis, proporsional, dan natural.
+`.trim();
             console.log("");
             console.log("==============================");
             console.log("Memulai Edit Foto fal.ai");
@@ -984,7 +998,7 @@ app.post(
                 {
                     input: {
                         image_url: imageUrl,
-                        prompt: prompt,
+                        prompt: promptAI,
                         output_format: "png"
                     },
 
