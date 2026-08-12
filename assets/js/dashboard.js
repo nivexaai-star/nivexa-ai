@@ -20,14 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const userElement = document.getElementById("namaUser");
 
     if (userElement) {
-        userElement.textContent = akunUser .nama || namaUser.email;
-    }
+    userElement.textContent =
+        namaUser.nama || namaUser.email;
+}
     const sidebarNamaUser =
     document.getElementById("sidebarNamaUser");
 
 if (sidebarNamaUser) {
     sidebarNamaUser.textContent =
-        akunUser.nama || namaUser.email;
+        namaUser.nama || namaUser.email;
 }
 
     const tombolMulai = document.getElementById("mulaiBtn");
