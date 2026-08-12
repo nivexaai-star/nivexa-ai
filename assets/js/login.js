@@ -37,7 +37,7 @@ loginForm.addEventListener("submit", function (event) {
     tombolLogin.disabled = true;
     tombolLogin.textContent = "MEMPROSES...";
 
-    fetch("/login-user", {
+    fetch("https://nivexa-ai-2.onrender.com/login-user", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
