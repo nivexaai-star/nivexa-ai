@@ -276,7 +276,7 @@
 
             <h3>Alat Edit</h3>
 
-            <button class="tool-btn">
+           <button class="tool-btn" id="cropBtn">
                 ✂️ Crop / Potong
             </button>
 
@@ -448,6 +448,28 @@ document
 
         rotasi = (rotasi + 90) % 360;
         updateTransformFoto();
+    });
+    document
+    .getElementById("cropBtn")
+    .addEventListener("click", function () {
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        if (foto.style.objectFit === "cover") {
+            foto.style.objectFit = "contain";
+            foto.style.width = "100%";
+            foto.style.height = "auto";
+        } else {
+            foto.style.objectFit = "cover";
+            foto.style.width = "100%";
+            foto.style.height = "350px";
+        }
     });
 let filterIndex = 0;
 
