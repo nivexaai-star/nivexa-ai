@@ -375,7 +375,19 @@
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
 </button>
+<button class="tool-btn" id="overlayBtn">
+    🖼️ Overlay
+</button>
 
+<input
+    type="file"
+    id="overlayInput"
+    accept="image/jpeg,image/png,image/webp"
+    style="display:none;"
+>
+<button class="tool-btn" id="ratioBtn">
+    📐 Rasio
+</button>
             <button class="tool-btn" id="resetBtn">
     ↻ Reset
 </button>
@@ -421,6 +433,61 @@
 
 </main>
 <script>
+    const ratioBtn = document.getElementById("ratioBtn");
+
+const pilihanRasio = [
+    "Asli",
+    "1:1",
+    "4:5",
+    "9:16",
+    "16:9"
+];
+
+let ratioIndex = 0;
+
+ratioBtn.addEventListener("click", function () {
+
+    const foto =
+        document.getElementById("fotoPreview");
+
+    if (!foto) {
+        alert("Pilih foto terlebih dahulu.");
+        return;
+    }
+
+    ratioIndex =
+        (ratioIndex + 1) % pilihanRasio.length;
+
+    const rasio = pilihanRasio[ratioIndex];
+
+    if (rasio === "Asli") {
+        foto.style.aspectRatio = "auto";
+        foto.style.objectFit = "contain";
+    }
+
+    if (rasio === "1:1") {
+        foto.style.aspectRatio = "1 / 1";
+        foto.style.objectFit = "cover";
+    }
+
+    if (rasio === "4:5") {
+        foto.style.aspectRatio = "4 / 5";
+        foto.style.objectFit = "cover";
+    }
+
+    if (rasio === "9:16") {
+        foto.style.aspectRatio = "9 / 16";
+        foto.style.objectFit = "cover";
+    }
+
+    if (rasio === "16:9") {
+        foto.style.aspectRatio = "16 / 9";
+        foto.style.objectFit = "cover";
+    }
+
+    ratioBtn.innerHTML =
+        "📐 " + rasio;
+});
     const fotoInput = document.getElementById("fotoInput");
     const uploadBox = document.querySelector(".upload-box");
 
