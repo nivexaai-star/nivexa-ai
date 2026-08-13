@@ -931,7 +931,48 @@ ctx.drawImage(
 );
 
 ctx.restore();
+if (overlayImage) {
+    const parent =
+        foto.parentElement;
 
+    const fotoRect =
+        foto.getBoundingClientRect();
+
+    const overlayRect =
+        overlayImage.getBoundingClientRect();
+
+    const scaleX =
+        canvas.width / fotoRect.width;
+
+    const scaleY =
+        canvas.height / fotoRect.height;
+
+    const overlayX =
+        (overlayRect.left - fotoRect.left) * scaleX;
+
+    const overlayY =
+        (overlayRect.top - fotoRect.top) * scaleY;
+
+    const overlayWidth =
+        overlayRect.width * scaleX;
+
+    const overlayHeight =
+        overlayRect.height * scaleY;
+
+    ctx.save();
+
+    ctx.filter = "none";
+
+    ctx.drawImage(
+        overlayImage,
+        overlayX,
+        overlayY,
+        overlayWidth,
+        overlayHeight
+    );
+
+    ctx.restore();
+}
         const teksTambahan =
             foto.parentElement.querySelectorAll(
                 ".teks-tambahan"
