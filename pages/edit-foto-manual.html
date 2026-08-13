@@ -519,7 +519,6 @@ overlayInput.addEventListener("change", function () {
         foto.parentElement.appendChild(
             overlayImage
         );
-    };
 let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
@@ -596,6 +595,7 @@ overlayImage.addEventListener("pointerup", function (event) {
 overlayImage.addEventListener("pointercancel", function () {
     sedangGeser = false;
 });
+    };
     reader.readAsDataURL(file);
 });
     const ratioBtn = document.getElementById("ratioBtn");
