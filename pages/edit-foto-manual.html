@@ -201,13 +201,13 @@
                 grid-template-columns: 1fr;
             }
 
-            .toolbar {
+    .toolbar {
     order: 2;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
     padding: 12px;
     white-space: nowrap;
 }
@@ -281,6 +281,9 @@
     padding: 8px 0 0;
     flex-wrap: wrap;
     overflow: visible;
+    order: 3;
+width: 100%;
+grid-column: 1 / -1;
 }
 
 .ratio-options.show {
@@ -415,6 +418,13 @@
 <button class="tool-btn" id="ratioBtn">
     📐 Rasio
 </button>
+
+            <button class="tool-btn" id="resetBtn">
+    ↻ Reset
+</button>
+
+        </aside>
+
 <div id="ratioOptions" class="ratio-options">
     <button type="button" data-ratio="Asli">Asli</button>
     <button type="button" data-ratio="1:1">1:1</button>
@@ -422,14 +432,8 @@
     <button type="button" data-ratio="9:16">9:16</button>
     <button type="button" data-ratio="16:9">16:9</button>
 </div>
-            <button class="tool-btn" id="resetBtn">
-    ↻ Reset
-</button>
 
-        </aside>
-
-
-        <section class="workspace">
+<section class="workspace">
 
             <div class="upload-box">
 
