@@ -5,6 +5,20 @@ const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
+const { Pool } = require("pg");
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+pool.query("SELECT NOW()")
+    .then(() => {
+        console.log("✅ PostgreSQL NIVEXA terhubung");
+    })
+    .catch((error) => {
+        console.error("❌ PostgreSQL gagal terhubung:", error.message);
+    });
 let falClient = null;
 
 async function dapatkanFalClient() {
