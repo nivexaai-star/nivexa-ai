@@ -413,13 +413,13 @@
         JSON.stringify({
             nama: nama,
             email: email,
-            kredit: Number(data.kredit || 1),
+            kredit: Number(data.kredit ?? 0),
             loginAt: new Date().toISOString()
         })
     );
 
     tampilkanPesan(
-        "Akun berhasil dibuat. Kamu mendapat 1 kredit gratis.",
+        "Akun berhasil dibuat.",
         true
     );
 
