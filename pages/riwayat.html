@@ -289,17 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "";
 
         card.innerHTML = `
-            <img src="${gambar}" alt="Hasil NIVEXA AI">
-
-            <div class="history-info">
-
-                <p>${prompt}</p>
-
-                ${
-                    waktu
-                    ? `<small>${waktu}</small>`
-                    : ""
-                }
+    <img src="${gambar}" alt="Hasil NIVEXA AI">
 
                 <button
     type="button"
@@ -308,8 +298,6 @@ document.addEventListener("DOMContentLoaded", function () {
 >
     ⬇ Download Hasil
 </button>
-
-            </div>
         `;
 
         grid.appendChild(card);
