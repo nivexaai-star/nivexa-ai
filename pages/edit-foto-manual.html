@@ -608,32 +608,11 @@ overlayImage.addEventListener("touchmove", function (e) {
 
         lebarBaru = Math.max(50, Math.min(500, lebarBaru));
 
-        const rectSebelum =
-    overlayImage.getBoundingClientRect();
-
-const tengahX =
-    rectSebelum.left + rectSebelum.width / 2;
-
-const tengahY =
-    rectSebelum.top + rectSebelum.height / 2;
-
-overlayImage.style.width =
+        overlayImage.style.width =
     lebarBaru + "px";
 
 overlayImage.style.height =
     "auto";
-
-const rectSesudah =
-    overlayImage.getBoundingClientRect();
-
-const parentRect =
-    foto.parentElement.getBoundingClientRect();
-
-overlayImage.style.left =
-    (tengahX - parentRect.left - rectSesudah.width / 2) + "px";
-
-overlayImage.style.top =
-    (tengahY - parentRect.top - rectSesudah.height / 2) + "px";
 
         e.preventDefault();
     }
