@@ -520,7 +520,82 @@ overlayInput.addEventListener("change", function () {
             overlayImage
         );
     };
+let sedangGeser = false;
+let offsetX = 0;
+let offsetY = 0;
 
+overlayImage.addEventListener("pointerdown", function (event) {
+    sedangGeser = true;
+
+    const rect =
+        overlayImage.getBoundingClientRect();
+
+    offsetX =
+        event.clientX - rect.left;
+
+    offsetY =
+        event.clientY - rect.top;
+
+    overlayImage.setPointerCapture(
+        event.pointerId
+    );
+});
+
+overlayImage.addEventListener("pointermove", function (event) {
+    if (!sedangGeser) return;
+
+    const parentRect =
+        foto.parentElement.getBoundingClientRect();
+
+    let x =
+        event.clientX -
+        parentRect.left -
+        offsetX;
+
+    let y =
+        event.clientY -
+        parentRect.top -
+        offsetY;
+
+    const maxX =
+        parentRect.width -
+        overlayImage.offsetWidth;
+
+    const maxY =
+        parentRect.height -
+        overlayImage.offsetHeight;
+
+    x = Math.max(
+        0,
+        Math.min(x, maxX)
+    );
+
+    y = Math.max(
+        0,
+        Math.min(y, maxY)
+    );
+
+    overlayImage.style.left =
+        x + "px";
+
+    overlayImage.style.top =
+        y + "px";
+
+    overlayImage.style.transform =
+        "none";
+});
+
+overlayImage.addEventListener("pointerup", function (event) {
+    sedangGeser = false;
+
+    overlayImage.releasePointerCapture(
+        event.pointerId
+    );
+});
+
+overlayImage.addEventListener("pointercancel", function () {
+    sedangGeser = false;
+});
     reader.readAsDataURL(file);
 });
     const ratioBtn = document.getElementById("ratioBtn");
