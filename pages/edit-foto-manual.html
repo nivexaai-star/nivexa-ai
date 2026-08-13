@@ -556,13 +556,17 @@ overlayImage.addEventListener("pointermove", function (event) {
         parentRect.top -
         offsetY;
 
-    const maxX =
-        parentRect.width -
-        overlayImage.offsetWidth;
 
-    const maxY =
+    const overlayRect =
+    overlayImage.getBoundingClientRect();
+
+const maxX =
+    parentRect.width -
+    overlayRect.width;
+
+const maxY =
     parentRect.height -
-    overlayImage.offsetHeight;
+    overlayRect.height;
 
 x = Math.max(
     Math.min(0, maxX),
