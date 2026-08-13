@@ -595,6 +595,53 @@ overlayImage.addEventListener("pointerup", function (event) {
 overlayImage.addEventListener("pointercancel", function () {
     sedangGeser = false;
 });
+let jarakAwal = 0;
+let lebarAwal = 0;
+
+overlayImage.style.touchAction = "none";
+
+overlayImage.addEventListener("touchstart", function (e) {
+    if (e.touches.length === 2) {
+        sedangGeser = false;
+
+        const dx =
+            e.touches[0].clientX - e.touches[1].clientX;
+        const dy =
+            e.touches[0].clientY - e.touches[1].clientY;
+
+        jarakAwal = Math.hypot(dx, dy);
+        lebarAwal = overlayImage.offsetWidth;
+
+        e.preventDefault();
+    }
+}, { passive: false });
+
+overlayImage.addEventListener("touchmove", function (e) {
+    if (e.touches.length === 2 && jarakAwal > 0) {
+        const dx =
+            e.touches[0].clientX - e.touches[1].clientX;
+        const dy =
+            e.touches[0].clientY - e.touches[1].clientY;
+
+        const jarakSekarang = Math.hypot(dx, dy);
+        const skala = jarakSekarang / jarakAwal;
+
+        let lebarBaru = lebarAwal * skala;
+
+        lebarBaru = Math.max(50, Math.min(500, lebarBaru));
+
+        overlayImage.style.width = lebarBaru + "px";
+        overlayImage.style.height = "auto";
+
+        e.preventDefault();
+    }
+}, { passive: false });
+
+overlayImage.addEventListener("touchend", function (e) {
+    if (e.touches.length < 2) {
+        jarakAwal = 0;
+    }
+});
     };
     reader.readAsDataURL(file);
 });
