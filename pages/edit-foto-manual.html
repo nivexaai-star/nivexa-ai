@@ -204,13 +204,12 @@
             .toolbar {
     order: 2;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible;
     padding: 12px;
     white-space: nowrap;
-    border-radius: 14px;
-    scrollbar-width: thin;
 }
 
 .toolbar h3 {
@@ -276,10 +275,16 @@
 }
 .ratio-options {
     display: none;
+    width: 100%;
+    flex-basis: 100%;
     gap: 6px;
-    padding: 8px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    padding: 8px 0 0;
+    flex-wrap: wrap;
+    overflow: visible;
+}
+
+.ratio-options.show {
+    display: flex;
 }
 
 .ratio-options.show {
