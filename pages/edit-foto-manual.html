@@ -290,10 +290,6 @@ grid-column: 1 / -1;
     display: flex;
 }
 
-.ratio-options.show {
-    display: flex;
-}
-
 .ratio-options button {
     flex: 0 0 auto;
     padding: 7px 10px;
@@ -502,6 +498,13 @@ ratioOptions
 
             const rasio =
                 button.getAttribute("data-ratio");
+                ratioOptions
+    .querySelectorAll("button")
+    .forEach(function (item) {
+        item.classList.remove("active");
+    });
+
+button.classList.add("active");
 
             if (rasio === "Asli") {
                 foto.style.aspectRatio = "auto";
@@ -795,7 +798,6 @@ elemenTeks.className = "teks-tambahan";
         updateFilterFoto();
     });
     document
-    document
     .getElementById("downloadBtn")
     .addEventListener("click", function () {
 
@@ -813,36 +815,66 @@ elemenTeks.className = "teks-tambahan";
         const ctx =
             canvas.getContext("2d");
 
-        canvas.width = foto.naturalWidth;
-        canvas.height = foto.naturalHeight;
+       const rasioAktif =
+    document.querySelector("#ratioOptions button.active")
+        ?.getAttribute("data-ratio") || "Asli";
 
-        ctx.filter = foto.style.filter || "none";
+if (rasioAktif === "1:1") {
+    canvas.width = 1080;
+    canvas.height = 1080;
+} else if (rasioAktif === "4:5") {
+    canvas.width = 1080;
+    canvas.height = 1350;
+} else if (rasioAktif === "9:16") {
+    canvas.width = 1080;
+    canvas.height = 1920;
+} else if (rasioAktif === "16:9") {
+    canvas.width = 1920;
+    canvas.height = 1080;
+} else {
+    canvas.width = foto.naturalWidth;
+    canvas.height = foto.naturalHeight;
+}
 
-        ctx.save();
+ctx.filter =
+    foto.style.filter || "none";
 
-        ctx.translate(
-            canvas.width / 2,
-            canvas.height / 2
-        );
+const skalaFoto = Math.max(
+    canvas.width / foto.naturalWidth,
+    canvas.height / foto.naturalHeight
+);
 
-        ctx.rotate(
-            rotasi * Math.PI / 180
-        );
+const lebarFoto =
+    foto.naturalWidth * skalaFoto;
 
-        ctx.scale(
-            balikX,
-            1
-        );
+const tinggiFoto =
+    foto.naturalHeight * skalaFoto;
 
-        ctx.drawImage(
-            foto,
-            -canvas.width / 2,
-            -canvas.height / 2,
-            canvas.width,
-            canvas.height
-        );
+ctx.save();
 
-        ctx.restore();
+ctx.translate(
+    canvas.width / 2,
+    canvas.height / 2
+);
+
+ctx.rotate(
+    rotasi * Math.PI / 180
+);
+
+ctx.scale(
+    balikX,
+    1
+);
+
+ctx.drawImage(
+    foto,
+    -lebarFoto / 2,
+    -tinggiFoto / 2,
+    lebarFoto,
+    tinggiFoto
+);
+
+ctx.restore();
 
         const teksTambahan =
             foto.parentElement.querySelectorAll(
