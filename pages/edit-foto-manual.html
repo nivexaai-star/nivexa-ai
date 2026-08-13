@@ -202,17 +202,51 @@
             }
 
             .toolbar {
-                order: 2;
-            }
+    order: 2;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px;
+    white-space: nowrap;
+    border-radius: 14px;
+    scrollbar-width: thin;
+}
+
+.toolbar h3 {
+    display: none;
+}
+
+.toolbar .tool-btn,
+.toolbar .control-group {
+    flex: 0 0 auto;
+    min-width: 120px;
+    margin-bottom: 0;
+}
+
+.toolbar .control-group {
+    width: 180px;
+}
+
+.toolbar .control-group input[type="range"] {
+    width: 150px;
+}
 
             .workspace {
                 order: 1;
                 min-height: auto;
+                padding: 14px;
             }
 
             .upload-box {
-                min-height: 360px;
+                min-height: 280px;
+                padding: 15px;
             }
+            #fotoPreview {
+    max-width: 100% !important;
+    max-height: 300px !important;
+    object-fit: contain;
+}
 
             .title h1 {
                 font-size: 24px;
