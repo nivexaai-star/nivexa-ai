@@ -467,6 +467,62 @@ grid-column: 1 / -1;
 
 </main>
 <script>
+    const overlayBtn =
+    document.getElementById("overlayBtn");
+
+const overlayInput =
+    document.getElementById("overlayInput");
+
+let overlayImage = null;
+
+overlayBtn.addEventListener("click", function () {
+    overlayInput.click();
+});
+
+overlayInput.addEventListener("change", function () {
+    const file = overlayInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const foto =
+        document.getElementById("fotoPreview");
+
+    if (!foto) {
+        alert("Pilih foto utama terlebih dahulu.");
+        overlayInput.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        overlayImage = document.createElement("img");
+
+        overlayImage.src = event.target.result;
+        overlayImage.className = "overlay-image";
+
+        overlayImage.style.position = "absolute";
+        overlayImage.style.width = "120px";
+        overlayImage.style.height = "auto";
+        overlayImage.style.left = "50%";
+        overlayImage.style.top = "50%";
+        overlayImage.style.transform =
+            "translate(-50%, -50%)";
+        overlayImage.style.zIndex = "20";
+        overlayImage.style.cursor = "move";
+
+        foto.parentElement.style.position =
+            "relative";
+
+        foto.parentElement.appendChild(
+            overlayImage
+        );
+    };
+
+    reader.readAsDataURL(file);
+});
     const ratioBtn = document.getElementById("ratioBtn");
 const ratioOptions = document.getElementById("ratioOptions");
 const pilihanRasio = [
