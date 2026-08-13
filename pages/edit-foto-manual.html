@@ -522,7 +522,7 @@ overlayInput.addEventListener("change", function () {
 let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
-
+overlayImage.style.touchAction = "none";
 overlayImage.addEventListener("pointerdown", function (event) {
     sedangGeser = true;
 
