@@ -561,18 +561,18 @@ overlayImage.addEventListener("pointermove", function (event) {
         overlayImage.offsetWidth;
 
     const maxY =
-        parentRect.height -
-        overlayImage.offsetHeight;
+    parentRect.height -
+    overlayImage.offsetHeight;
 
-    x = Math.max(
-        0,
-        Math.min(x, maxX)
-    );
+x = Math.max(
+    Math.min(0, maxX),
+    Math.min(x, Math.max(0, maxX))
+);
 
-    y = Math.max(
-        0,
-        Math.min(y, maxY)
-    );
+y = Math.max(
+    Math.min(0, maxY),
+    Math.min(y, Math.max(0, maxY))
+);
 
     overlayImage.style.left =
         x + "px";
