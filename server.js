@@ -12,6 +12,25 @@ const pool = new Pool({
         rejectUnauthorized: false
     }
 });
+pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        nama TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        kredit INTEGER NOT NULL DEFAULT 1,
+        dibuat_pada TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+`)
+.then(() => {
+    console.log("✅ Tabel users PostgreSQL siap");
+})
+.catch((error) => {
+    console.error(
+        "❌ Gagal menyiapkan tabel users:",
+        error.message
+    );
+});
 pool.query("SELECT NOW()")
     .then(() => {
         console.log("✅ PostgreSQL NIVEXA terhubung");
@@ -304,21 +323,15 @@ app.post("/register-user", async function (req, res) {
         )
             .trim()
             .toLowerCase();
-const nama = String(
-    req.body.nama || ""
-).trim();
-const password = String(
-    req.body.password || ""
-).trim();
 
-if (password.length < 6) {
-    return res.status(400).json({
-        success: false,
-        message: "Password minimal 6 karakter."
-    });
-}
+        const nama = String(
+            req.body.nama || ""
+        ).trim();
 
-const passwordHash = await bcrypt.hash(password, 10);
+        const password = String(
+            req.body.password || ""
+        ).trim();
+
         if (!email) {
             return res.status(400).json({
                 success: false,
@@ -326,42 +339,71 @@ const passwordHash = await bcrypt.hash(password, 10);
             });
         }
 
-        const dataUser = bacaDataUser();
+        if (password.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password minimal 6 karakter."
+            });
+        }
 
-        const userIndex = dataUser.findIndex(
-            function (item) {
-                return String(
-                    item.email || ""
-                )
-                    .trim()
-                    .toLowerCase() === email;
-            }
+        const userLama = await pool.query(
+            `
+            SELECT email, kredit
+            FROM users
+            WHERE LOWER(email) = $1
+            LIMIT 1
+            `,
+            [email]
         );
 
-        if (userIndex !== -1) {
+        if (userLama.rows.length > 0) {
             return res.json({
                 success: true,
-                email: email,
+                email: userLama.rows[0].email,
                 kredit: Number(
-                    dataUser[userIndex].kredit || 0
+                    userLama.rows[0].kredit || 0
                 ),
                 sudahAda: true
             });
         }
+const dataUserLama = bacaDataUser();
 
-        dataUser.push({
-    nama: nama,
-    email: email,
-    password: passwordHash,
-    kredit: 1
+const userJsonLama = dataUserLama.find(function (item) {
+    return String(
+        item.email || ""
+    )
+        .trim()
+        .toLowerCase() === email;
 });
 
-        simpanDataUser(dataUser);
+const kreditAwal = userJsonLama
+    ? Number(userJsonLama.kredit || 1)
+    : 1;
+        const passwordHash =
+            await bcrypt.hash(password, 10);
+
+        const userBaru = await pool.query(
+            `
+            INSERT INTO users
+                (nama, email, password, kredit)
+            VALUES
+                ($1, $2, $3, $4)
+            RETURNING email, kredit
+            `,
+            [
+                nama,
+                email,
+                passwordHash,
+                kreditAwal
+            ]
+        );
 
         return res.json({
             success: true,
-            email: email,
-            kredit: 1,
+            email: userBaru.rows[0].email,
+            kredit: Number(
+                userBaru.rows[0].kredit
+            ),
             sudahAda: false
         });
 
@@ -396,22 +438,28 @@ app.post("/login-user", async function (req, res) {
             });
         }
 
-        const dataUser = bacaDataUser();
+        const hasil = await pool.query(
+            `
+            SELECT
+                nama,
+                email,
+                password,
+                kredit
+            FROM users
+            WHERE LOWER(email) = $1
+            LIMIT 1
+            `,
+            [email]
+        );
 
-        const user = dataUser.find(function (item) {
-            return String(
-                item.email || ""
-            )
-                .trim()
-                .toLowerCase() === email;
-        });
-
-        if (!user) {
+        if (hasil.rows.length === 0) {
             return res.status(401).json({
                 success: false,
                 message: "Akun belum terdaftar."
             });
         }
+
+        const user = hasil.rows[0];
 
         if (!user.password) {
             return res.status(401).json({
@@ -439,6 +487,7 @@ app.post("/login-user", async function (req, res) {
             email: user.email,
             kredit: Number(user.kredit || 0)
         });
+
     } catch (error) {
         console.error(
             "Gagal login user:",
@@ -460,7 +509,7 @@ app.get("/status", function (req, res) {
         space: HF_SPACE
     });
 });
-app.get("/saldo-kredit", function (req, res) {
+app.get("/saldo-kredit", async function (req, res) {
     try {
         const email = String(
             req.query.email || ""
@@ -473,21 +522,32 @@ app.get("/saldo-kredit", function (req, res) {
             });
         }
 
-        const dataUser = bacaDataUser();
+        const hasil = await pool.query(
+            `
+            SELECT email, kredit
+            FROM users
+            WHERE LOWER(email) = $1
+            LIMIT 1
+            `,
+            [email]
+        );
 
-        const user = dataUser.find(function (item) {
-            return String(item.email || "")
-                .trim()
-                .toLowerCase() === email;
-        });
+        if (hasil.rows.length === 0) {
+            return res.json({
+                success: true,
+                email: email,
+                kredit: 0
+            });
+        }
 
         return res.json({
             success: true,
-            email: email,
-            kredit: user
-                ? Number(user.kredit || 0)
-                : 0
+            email: hasil.rows[0].email,
+            kredit: Number(
+                hasil.rows[0].kredit || 0
+            )
         });
+
     } catch (error) {
         console.error(
             "Gagal membaca saldo kredit:",
@@ -496,28 +556,11 @@ app.get("/saldo-kredit", function (req, res) {
 
         return res.status(500).json({
             success: false,
-            message:
-                "Gagal membaca saldo kredit."
+            message: "Gagal membaca saldo kredit."
         });
     }
 });
-app.get("/debug-data-user", function (req, res) {
-    try {
-        const dataUser = bacaDataUser();
-
-        return res.json({
-            success: true,
-            jumlahUser: dataUser.length,
-            dataUser: dataUser
-        });
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-});
-app.post("/kurangi-kredit", function (req, res) {
+app.post("/kurangi-kredit", async function (req, res) {
     try {
         const email = String(
             req.body.email || ""
@@ -534,43 +577,57 @@ app.post("/kurangi-kredit", function (req, res) {
             });
         }
 
-        const dataUser = bacaDataUser();
-
-        const userIndex = dataUser.findIndex(
-            function (item) {
-                return String(
-                    item.email || ""
-                ).trim().toLowerCase() === email;
-            }
-        );
-
-        if (userIndex === -1) {
-            return res.status(404).json({
+        if (
+            !Number.isInteger(jumlah) ||
+            jumlah <= 0
+        ) {
+            return res.status(400).json({
                 success: false,
-                message: "Data pengguna tidak ditemukan."
+                message: "Jumlah kredit tidak valid."
             });
         }
 
-        const kreditSekarang = Number(
-            dataUser[userIndex].kredit || 0
+        const hasil = await pool.query(
+            `
+            UPDATE users
+            SET kredit = kredit - $2
+            WHERE LOWER(email) = $1
+              AND kredit >= $2
+            RETURNING email, kredit
+            `,
+            [email, jumlah]
         );
 
-        if (kreditSekarang < jumlah) {
+        if (hasil.rows.length === 0) {
+            const cekUser = await pool.query(
+                `
+                SELECT kredit
+                FROM users
+                WHERE LOWER(email) = $1
+                LIMIT 1
+                `,
+                [email]
+            );
+
+            if (cekUser.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Data pengguna tidak ditemukan."
+                });
+            }
+
             return res.status(400).json({
                 success: false,
                 message: "Kredit tidak mencukupi."
             });
         }
 
-        dataUser[userIndex].kredit =
-            kreditSekarang - jumlah;
-
-        simpanDataUser(dataUser);
-
         return res.json({
             success: true,
-            email: email,
-            kredit: dataUser[userIndex].kredit
+            email: hasil.rows[0].email,
+            kredit: Number(
+                hasil.rows[0].kredit
+            )
         });
 
     } catch (error) {
@@ -728,9 +785,11 @@ app.get(
 );
 app.post(
     "/setujui-pembayaran/:id",
-    function (req, res) {
+    async function (req, res) {
         try {
-            const id = String(req.params.id || "").trim();
+            const id = String(
+                req.params.id || ""
+            ).trim();
 
             const pembayaran = JSON.parse(
                 fs.readFileSync(
@@ -752,49 +811,75 @@ app.post(
                         "Transaksi tidak ditemukan."
                 });
             }
-if (pembayaran[index].status === "disetujui") {
-    return res.status(400).json({
-        success: false,
-        message:
-            "Pembayaran ini sudah pernah disetujui."
-    });
-}
+
+            if (
+                pembayaran[index].status ===
+                "disetujui"
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Pembayaran ini sudah pernah disetujui."
+                });
+            }
+
+            const emailPembeli = String(
+                pembayaran[index].email || ""
+            )
+                .trim()
+                .toLowerCase();
+
+            const kreditDibeli = Number(
+                pembayaran[index].kredit || 0
+            );
+
+            if (!emailPembeli) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Email pembeli tidak valid."
+                });
+            }
+
+            if (
+                !Number.isInteger(kreditDibeli) ||
+                kreditDibeli <= 0
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Jumlah kredit tidak valid."
+                });
+            }
+
+            const hasilUser =
+                await pool.query(
+                    `
+                    UPDATE users
+                    SET kredit = kredit + $2
+                    WHERE LOWER(email) = $1
+                    RETURNING email, kredit
+                    `,
+                    [
+                        emailPembeli,
+                        kreditDibeli
+                    ]
+                );
+
+            if (hasilUser.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message:
+                        "Akun pembeli belum terdaftar di PostgreSQL."
+                });
+            }
+
             pembayaran[index].status =
                 "disetujui";
 
             pembayaran[index].disetujuiPada =
                 new Date().toISOString();
-const dataUser = bacaDataUser();
 
-const emailPembeli = String(
-    pembayaran[index].email || ""
-).trim().toLowerCase();
-
-const kreditDibeli = Number(
-    pembayaran[index].kredit || 0
-);
-
-let userIndex = dataUser.findIndex(function (user) {
-    return String(user.email || "")
-        .trim()
-        .toLowerCase() === emailPembeli;
-});
-
-if (userIndex === -1) {
-    dataUser.push({
-        email: emailPembeli,
-        kredit: kreditDibeli
-    });
-} else {
-    const kreditLama = Number(
-        dataUser[userIndex].kredit || 0
-    );
-
-    dataUser[userIndex].kredit =
-        kreditLama + kreditDibeli;
-}
-
-simpanDataUser(dataUser);
             fs.writeFileSync(
                 fileDataPembayaran,
                 JSON.stringify(
@@ -809,8 +894,12 @@ simpanDataUser(dataUser);
                 message:
                     "Pembayaran berhasil disetujui.",
                 pembayaran:
-                    pembayaran[index]
+                    pembayaran[index],
+                kreditSekarang: Number(
+                    hasilUser.rows[0].kredit
+                )
             });
+
         } catch (error) {
             console.error(
                 "Gagal menyetujui pembayaran:",
@@ -828,104 +917,126 @@ simpanDataUser(dataUser);
 // ========================================
 // ADMIN - TARIK / KOREKSI KREDIT PENGGUNA
 // ========================================
-app.post("/admin/tarik-kredit", function (req, res) {
-    try {
-        const email = String(
-            req.body.email || ""
-        ).trim().toLowerCase();
+app.post(
+    "/admin/tarik-kredit",
+    async function (req, res) {
+        try {
+            const email = String(
+                req.body.email || ""
+            )
+                .trim()
+                .toLowerCase();
 
-        const jumlah = Number(
-            req.body.jumlah
-        );
+            const jumlah = Number(
+                req.body.jumlah
+            );
 
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: "Email pengguna wajib diisi."
-            });
-        }
-
-        if (
-            !Number.isFinite(jumlah) ||
-            jumlah <= 0 ||
-            !Number.isInteger(jumlah)
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "Jumlah kredit tidak valid."
-            });
-        }
-
-        const dataUser = bacaDataUser();
-
-        const userIndex = dataUser.findIndex(
-            function (user) {
-                return (
-                    String(user.email || "")
-                        .trim()
-                        .toLowerCase() === email
-                );
+            if (!email) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Email pengguna wajib diisi."
+                });
             }
-        );
 
-        if (userIndex === -1) {
-            return res.status(404).json({
-                success: false,
-                message: "Pengguna tidak ditemukan."
-            });
-        }
+            if (
+                !Number.isFinite(jumlah) ||
+                jumlah <= 0 ||
+                !Number.isInteger(jumlah)
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Jumlah kredit tidak valid."
+                });
+            }
 
-        const kreditSekarang = Number(
-            dataUser[userIndex].kredit || 0
-        );
+            const hasil =
+                await pool.query(
+                    `
+                    UPDATE users
+                    SET kredit = kredit - $2
+                    WHERE LOWER(email) = $1
+                      AND kredit >= $2
+                    RETURNING email, kredit
+                    `,
+                    [
+                        email,
+                        jumlah
+                    ]
+                );
 
-        if (jumlah > kreditSekarang) {
-            return res.status(400).json({
-                success: false,
+            if (hasil.rows.length === 0) {
+                const cekUser =
+                    await pool.query(
+                        `
+                        SELECT kredit
+                        FROM users
+                        WHERE LOWER(email) = $1
+                        LIMIT 1
+                        `,
+                        [email]
+                    );
+
+                if (
+                    cekUser.rows.length === 0
+                ) {
+                    return res
+                        .status(404)
+                        .json({
+                            success: false,
+                            message:
+                                "Pengguna tidak ditemukan."
+                        });
+                }
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "Kredit yang ditarik melebihi saldo pengguna."
+                    });
+            }
+
+            const kreditBaru = Number(
+                hasil.rows[0].kredit
+            );
+
+            console.log(
+                "ADMIN TARIK KREDIT:",
+                email,
+                jumlah,
+                "Saldo:",
+                kreditBaru
+            );
+
+            return res.json({
+                success: true,
                 message:
-                    "Kredit yang ditarik melebihi saldo pengguna."
+                    "Kredit berhasil ditarik.",
+                email: email,
+                kreditDitarik: jumlah,
+                kreditSekarang:
+                    kreditBaru
             });
+
+        } catch (error) {
+            console.error(
+                "Gagal menarik kredit:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message:
+                        "Gagal menarik kredit pengguna."
+                });
         }
-
-        const kreditBaru =
-            kreditSekarang - jumlah;
-
-        dataUser[userIndex].kredit =
-            kreditBaru;
-
-        simpanDataUser(dataUser);
-
-        console.log(
-            "ADMIN TARIK KREDIT:",
-            email,
-            jumlah,
-            "Saldo:",
-            kreditBaru
-        );
-
-        return res.json({
-            success: true,
-            message:
-                "Kredit berhasil ditarik.",
-            email: email,
-            kreditDitarik: jumlah,
-            kreditSebelumnya: kreditSekarang,
-            kreditSekarang: kreditBaru
-        });
-
-    } catch (error) {
-        console.error(
-            "Gagal menarik kredit:",
-            error
-        );
-
-        return res.status(500).json({
-            success: false,
-            message:
-                "Gagal menarik kredit pengguna."
-        });
     }
-});
+);
 app.post(
     "/edit-photo",
     upload.single("photo"),
