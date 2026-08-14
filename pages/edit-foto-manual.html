@@ -226,7 +226,35 @@
     margin-bottom: 0;
     font-size: 12px;
 }
+.effect-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    width: 120px;
+}
+.effect-wrapper .tool-btn {
+    width: 100%;
+    margin-bottom: 0;
+}
+#effectControl {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px !important;
+    min-width: 120px !important;
+    padding: 0 8px 6px !important;
+}
 
+#effectRange {
+    width: 100px !important;
+}
+
+#effectValue {
+    text-align: center;
+    font-size: 12px;
+}
 .toolbar .control-group {
     width: 125px;
 }
@@ -391,18 +419,23 @@ grid-column: 1 / -1;
            <button class="tool-btn" id="filterBtn">
     ✨ Filter
 </button>
-<button class="tool-btn" id="effectBtn">
-    ✨ Efek
-</button>
-<div id="effectControl" style="display: none;">
-    <input
-        type="range"
-        id="effectRange"
-        min="0"
-        max="100"
-        value="0"
-    >
-    <span id="effectValue">0</span>
+<div class="effect-wrapper">
+
+    <div id="effectControl" style="display: none;">
+        <input
+            type="range"
+            id="effectRange"
+            min="0"
+            max="100"
+            value="0"
+        >
+        <span id="effectValue">0</span>
+    </div>
+
+    <button class="tool-btn" id="effectBtn">
+        ✨ Efek
+    </button>
+
 </div>
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
@@ -904,9 +937,9 @@ effectRange.addEventListener("input", function () {
     effectValue.textContent = nilai;
 
     filterTambahan =
-        `brightness(${100 + nilai * 0.15}%)
-         contrast(${100 + nilai * 0.12}%)
-         saturate(${100 + nilai * 0.10}%)`;
+        `brightness(${100 + nilai * 0.30}%)
+         contrast(${100 + nilai * 0.25}%)
+         saturate(${100 + nilai * 0.20}%)`;
 
     updateFilterFoto();
 });
