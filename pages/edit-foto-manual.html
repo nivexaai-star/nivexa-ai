@@ -394,6 +394,16 @@ grid-column: 1 / -1;
 <button class="tool-btn" id="effectBtn">
     ✨ Efek
 </button>
+<div id="effectControl" style="display: none;">
+    <input
+        type="range"
+        id="effectRange"
+        min="0"
+        max="100"
+        value="0"
+    >
+    <span id="effectValue">0</span>
+</div>
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
 </button>
@@ -875,23 +885,31 @@ saturationRange.addEventListener(
     "input",
     updateFilterFoto
 );
-document
-    .getElementById("effectBtn")
-    .addEventListener("click", function () {
+const effectBtn = document.getElementById("effectBtn");
+const effectControl = document.getElementById("effectControl");
+const effectRange = document.getElementById("effectRange");
+const effectValue = document.getElementById("effectValue");
 
-        const foto =
-            document.getElementById("fotoPreview");
+effectBtn.addEventListener("click", function () {
+    if (effectControl.style.display === "none") {
+        effectControl.style.display = "flex";
+    } else {
+        effectControl.style.display = "none";
+    }
+});
 
-        if (!foto || !foto.src) {
-            alert("Pilih foto terlebih dahulu.");
-            return;
-        }
+effectRange.addEventListener("input", function () {
+    const nilai = Number(effectRange.value);
 
-        filterTambahan =
-    "brightness(115%) contrast(112%) saturate(110%)";
+    effectValue.textContent = nilai;
 
-        updateFilterFoto();
-    });
+    filterTambahan =
+        `brightness(${100 + nilai * 0.15}%)
+         contrast(${100 + nilai * 0.12}%)
+         saturate(${100 + nilai * 0.10}%)`;
+
+    updateFilterFoto();
+});
 document
     .getElementById("textBtn")
     .addEventListener("click", function () {
