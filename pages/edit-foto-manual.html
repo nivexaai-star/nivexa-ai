@@ -391,7 +391,9 @@ grid-column: 1 / -1;
            <button class="tool-btn" id="filterBtn">
     ✨ Filter
 </button>
-
+<button class="tool-btn" id="effectBtn">
+    ✨ Efek
+</button>
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
 </button>
@@ -858,6 +860,7 @@ document
 
         updateFilterFoto();
     });
+
 brightnessRange.addEventListener(
     "input",
     updateFilterFoto
@@ -872,6 +875,11 @@ saturationRange.addEventListener(
     "input",
     updateFilterFoto
 );
+document
+    .getElementById("effectBtn")
+    .addEventListener("click", function () {
+        alert("Menu Efek berhasil dibuka");
+    });
 document
     .getElementById("textBtn")
     .addEventListener("click", function () {
