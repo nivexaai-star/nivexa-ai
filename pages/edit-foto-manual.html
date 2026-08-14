@@ -878,7 +878,19 @@ saturationRange.addEventListener(
 document
     .getElementById("effectBtn")
     .addEventListener("click", function () {
-        alert("Menu Efek berhasil dibuka");
+
+        const foto =
+            document.getElementById("fotoPreview");
+
+        if (!foto || !foto.src) {
+            alert("Pilih foto terlebih dahulu.");
+            return;
+        }
+
+        filterTambahan =
+            "brightness(108%) contrast(105%) saturate(105%)";
+
+        updateFilterFoto();
     });
 document
     .getElementById("textBtn")
