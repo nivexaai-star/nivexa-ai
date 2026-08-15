@@ -541,7 +541,8 @@ let overlayImage = null;
 
 function simpanUndo() {
     undoState = {
-        overlayAda: !!overlayImage
+        overlayImage: overlayImage,
+        parent: overlayImage ? overlayImage.parentElement : null
     };
 
     redoState = null;
@@ -554,10 +555,10 @@ undoBtn.addEventListener("click", function () {
     parent: overlayImage ? overlayImage.parentElement : null
 };
 
-    if (!undoState.overlayAda && overlayImage) {
-        overlayImage.remove();
-        overlayImage = null;
-    }
+    if (overlayImage) {
+    overlayImage.remove();
+    overlayImage = null;
+}
 });
 
 redoBtn.addEventListener("click", function () {
