@@ -603,6 +603,7 @@ overlayInput.addEventListener("change", function () {
 
     reader.onload = function (event) {
         overlayImage = document.createElement("img");
+        const currentOverlay = overlayImage;
 
         overlayImage.src = event.target.result;
         overlayImage.className = "overlay-image";
@@ -628,11 +629,11 @@ let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
 overlayImage.style.touchAction = "none";
-overlayImage.addEventListener("pointerdown", function (event) {
+currentOverlay.addEventListener("pointerdown", function (event) {
     sedangGeser = true;
 
     const rect =
-        overlayImage.getBoundingClientRect();
+        currentOverlay.getBoundingClientRect();
 
     offsetX =
         event.clientX - rect.left;
@@ -640,12 +641,12 @@ overlayImage.addEventListener("pointerdown", function (event) {
     offsetY =
         event.clientY - rect.top;
 
-    overlayImage.setPointerCapture(
+    currentOverlay.setPointerCapture(
         event.pointerId
     );
 });
 
-overlayImage.addEventListener("pointermove", function (event) {
+currentOverlay.addEventListener("pointermove", function (event) {
     if (!sedangGeser) return;
 
     const parentRect =
@@ -661,9 +662,9 @@ overlayImage.addEventListener("pointermove", function (event) {
         parentRect.top -
         offsetY;
 
-    overlayImage.style.left =
+     currentOverlay.style.left =
         x + "px";
-overlayImage.style.top =
+currentOverlay.style.top =
     y + "px";
 });
 
@@ -675,15 +676,15 @@ overlayImage.addEventListener("pointerup", function (event) {
     );
 });
 
-overlayImage.addEventListener("pointercancel", function () {
+currentOverlay.addEventListener("pointerup", function (event) {
     sedangGeser = false;
 });
 let jarakAwal = 0;
 let lebarAwal = 0;
 
-overlayImage.style.touchAction = "none";
+currentOverlay.style.touchAction = "none";
 
-overlayImage.addEventListener("touchstart", function (e) {
+currentOverlay.addEventListener("touchstart", function (e) {
     if (e.touches.length === 2) {
         sedangGeser = false;
 
@@ -693,13 +694,13 @@ overlayImage.addEventListener("touchstart", function (e) {
             e.touches[0].clientY - e.touches[1].clientY;
 
         jarakAwal = Math.hypot(dx, dy);
-        lebarAwal = overlayImage.offsetWidth;
+        lebarAwal = currentOverlay.offsetWidth;
 
         e.preventDefault();
     }
 }, { passive: false });
 
-overlayImage.addEventListener("touchmove", function (e) {
+currentOverlay.addEventListener("touchmove", function (e) {
     if (e.touches.length === 2 && jarakAwal > 0) {
         const dx =
             e.touches[0].clientX - e.touches[1].clientX;
@@ -713,10 +714,10 @@ overlayImage.addEventListener("touchmove", function (e) {
 
         lebarBaru = Math.max(50, Math.min(500, lebarBaru));
 
-        overlayImage.style.width =
+        currentOverlay.style.width =
     lebarBaru + "px";
 
-overlayImage.style.height =
+currentOverlay.style.height =
     "auto";
 
         e.preventDefault();
