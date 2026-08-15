@@ -1244,7 +1244,20 @@ addTextBtn.addEventListener("click", function () {
     const teks = textInput.value.trim();
     const warna = textColor.value;
 
-    if (!teks || !foto) return;
+    if (!foto) return;
+
+if (!teks && elemenTeksAktif) {
+    elemenTeksAktif.remove();
+    elemenTeksAktif = null;
+
+    textPanel.style.display = "none";
+    document.querySelector(".toolbar").style.display = "flex";
+    textInput.blur();
+
+    return;
+}
+
+if (!teks) return;
 
     if (elemenTeksAktif) {
     elemenTeksAktif.textContent = teks;
