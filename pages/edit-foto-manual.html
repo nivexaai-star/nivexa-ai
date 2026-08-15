@@ -1215,10 +1215,17 @@ document.querySelector(".toolbar").style.display = "none";
 textInput.value = "";
 textColor.value = "#ffffff";
 
-return;
+});
 
-        const elemenTeks =
-            document.createElement("div");
+addTextBtn.addEventListener("click", function () {
+    const foto = document.getElementById("fotoPreview");
+
+    const teks = textInput.value.trim();
+    const warna = textColor.value;
+
+    if (!teks || !foto) return;
+
+    const elemenTeks = document.createElement("div");
 
         elemenTeks.textContent = teks;
 elemenTeks.className = "teks-tambahan";
@@ -1282,6 +1289,9 @@ elemenTeks.addEventListener("pointerup", function () {
 elemenTeks.addEventListener("pointercancel", function () {
     sedangGeser = false;
 });
+textPanel.style.display = "none";
+document.querySelector(".toolbar").style.display = "flex";
+textInput.blur();
     });
     document
     .getElementById("resetBtn")
