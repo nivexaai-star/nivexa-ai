@@ -315,7 +315,7 @@ margin-bottom: -20px;
                 order: 1;
                 min-height: auto;
                 padding: 0 !important;
-                margin-top: -25px;
+                margin-top: 0;
             }
 
            .upload-box {
@@ -1209,16 +1209,7 @@ document
 
         textPanel.style.display = "block";
         
-        const posisiHalaman = window.scrollY;
-
-document.body.dataset.posisiScroll = posisiHalaman;
-
-document.body.style.position = "fixed";
-document.body.style.top = "-" + posisiHalaman + "px";
-document.body.style.left = "0";
-document.body.style.right = "0";
-document.body.style.width = "100%";
-
+        
 document.querySelector(".toolbar").style.display = "none";
 
 textInput.value = "";
