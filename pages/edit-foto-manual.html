@@ -1282,6 +1282,8 @@ let sedangGeser = false;
 let sudahBergerak = false;
 let offsetX = 0;
 let offsetY = 0;
+let mulaiX = 0;
+let mulaiY = 0;
 
 elemenTeks.addEventListener("pointerdown", function (e) {
     e.preventDefault();
@@ -1289,6 +1291,8 @@ elemenTeks.addEventListener("pointerdown", function (e) {
 
     sedangGeser = true;
     sudahBergerak = false;
+    mulaiX = e.clientX;
+    mulaiY = e.clientY;
 
     const rect = elemenTeks.getBoundingClientRect();
 
@@ -1303,7 +1307,14 @@ elemenTeks.addEventListener("pointerdown", function (e) {
 
 elemenTeks.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
-    sudahBergerak = true;
+
+const jarakX = Math.abs(e.clientX - mulaiX);
+const jarakY = Math.abs(e.clientY - mulaiY);
+
+if (jarakX < 8 && jarakY < 8) return;
+
+sudahBergerak = true;
+
     const parentRect =
         foto.parentElement.getBoundingClientRect();
 
@@ -1341,7 +1352,10 @@ elemenTeks.addEventListener("pointerup", function (e) {
         }, 100);
     }
 });
-
+elemenTeks.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+});
 elemenTeks.addEventListener("pointercancel", function () {
     sedangGeser = false;
 });
