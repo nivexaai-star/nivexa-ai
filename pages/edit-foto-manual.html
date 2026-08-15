@@ -1375,7 +1375,13 @@ elemenTeks.addEventListener("pointercancel", function () {
 textPanel.style.display = "none";
 document.querySelector(".toolbar").style.display = "flex";
 textInput.blur();
-    });
+});
+textInput.addEventListener("input", function () {
+    if (!elemenTeksAktif) return;
+
+    elemenTeksAktif.textContent = textInput.value;
+});
+
     document
     .getElementById("resetBtn")
     .addEventListener("click", function () {
