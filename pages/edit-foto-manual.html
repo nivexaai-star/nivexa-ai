@@ -1285,6 +1285,7 @@ let offsetY = 0;
 
 elemenTeks.addEventListener("pointerdown", function (e) {
     e.preventDefault();
+    e.stopPropagation();
 
     sedangGeser = true;
     sudahBergerak = false;
@@ -1320,7 +1321,10 @@ elemenTeks.addEventListener("pointermove", function (e) {
     elemenTeks.style.top = y + "px";
 });
 
-elemenTeks.addEventListener("pointerup", function () {
+elemenTeks.addEventListener("pointerup", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     sedangGeser = false;
 
     if (!sudahBergerak) {
