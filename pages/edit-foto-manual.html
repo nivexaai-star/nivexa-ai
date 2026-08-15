@@ -1056,6 +1056,9 @@ document
         }
 
         const teks = prompt("Masukkan teks:");
+        const warna = prompt(
+    "Masukkan warna teks:\nContoh: white, red, yellow, blue, black"
+) || "white";
 
         if (!teks) return;
 
@@ -1068,7 +1071,7 @@ elemenTeks.className = "teks-tambahan";
         elemenTeks.style.left = "50%";
         elemenTeks.style.bottom = "30px";
         elemenTeks.style.transform = "translateX(-50%)";
-        elemenTeks.style.color = "white";
+        elemenTeks.style.color = warna;
         elemenTeks.style.fontSize = "32px";
         elemenTeks.style.fontWeight = "bold";
         elemenTeks.style.textShadow = "0 2px 6px black";
