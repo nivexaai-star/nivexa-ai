@@ -495,8 +495,9 @@ grid-column: 1 / -1;
 
 #cancelTextBtn {
     position: absolute;
-    left: 15px;
-    bottom: 15px;
+    left: auto;
+    right: 15px;
+    bottom: 70px;
     z-index: 30;
 }
 
@@ -725,6 +726,7 @@ const overlayInput =
     document.getElementById("overlayInput");
 
 let overlayImage = null;
+let elemenTeksAktif = null;
 
 function simpanUndo() {
     if (!overlayImage) return;
@@ -1238,6 +1240,19 @@ addTextBtn.addEventListener("click", function () {
 
     if (!teks || !foto) return;
 
+    if (elemenTeksAktif) {
+    elemenTeksAktif.textContent = teks;
+    elemenTeksAktif.style.color = warna;
+
+    elemenTeksAktif = null;
+
+    textPanel.style.display = "none";
+    document.querySelector(".toolbar").style.display = "flex";
+    textInput.blur();
+
+    return;
+}
+
     const elemenTeks = document.createElement("div");
 
         elemenTeks.textContent = teks;
@@ -1256,6 +1271,18 @@ elemenTeks.className = "teks-tambahan";
         foto.parentElement.appendChild(elemenTeks);
         elemenTeks.style.cursor = "move";
 elemenTeks.style.touchAction = "none";
+
+elemenTeks.addEventListener("dblclick", function () {
+    elemenTeksAktif = elemenTeks;
+
+    textInput.value = elemenTeks.textContent;
+    textColor.value = elemenTeks.style.color || "#ffffff";
+
+    textPanel.style.display = "block";
+    document.querySelector(".toolbar").style.display = "none";
+
+    textInput.focus();
+});
 
 let sedangGeser = false;
 let offsetX = 0;
