@@ -1038,6 +1038,10 @@ elemenTeks.className = "teks-tambahan";
         teksTambahan.forEach(function (item) {
     item.remove();
 });
+if (overlayImage) {
+    overlayImage.remove();
+    overlayImage = null;
+}
 
         updateTransformFoto();
         updateFilterFoto();
