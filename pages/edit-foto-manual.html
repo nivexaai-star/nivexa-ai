@@ -381,47 +381,97 @@ grid-column: 1 / -1;
     cursor: pointer;
     white-space: nowrap;
 }
+/* ===== MODE TAMBAH TEKS ===== */
+
 #textPanel {
     display: none;
     position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
     z-index: 50;
 
-    box-sizing: border-box;
-    padding: 10px;
-    background: rgba(17, 24, 39, 0.92);
-    border-radius: 14px;
-}
-
-#textPanel input[type="color"] {
-    display: block;
-    width: 54px;
-    height: 42px;
     padding: 0;
-    border: none;
     background: transparent;
-    margin-bottom: 8px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: left;
 }
 
+/* Kolom ketik */
 #textInput {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 16px;
-    font-size: 17px;
-    border-radius: 10px;
-    border: 1px solid #374151;
+    width: calc(100% - 55px);
+    height: 46px;
+    padding: 0 14px;
+
+    background: rgba(20, 20, 25, 0.72);
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
     outline: none;
+
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
+#textInput::placeholder {
+    color: rgba(255,255,255,0.65);
+}
+
+/* Pilihan warna */
+#textPanel input[type="color"] {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    width: 46px;
+    height: 46px;
+
+    padding: 3px;
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Hilangkan bentuk tombol putih besar */
 #addTextBtn,
 #cancelTextBtn {
-    margin-top: 10px;
-    padding: 11px 16px;
-    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+
+    margin-top: 8px;
+    margin-right: 6px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(15, 23, 42, 0.82);
+    color: white;
+
+    font-size: 0;
     cursor: pointer;
+}
+
+/* Tombol selesai */
+#addTextBtn::before {
+    content: "✓";
+    font-size: 24px;
+}
+
+/* Tombol batal */
+#cancelTextBtn::before {
+    content: "×";
+    font-size: 28px;
+}
+
+/* Saat disentuh */
+#addTextBtn:active,
+#cancelTextBtn:active {
+    transform: scale(0.92);
 }
     </style>
 </head>
