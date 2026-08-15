@@ -136,6 +136,27 @@
             min-height: 520px;
         }
 
+        .undo-redo {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.undo-redo button {
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: #1e293b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.undo-redo button:hover {
+    background: #2b3550;
+}
+
         .upload-box {
             min-height: 440px;
             border: 2px dashed #46516c;
@@ -489,6 +510,11 @@ grid-column: 1 / -1;
 <button class="download-btn" id="downloadBtn" type="button">
     ⬇️ Download Foto
 </button>
+
+<div class="undo-redo">
+    <button type="button" id="undoBtn">↶ Undo</button>
+    <button type="button" id="redoBtn">↷ Redo</button>
+</div>
 
         </section>
 
