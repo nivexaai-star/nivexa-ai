@@ -550,13 +550,25 @@ undoBtn.addEventListener("click", function () {
     if (!undoState) return;
 
     redoState = {
-        overlayAda: !!overlayImage
-    };
+    overlayImage: overlayImage,
+    parent: overlayImage ? overlayImage.parentElement : null
+};
 
     if (!undoState.overlayAda && overlayImage) {
         overlayImage.remove();
         overlayImage = null;
     }
+});
+
+redoBtn.addEventListener("click", function () {
+    if (!redoState) return;
+
+    if (redoState.overlayImage && redoState.parent) {
+        redoState.parent.appendChild(redoState.overlayImage);
+        overlayImage = redoState.overlayImage;
+    }
+
+    redoState = null;
 });
 
 overlayBtn.addEventListener("click", function () {
