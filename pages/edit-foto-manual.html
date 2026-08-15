@@ -527,8 +527,8 @@ grid-column: 1 / -1;
 
 </main>
 <script>
-    let undoState = null;
-let redoState = null;
+    let undoStack = [];
+let redoStack = [];
 const undoBtn = document.getElementById("undoBtn");
 const redoBtn = document.getElementById("redoBtn");
     const overlayBtn =
@@ -540,36 +540,42 @@ const overlayInput =
 let overlayImage = null;
 
 function simpanUndo() {
-    undoState = {
-        overlayImage: overlayImage,
-        parent: overlayImage ? overlayImage.parentElement : null
-    };
+    if (!overlayImage) return;
 
-    redoState = null;
+    undoStack.push({
+        overlayImage: overlayImage,
+        parent: overlayImage.parentElement
+    });
+
+    redoStack = [];
 }
 undoBtn.addEventListener("click", function () {
-    if (!undoState) return;
+    if (undoStack.length === 0) return;
 
-    redoState = {
-    overlayImage: overlayImage,
-    parent: overlayImage ? overlayImage.parentElement : null
-};
+    const state = undoStack.pop();
+    redoStack.push(state);
 
-    if (overlayImage) {
-    overlayImage.remove();
-    overlayImage = null;
-}
+    if (state.overlayImage) {
+        state.overlayImage.remove();
+    }
+
+    overlayImage =
+        undoStack.length > 0
+            ? undoStack[undoStack.length - 1].overlayImage
+            : null;
 });
 
 redoBtn.addEventListener("click", function () {
-    if (!redoState) return;
+    if (redoStack.length === 0) return;
 
-    if (redoState.overlayImage && redoState.parent) {
-        redoState.parent.appendChild(redoState.overlayImage);
-        overlayImage = redoState.overlayImage;
+    const state = redoStack.pop();
+
+    if (state.overlayImage && state.parent) {
+        state.parent.appendChild(state.overlayImage);
+        overlayImage = state.overlayImage;
+
+        undoStack.push(state);
     }
-
-    redoState = null;
 });
 
 overlayBtn.addEventListener("click", function () {
