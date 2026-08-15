@@ -1208,31 +1208,16 @@ document
         }
 
         textPanel.style.display = "block";
+        
         const posisiHalaman = window.scrollY;
 
-setTimeout(function () {
-    window.scrollTo(0, posisiHalaman);
-}, 50);
+document.body.dataset.posisiScroll = posisiHalaman;
 
-setTimeout(function () {
-    window.scrollTo(0, posisiHalaman);
-}, 200);
-
-setTimeout(function () {
-    window.scrollTo(0, posisiHalaman);
-}, 500);
-
-textInput.addEventListener("focus", function () {
-    const posisiTetap = window.scrollY;
-
-    setTimeout(function () {
-        window.scrollTo(0, posisiTetap);
-    }, 100);
-
-    setTimeout(function () {
-        window.scrollTo(0, posisiTetap);
-    }, 300);
-});
+document.body.style.position = "fixed";
+document.body.style.top = "-" + posisiHalaman + "px";
+document.body.style.left = "0";
+document.body.style.right = "0";
+document.body.style.width = "100%";
 
 document.querySelector(".toolbar").style.display = "none";
 
