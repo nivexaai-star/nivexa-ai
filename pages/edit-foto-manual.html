@@ -527,6 +527,10 @@ grid-column: 1 / -1;
 
 </main>
 <script>
+    let undoState = null;
+let redoState = null;
+const undoBtn = document.getElementById("undoBtn");
+const redoBtn = document.getElementById("redoBtn");
     const overlayBtn =
     document.getElementById("overlayBtn");
 
@@ -534,6 +538,26 @@ const overlayInput =
     document.getElementById("overlayInput");
 
 let overlayImage = null;
+
+function simpanUndo() {
+    undoState = {
+        overlayAda: !!overlayImage
+    };
+
+    redoState = null;
+}
+undoBtn.addEventListener("click", function () {
+    if (!undoState) return;
+
+    redoState = {
+        overlayAda: !!overlayImage
+    };
+
+    if (!undoState.overlayAda && overlayImage) {
+        overlayImage.remove();
+        overlayImage = null;
+    }
+});
 
 overlayBtn.addEventListener("click", function () {
     overlayInput.click();
@@ -545,6 +569,8 @@ overlayInput.addEventListener("change", function () {
     if (!file) {
         return;
     }
+
+    simpanUndo();
 
     const foto =
         document.getElementById("fotoPreview");
