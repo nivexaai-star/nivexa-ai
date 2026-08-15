@@ -7,6 +7,7 @@
     <title>Edit Foto - NIVEXA AI</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -379,6 +380,45 @@ grid-column: 1 / -1;
     cursor: pointer;
     white-space: nowrap;
 }
+#textPanel {
+    display: none;
+    width: 100%;
+    grid-column: 1 / -1;
+    box-sizing: border-box;
+    padding: 12px;
+    background: #111827;
+    border-radius: 14px;
+    gap: 10px;
+}
+
+#textPanel input[type="color"] {
+    display: block;
+    width: 54px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    margin-bottom: 8px;
+}
+
+#textInput {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    font-size: 17px;
+    border-radius: 10px;
+    border: 1px solid #374151;
+    outline: none;
+}
+
+#addTextBtn,
+#cancelTextBtn {
+    margin-top: 10px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
     </style>
 </head>
 
@@ -489,6 +529,26 @@ grid-column: 1 / -1;
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
 </button>
+
+<button class="tool-btn" id="overlayBtn">
+    🖼️ Overlay
+</button>
+
+<input
+    type="file"
+    id="overlayInput"
+    accept="image/jpeg,image/png,image/webp"
+    style="display:none;"
+>
+<button class="tool-btn" id="ratioBtn">
+    📐 Rasio
+</button>
+
+            <button class="tool-btn" id="resetBtn">
+    ↻ Reset
+</button>
+
+        </aside>
 <div id="textPanel" style="display:none;">
     <input
         type="text"
@@ -510,25 +570,6 @@ grid-column: 1 / -1;
         Batal
     </button>
 </div>
-<button class="tool-btn" id="overlayBtn">
-    🖼️ Overlay
-</button>
-
-<input
-    type="file"
-    id="overlayInput"
-    accept="image/jpeg,image/png,image/webp"
-    style="display:none;"
->
-<button class="tool-btn" id="ratioBtn">
-    📐 Rasio
-</button>
-
-            <button class="tool-btn" id="resetBtn">
-    ↻ Reset
-</button>
-
-        </aside>
 
 <div id="ratioOptions" class="ratio-options">
     <button type="button" data-ratio="Asli">Asli</button>
