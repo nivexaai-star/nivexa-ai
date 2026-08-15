@@ -489,6 +489,27 @@ grid-column: 1 / -1;
            <button class="tool-btn" id="textBtn">
     T Tambah Teks
 </button>
+<div id="textPanel" style="display:none;">
+    <input
+        type="text"
+        id="textInput"
+        placeholder="Tulis teks..."
+    >
+
+    <input
+        type="color"
+        id="textColor"
+        value="#ffffff"
+    >
+
+    <button type="button" id="addTextBtn">
+        Tambahkan
+    </button>
+
+    <button type="button" id="cancelTextBtn">
+        Batal
+    </button>
+</div>
 <button class="tool-btn" id="overlayBtn">
     🖼️ Overlay
 </button>
@@ -549,7 +570,23 @@ grid-column: 1 / -1;
     </div>
 
 </main>
+
 <script>
+   const textPanel =
+    document.getElementById("textPanel");
+
+const textInput =
+    document.getElementById("textInput");
+
+const textColor =
+    document.getElementById("textColor");
+
+const addTextBtn =
+    document.getElementById("addTextBtn");
+
+const cancelTextBtn =
+    document.getElementById("cancelTextBtn");
+
     let undoStack = [];
 let redoStack = [];
 const undoBtn = document.getElementById("undoBtn");
@@ -1055,12 +1092,16 @@ document
             return;
         }
 
-        const teks = prompt("Masukkan teks:");
-        const warna = prompt(
-    "Masukkan warna teks:\nContoh: white, red, yellow, blue, black"
-) || "white";
+        textPanel.style.display = "block";
 
-        if (!teks) return;
+document.getElementById("textBtn").style.display = "none";
+document.getElementById("overlayBtn").style.display = "none";
+document.getElementById("ratioBtn").style.display = "none";
+
+textInput.value = "";
+textColor.value = "#ffffff";
+
+return;
 
         const elemenTeks =
             document.createElement("div");
