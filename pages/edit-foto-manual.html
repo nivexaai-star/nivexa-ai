@@ -589,7 +589,6 @@ overlayInput.addEventListener("change", function () {
         return;
     }
 
-    simpanUndo();
 
     const foto =
         document.getElementById("fotoPreview");
@@ -624,6 +623,7 @@ overlayInput.addEventListener("change", function () {
         foto.parentElement.appendChild(
             overlayImage
         );
+        simpanUndo();
 let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
