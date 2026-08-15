@@ -1278,24 +1278,16 @@ elemenTeks.className = "teks-tambahan";
         elemenTeks.style.cursor = "move";
 elemenTeks.style.touchAction = "none";
 
-elemenTeks.addEventListener("click", function () {
-    elemenTeksAktif = elemenTeks;
-
-    textInput.value = elemenTeks.textContent;
-    textColor.value = elemenTeks.style.color || "#ffffff";
-
-    textPanel.style.display = "block";
-    document.querySelector(".toolbar").style.display = "none";
-
-    textInput.focus();
-});
-
 let sedangGeser = false;
+let sudahBergerak = false;
 let offsetX = 0;
 let offsetY = 0;
 
 elemenTeks.addEventListener("pointerdown", function (e) {
+    e.preventDefault();
+
     sedangGeser = true;
+    sudahBergerak = false;
 
     const rect = elemenTeks.getBoundingClientRect();
 
@@ -1310,7 +1302,7 @@ elemenTeks.addEventListener("pointerdown", function (e) {
 
 elemenTeks.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
-
+    sudahBergerak = true;
     const parentRect =
         foto.parentElement.getBoundingClientRect();
 
@@ -1330,6 +1322,20 @@ elemenTeks.addEventListener("pointermove", function (e) {
 
 elemenTeks.addEventListener("pointerup", function () {
     sedangGeser = false;
+
+    if (!sudahBergerak) {
+        elemenTeksAktif = elemenTeks;
+
+        textInput.value = elemenTeks.textContent;
+        textColor.value = elemenTeks.style.color || "#ffffff";
+
+        textPanel.style.display = "block";
+        document.querySelector(".toolbar").style.display = "none";
+
+        setTimeout(function () {
+            textInput.focus();
+        }, 100);
+    }
 });
 
 elemenTeks.addEventListener("pointercancel", function () {
@@ -1363,12 +1369,6 @@ textInput.blur();
         foto.style.transform = "";
         foto.style.filter = "";
 
-        const teksTambahan =
-    foto.parentElement.querySelectorAll(".teks-tambahan");
-
-        teksTambahan.forEach(function (item) {
-    item.remove();
-});
 if (overlayImage) {
     overlayImage.remove();
     overlayImage = null;
