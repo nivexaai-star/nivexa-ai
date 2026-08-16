@@ -578,6 +578,10 @@ grid-column: 1 / -1;
     border-radius: 4px;
     white-space: nowrap;
 }
+#addTextBtn,
+#cancelTextBtn {
+    display: none !important;
+}
     </style>
 </head>
 
@@ -1377,13 +1381,26 @@ textColor.value = "#ffffff";
 });
 
 textInput.addEventListener("input", function () {
-    if (!elemenTeksAktif) return;
+    const teksSekarang = textInput.value;
+
+    if (!teksSekarang.trim()) {
+        if (elemenTeksAktif) {
+            elemenTeksAktif.remove();
+            elemenTeksAktif = null;
+        }
+        return;
+    }
+
+    if (!elemenTeksAktif) {
+        addTextBtn.click();
+        return;
+    }
 
     const isiTeksAktif =
         elemenTeksAktif.querySelector(".isi-teks");
 
     if (isiTeksAktif) {
-        isiTeksAktif.textContent = textInput.value;
+        isiTeksAktif.textContent = teksSekarang;
     }
 });
 
