@@ -461,6 +461,35 @@ grid-column: 1 / -1;
     flex-shrink: 0;
 }
 
+.font-category-row {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    padding: 2px 0 6px;
+}
+
+.font-category-row::-webkit-scrollbar {
+    display: none;
+}
+
+.font-category {
+    flex: 0 0 auto;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 2px;
+    cursor: pointer;
+}
+
+.font-category.active {
+    color: white;
+    border-bottom: 2px solid white;
+}
+
 .font-options {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -762,6 +791,28 @@ grid-column: 1 / -1;
         </aside>
 <div id="textPanel" style="display:none;">
 
+    <div class="font-category-row">
+    <button type="button" class="font-category active" data-category="tren">
+        Sedang tren
+    </button>
+
+    <button type="button" class="font-category" data-category="klasik">
+        Klasik
+    </button>
+
+    <button type="button" class="font-category" data-category="baru">
+        Baru
+    </button>
+
+    <button type="button" class="font-category" data-category="flourish">
+        Flourish
+    </button>
+
+    <button type="button" class="font-category" data-category="retro">
+        Retro
+    </button>
+</div>
+
 <div class="font-options">
     <button type="button" class="font-btn active" data-font="Arial">
         Default
@@ -873,10 +924,125 @@ grid-column: 1 / -1;
 const textInput =
     document.getElementById("textInput");
 
+    const fontCategories =
+    document.querySelectorAll(".font-category");
+
+const fontOptions =
+    document.querySelector(".font-options");
+
     const fontButtons =
     document.querySelectorAll(".font-btn");
 
 let fontDipilih = "Arial";
+
+const daftarFont = {
+    tren: [
+        ["System", "Arial"],
+        ["Montserrat", "Arial Black"],
+        ["Bebas", "Impact"],
+        ["Comic", "Comic Sans MS"],
+        ["Modern", "Trebuchet MS"],
+        ["Retro", "Courier New"]
+    ],
+
+    klasik: [
+        ["Classic", "Georgia"],
+        ["Times", "Times New Roman"],
+        ["Book", "Palatino Linotype"],
+        ["Elegant", "Garamond"],
+        ["Serif", "Georgia"],
+        ["Old Style", "Times New Roman"]
+    ],
+
+    baru: [
+        ["Modern", "Trebuchet MS"],
+        ["Clean", "Arial"],
+        ["Bold", "Arial Black"],
+        ["Fresh", "Verdana"],
+        ["Simple", "Tahoma"],
+        ["Wide", "Trebuchet MS"]
+    ],
+
+    flourish: [
+        ["Elegant", "Georgia"],
+        ["Lovely", "Brush Script MT"],
+        ["Script", "Segoe Script"],
+        ["Handwrite", "Segoe Print"],
+        ["Fancy", "Lucida Handwriting"],
+        ["Soft", "Comic Sans MS"]
+    ],
+
+    retro: [
+        ["Retro", "Courier New"],
+        ["Vintage", "Georgia"],
+        ["Classic 80", "Impact"],
+        ["Typewriter", "Courier New"],
+        ["Old School", "Times New Roman"],
+        ["Poster", "Arial Black"]
+    ]
+};
+function tampilkanFont(kategori) {
+    const fonts = daftarFont[kategori];
+
+    if (!fonts) return;
+
+    fontOptions.innerHTML = "";
+
+    fonts.forEach(function (font, index) {
+        const nama = font[0];
+        const jenis = font[1];
+
+        const tombol = document.createElement("button");
+
+        tombol.type = "button";
+        tombol.className = "font-btn";
+        tombol.textContent = nama;
+        tombol.setAttribute("data-font", jenis);
+
+        // Contoh tulisan langsung memakai font-nya
+        tombol.style.fontFamily = jenis;
+
+        if (index === 0) {
+            tombol.classList.add("active");
+        }
+
+        tombol.addEventListener("click", function () {
+            fontDipilih = jenis;
+
+            fontOptions
+                .querySelectorAll(".font-btn")
+                .forEach(function (item) {
+                    item.classList.remove("active");
+                });
+
+            tombol.classList.add("active");
+
+            if (elemenTeksAktif) {
+                elemenTeksAktif.style.fontFamily = fontDipilih;
+            }
+        });
+
+        fontOptions.appendChild(tombol);
+    });
+}
+fontCategories.forEach(function (categoryBtn) {
+    categoryBtn.addEventListener("click", function () {
+
+        fontCategories.forEach(function (item) {
+            item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        const kategori =
+            this.getAttribute("data-category");
+
+        tampilkanFont(kategori);
+    });
+});
+
+// Tampilkan Sedang tren saat panel pertama dibuka
+tampilkanFont("tren");
 
 fontButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
