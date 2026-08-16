@@ -1572,8 +1572,13 @@ let cropStartTop = 0;
 document.addEventListener("pointerdown", function (e) {
     const cropBox = document.getElementById("cropBox");
 
-    if (!cropBox) return;
-    if (e.target !== cropBox) return;
+   if (!cropBox) return;
+
+// Bulatan resize jangan ikut menggeser kotak
+if (e.target.id === "cropResizeHandle") return;
+
+// Sentuh bagian mana pun di dalam kotak = boleh digeser
+if (!cropBox.contains(e.target)) return;
 
     cropDragging = true;
 
