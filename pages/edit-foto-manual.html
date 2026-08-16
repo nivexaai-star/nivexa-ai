@@ -1424,12 +1424,6 @@ resizeHandle.addEventListener("pointerdown", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
-    let sedangGeser = false;
-let sudahBergerak = false;
-let mulaiX = 0;
-let mulaiY = 0;
-let posisiAwalX = 0;
-let posisiAwalY = 0;
 
     const rect = elemenTeks.getBoundingClientRect();
 
@@ -1562,27 +1556,6 @@ elemenTeks.addEventListener("pointerdown", function (e) {
     elemenTeks.setPointerCapture(e.pointerId);
 });
 
-    /* Baru ubah ke sistem left/top */
-    elemenTeks.style.left =
-        posisiX + "px";
-
-    elemenTeks.style.top =
-        posisiY + "px";
-
-    elemenTeks.style.bottom = "auto";
-    elemenTeks.style.transform = "none";
-
-    /* Posisi jari di dalam kotak */
-    offsetX =
-        e.clientX - rect.left;
-
-    offsetY =
-        e.clientY - rect.top;
-
-    elemenTeks.setPointerCapture(
-        e.pointerId
-    );
-});
 
 elemenTeks.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
@@ -1823,6 +1796,7 @@ if (overlayImage) {
 
         }, "image/jpeg", 0.95);
     });
+});
 </script>
 </body>
 </html>
