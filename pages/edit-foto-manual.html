@@ -1535,18 +1535,43 @@ elemenTeks.addEventListener("pointerdown", function (e) {
 
     sedangGeser = true;
     sudahBergerak = false;
+
     mulaiX = e.clientX;
     mulaiY = e.clientY;
 
-    const rect = elemenTeks.getBoundingClientRect();
+    const parentRect =
+        foto.parentElement.getBoundingClientRect();
 
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    const rect =
+        elemenTeks.getBoundingClientRect();
 
-    elemenTeks.setPointerCapture(e.pointerId);
+    /* Simpan posisi yang BENAR-BENAR terlihat di layar */
+    const posisiX =
+        rect.left - parentRect.left;
 
-    elemenTeks.style.transform = "none";
+    const posisiY =
+        rect.top - parentRect.top;
+
+    /* Baru ubah ke sistem left/top */
+    elemenTeks.style.left =
+        posisiX + "px";
+
+    elemenTeks.style.top =
+        posisiY + "px";
+
     elemenTeks.style.bottom = "auto";
+    elemenTeks.style.transform = "none";
+
+    /* Posisi jari di dalam kotak */
+    offsetX =
+        e.clientX - rect.left;
+
+    offsetY =
+        e.clientY - rect.top;
+
+    elemenTeks.setPointerCapture(
+        e.pointerId
+    );
 });
 
 elemenTeks.addEventListener("pointermove", function (e) {
