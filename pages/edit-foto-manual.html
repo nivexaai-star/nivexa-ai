@@ -1392,9 +1392,9 @@ textInput.addEventListener("input", function () {
     }
 
     if (!elemenTeksAktif) {
-        addTextBtn.click();
-        return;
-    }
+    addTextBtn.click();
+    return;
+}
 
     const isiTeksAktif =
         elemenTeksAktif.querySelector(".isi-teks");
@@ -1464,6 +1464,7 @@ elemenTeks.className = "teks-tambahan";
 
         foto.parentElement.style.position = "relative";
         foto.parentElement.appendChild(elemenTeks);
+        elemenTeksAktif = elemenTeks;
         elemenTeks.style.cursor = "move";
 elemenTeks.style.touchAction = "none";
 
