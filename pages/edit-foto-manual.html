@@ -1544,13 +1544,23 @@ document
 
         cropBox.style.display = "block";
 
-        cropBox.style.resize = "both";
-cropBox.style.overflow = "hidden";
-cropBox.style.minWidth = "80px";
-cropBox.style.minHeight = "80px";
-cropBox.style.maxWidth = "90%";
-cropBox.style.maxHeight = "90%";
+        const resizeHandle = document.createElement("div");
 
+resizeHandle.id = "cropResizeHandle";
+
+resizeHandle.style.position = "absolute";
+resizeHandle.style.right = "-14px";
+resizeHandle.style.bottom = "-14px";
+resizeHandle.style.width = "30px";
+resizeHandle.style.height = "30px";
+resizeHandle.style.borderRadius = "50%";
+resizeHandle.style.background = "#ffffff";
+resizeHandle.style.border = "3px solid #4da3ff";
+resizeHandle.style.zIndex = "60";
+resizeHandle.style.cursor = "nwse-resize";
+resizeHandle.style.touchAction = "none";
+
+cropBox.appendChild(resizeHandle);
         cropActions.style.display = "flex";
     });
    let cropDragging = false;
