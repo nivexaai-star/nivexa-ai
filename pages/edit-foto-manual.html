@@ -1420,14 +1420,7 @@ resizeHandle.innerHTML = "↘";
 
 elemenTeks.appendChild(resizeHandle);
 
-const rotateHandle = document.createElement("div");
-
-rotateHandle.className = "rotate-handle";
-rotateHandle.innerHTML = "↻";
-
-elemenTeks.appendChild(rotateHandle);
-
-rotateHandle.addEventListener("pointerdown", function (e) {
+resizeHandle.addEventListener("pointerdown", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -1436,47 +1429,65 @@ rotateHandle.addEventListener("pointerdown", function (e) {
     const tengahX = rect.left + rect.width / 2;
     const tengahY = rect.top + rect.height / 2;
 
-    const startX = e.clientX;
-    const startY = e.clientY;
+    const awalX = e.clientX - tengahX;
+    const awalY = e.clientY - tengahY;
+
+    const jarakAwal =
+        Math.sqrt(
+            awalX * awalX +
+            awalY * awalY
+        );
+
+    const sudutAwal =
+        Math.atan2(awalY, awalX);
+
+    const ukuranAwal =
+        parseFloat(
+            window.getComputedStyle(elemenTeks).fontSize
+        );
 
     const rotasiAwal =
-        parseFloat(elemenTeks.dataset.rotasi || "0");
+        parseFloat(
+            elemenTeks.dataset.rotasi || "0"
+        );
 
-    let mulaiPutar = false;
-    let sudutMulai = 0;
+    function ubahTeks(ev) {
+        const sekarangX =
+            ev.clientX - tengahX;
 
-    function putarTeks(ev) {
-        const geserX = ev.clientX - startX;
-        const geserY = ev.clientY - startY;
+        const sekarangY =
+            ev.clientY - tengahY;
 
-        const jarak =
+        const jarakSekarang =
             Math.sqrt(
-                geserX * geserX +
-                geserY * geserY
+                sekarangX * sekarangX +
+                sekarangY * sekarangY
             );
-
-        /* Jari baru menyentuh = jangan bergerak */
-        if (!mulaiPutar) {
-            if (jarak < 8) return;
-
-            sudutMulai =
-                Math.atan2(
-                    ev.clientY - tengahY,
-                    ev.clientX - tengahX
-                ) * 180 / Math.PI;
-
-            mulaiPutar = true;
-            return;
-        }
 
         const sudutSekarang =
             Math.atan2(
-                ev.clientY - tengahY,
-                ev.clientX - tengahX
-            ) * 180 / Math.PI;
+                sekarangY,
+                sekarangX
+            );
 
+        /* BESAR / KECIL */
+        let ukuranBaru =
+            ukuranAwal *
+            (jarakSekarang / jarakAwal);
+
+        ukuranBaru =
+            Math.max(
+                14,
+                Math.min(120, ukuranBaru)
+            );
+
+        elemenTeks.style.fontSize =
+            ukuranBaru + "px";
+
+        /* PUTAR */
         const selisihSudut =
-            sudutSekarang - sudutMulai;
+            (sudutSekarang - sudutAwal) *
+            180 / Math.PI;
 
         const rotasiBaru =
             rotasiAwal + selisihSudut;
@@ -1488,71 +1499,26 @@ rotateHandle.addEventListener("pointerdown", function (e) {
             rotasiBaru;
     }
 
-    function selesaiPutar() {
+    function selesaiUbah() {
         window.removeEventListener(
             "pointermove",
-            putarTeks
+            ubahTeks
         );
 
         window.removeEventListener(
             "pointerup",
-            selesaiPutar
+            selesaiUbah
         );
     }
 
     window.addEventListener(
         "pointermove",
-        putarTeks
+        ubahTeks
     );
 
     window.addEventListener(
         "pointerup",
-        selesaiPutar
-    );
-});
-
-resizeHandle.addEventListener("pointerdown", function (e) {
-    e.stopPropagation();
-
-    const startY = e.clientY;
-    const startSize =
-        parseFloat(
-            window.getComputedStyle(elemenTeks).fontSize
-        );
-
-    function resizeText(ev) {
-        const selisih = ev.clientY - startY;
-
-        let ukuranBaru =
-            startSize + selisih * 0.25;
-
-        ukuranBaru =
-            Math.max(14, Math.min(100, ukuranBaru));
-
-        elemenTeks.style.fontSize =
-            ukuranBaru + "px";
-    }
-
-    function stopResize() {
-        window.removeEventListener(
-            "pointermove",
-            resizeText
-        );
-
-        window.removeEventListener(
-            "pointerup",
-            stopResize
-        );
-    }
-
-    window.addEventListener(
-        "pointermove",
-        resizeText
-    );
-
-    window.addEventListener(
-        "pointerup",
-        stopResize
+        selesaiUbah
     );
 });
 
