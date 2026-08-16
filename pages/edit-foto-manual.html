@@ -953,26 +953,27 @@ currentOverlay.addEventListener("pointerdown", function (event) {
     );
 });
 
-currentOverlay.addEventListener("pointermove", function (event) {
+elemenTeks.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
 
-    const parentRect =
-        foto.parentElement.getBoundingClientRect();
+    const jarakX = Math.abs(e.clientX - mulaiX);
+    const jarakY = Math.abs(e.clientY - mulaiY);
 
-    let x =
-        event.clientX -
-        parentRect.left -
-        offsetX;
+    if (!sudahBergerak) {
+        if (jarakX < 15 && jarakY < 15) return;
+        sudahBergerak = true;
+    }
 
-    let y =
-        event.clientY -
-        parentRect.top -
-        offsetY;
+    const deltaX = e.clientX - mulaiX;
+    const deltaY = e.clientY - mulaiY;
 
-     currentOverlay.style.left =
-        x + "px";
-currentOverlay.style.top =
-    y + "px";
+    elemenTeks.style.left =
+        (posisiAwalX + deltaX) + "px";
+
+    elemenTeks.style.top =
+        (posisiAwalY + deltaY) + "px";
+
+    elemenTeks.style.bottom = "auto";
 });
 
 overlayImage.addEventListener("pointerup", function (event) {
