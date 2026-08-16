@@ -1376,6 +1376,17 @@ textColor.value = "#ffffff";
 
 });
 
+textInput.addEventListener("input", function () {
+    if (!elemenTeksAktif) return;
+
+    const isiTeksAktif =
+        elemenTeksAktif.querySelector(".isi-teks");
+
+    if (isiTeksAktif) {
+        isiTeksAktif.textContent = textInput.value;
+    }
+});
+
 addTextBtn.addEventListener("click", function () {
     const foto = document.getElementById("fotoPreview");
 
