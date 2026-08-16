@@ -1545,7 +1545,59 @@ document
         cropBox.style.display = "block";
         cropActions.style.display = "flex";
     });
-   
+   let cropDragging = false;
+let cropStartX = 0;
+let cropStartY = 0;
+let cropStartLeft = 0;
+let cropStartTop = 0;
+
+document.addEventListener("pointerdown", function (e) {
+    const cropBox = document.getElementById("cropBox");
+
+    if (!cropBox) return;
+    if (e.target !== cropBox) return;
+
+    cropDragging = true;
+
+    cropStartX = e.clientX;
+    cropStartY = e.clientY;
+
+    cropStartLeft = cropBox.offsetLeft;
+    cropStartTop = cropBox.offsetTop;
+
+    cropBox.setPointerCapture(e.pointerId);
+});
+
+document.addEventListener("pointermove", function (e) {
+    if (!cropDragging) return;
+
+    const cropBox = document.getElementById("cropBox");
+    if (!cropBox) return;
+
+    const parent = cropBox.parentElement;
+
+    const dx = e.clientX - cropStartX;
+    const dy = e.clientY - cropStartY;
+
+    let left = cropStartLeft + dx;
+    let top = cropStartTop + dy;
+
+    const maxLeft =
+        parent.clientWidth - cropBox.offsetWidth;
+
+    const maxTop =
+        parent.clientHeight - cropBox.offsetHeight;
+
+    left = Math.max(0, Math.min(left, maxLeft));
+    top = Math.max(0, Math.min(top, maxTop));
+
+    cropBox.style.left = left + "px";
+    cropBox.style.top = top + "px";
+});
+
+document.addEventListener("pointerup", function () {
+    cropDragging = false;
+});
 
 let filterIndex = 0;
 
