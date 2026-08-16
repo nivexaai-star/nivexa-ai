@@ -1372,7 +1372,12 @@ if (!teks && elemenTeksAktif) {
 if (!teks) return;
 
     if (elemenTeksAktif) {
-    elemenTeksAktif.textContent = teks;
+   const isiTeksAktif =
+    elemenTeksAktif.querySelector(".isi-teks");
+
+if (isiTeksAktif) {
+    isiTeksAktif.textContent = teks;
+}
     elemenTeksAktif.style.color = warna;
 
     elemenTeksAktif = null;
@@ -1386,7 +1391,12 @@ if (!teks) return;
 
     const elemenTeks = document.createElement("div");
 
-        elemenTeks.textContent = teks;
+       const isiTeks = document.createElement("span");
+isiTeks.className = "isi-teks";
+isiTeks.textContent = teks;
+
+elemenTeks.appendChild(isiTeks);
+
 elemenTeks.className = "teks-tambahan";
         elemenTeks.style.position = "absolute";
         elemenTeks.style.left = "50%";
@@ -1609,7 +1619,8 @@ elemenTeks.addEventListener("pointerup", function (e) {
     if (!sudahBergerak) {
         elemenTeksAktif = elemenTeks;
 
-        textInput.value = elemenTeks.textContent;
+       textInput.value =
+    elemenTeks.querySelector(".isi-teks")?.textContent || "";
         textColor.value = elemenTeks.style.color || "#ffffff";
 
         textPanel.style.display = "block";
@@ -1634,7 +1645,12 @@ textInput.blur();
 textInput.addEventListener("input", function () {
     if (!elemenTeksAktif) return;
 
-    elemenTeksAktif.textContent = textInput.value;
+    const isiTeksAktif =
+    elemenTeksAktif.querySelector(".isi-teks");
+
+if (isiTeksAktif) {
+    isiTeksAktif.textContent = textInput.value;
+}
 });
 
     document
