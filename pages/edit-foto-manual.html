@@ -752,6 +752,10 @@ textColorDots.forEach(function(dot) {
 
         textColor.value = warnaDipilih;
 
+        if (elemenTeksAktif) {
+    elemenTeksAktif.style.color = warnaDipilih;
+}
+
         textColorDots.forEach(function(item) {
             item.classList.remove("active");
         });
