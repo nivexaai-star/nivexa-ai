@@ -1498,12 +1498,13 @@ document
             `;
 
             document
-                .querySelector(".toolbar")
-                .appendChild(cropPanel);
+    .querySelector(".editor-layout")
+    .appendChild(cropPanel);
         }
 
         cropPanel.style.display = "flex";
     });
+    document.querySelector(".toolbar").style.display = "none";
 
 let filterIndex = 0;
 
