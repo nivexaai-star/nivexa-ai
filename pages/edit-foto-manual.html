@@ -1470,6 +1470,7 @@ document
         rotasi = (rotasi + 90) % 360;
         updateTransformFoto();
     });
+    
     document
     .getElementById("cropBtn")
     .addEventListener("click", function () {
@@ -1482,33 +1483,67 @@ document
             return;
         }
 
-        let cropPanel =
-            document.getElementById("cropPanel");
+        const parentFoto = foto.parentElement;
 
-        if (!cropPanel) {
-            cropPanel = document.createElement("div");
-            cropPanel.id = "cropPanel";
+        parentFoto.style.position = "relative";
 
-            cropPanel.innerHTML = `
-                <button type="button" data-ratio="free">Bebas</button>
-                <button type="button" data-ratio="1">1:1</button>
-                <button type="button" data-ratio="0.8">4:5</button>
-                <button type="button" data-ratio="0.5625">9:16</button>
-                <button type="button" data-ratio="1.7778">16:9</button>
-            `;
+        let cropBox =
+            document.getElementById("cropBox");
 
-            document
-    .querySelector(".editor-layout")
-    .appendChild(cropPanel);
+        if (!cropBox) {
+            cropBox = document.createElement("div");
+            cropBox.id = "cropBox";
+
+            cropBox.style.position = "absolute";
+            cropBox.style.left = "15%";
+            cropBox.style.top = "15%";
+            cropBox.style.width = "70%";
+            cropBox.style.height = "70%";
+
+            cropBox.style.border =
+                "2px solid white";
+
+            cropBox.style.boxSizing =
+                "border-box";
+
+            cropBox.style.zIndex = "50";
+
+            cropBox.style.background =
+                "rgba(255,255,255,0.05)";
+
+            parentFoto.appendChild(cropBox);
         }
 
-        cropPanel.style.display = "flex";
-        cropPanel.style.position = "relative";
-cropPanel.style.zIndex = "999";
-cropPanel.style.background = "rgba(10, 15, 30, 0.95)";
-cropPanel.style.borderRadius = "12px";
-cropPanel.style.marginTop = "10px";
-cropPanel.style.padding = "10px";
+        let cropActions =
+            document.getElementById("cropActions");
+
+        if (!cropActions) {
+            cropActions =
+                document.createElement("div");
+
+            cropActions.id = "cropActions";
+
+            cropActions.innerHTML = `
+                <button type="button" id="cancelCropBtn">
+                    Batal
+                </button>
+
+                <button type="button" id="applyCropBtn">
+                    ✓ Terapkan
+                </button>
+            `;
+
+            cropActions.style.display = "flex";
+            cropActions.style.gap = "10px";
+            cropActions.style.marginTop = "10px";
+
+            document
+                .querySelector(".editor-layout")
+                .appendChild(cropActions);
+        }
+
+        cropBox.style.display = "block";
+        cropActions.style.display = "flex";
     });
    
 
