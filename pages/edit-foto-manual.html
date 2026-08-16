@@ -438,6 +438,28 @@ grid-column: 1 / -1;
 #textInput::placeholder {
     color: rgba(255,255,255,0.65);
 }
+.text-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.text-input-row #textInput {
+    flex: 1;
+    width: auto;
+}
+
+#finishTextBtn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
 /* Pilihan warna baru */
 .text-color-options {
@@ -491,8 +513,8 @@ grid-column: 1 / -1;
 
 .rotate-handle {
     position: absolute;
-    left: -22px;
-    top: -22px;
+    left: -25px;
+    top: -25px;
 
     width: 42px;
     height: 42px;
@@ -713,11 +735,15 @@ grid-column: 1 / -1;
 
         </aside>
 <div id="textPanel" style="display:none;">
+    <div class="text-input-row">
     <input
         type="text"
         id="textInput"
         placeholder="Tulis teks..."
     >
+
+    <button type="button" id="finishTextBtn">✓</button>
+</div>
 
     <div class="text-color-options">
     <button type="button" class="text-color-dot" data-color="#ffffff" style="background:#ffffff;"></button>
@@ -1402,6 +1428,16 @@ textInput.addEventListener("input", function () {
     if (isiTeksAktif) {
         isiTeksAktif.textContent = teksSekarang;
     }
+});
+const finishTextBtn = document.getElementById("finishTextBtn");
+
+finishTextBtn.addEventListener("click", function () {
+    textInput.blur();
+
+    textPanel.style.display = "none";
+    document.querySelector(".toolbar").style.display = "flex";
+
+    elemenTeksAktif = null;
 });
 
 addTextBtn.addEventListener("click", function () {
