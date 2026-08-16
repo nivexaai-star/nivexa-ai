@@ -1424,6 +1424,13 @@ resizeHandle.addEventListener("pointerdown", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
+    let sedangGeser = false;
+let sudahBergerak = false;
+let mulaiX = 0;
+let mulaiY = 0;
+let posisiAwalX = 0;
+let posisiAwalY = 0;
+
     const rect = elemenTeks.getBoundingClientRect();
 
     const tengahX = rect.left + rect.width / 2;
@@ -1543,21 +1550,17 @@ elemenTeks.addEventListener("pointerdown", function (e) {
     mulaiX = e.clientX;
     mulaiY = e.clientY;
 
-    posisiAwalX = parseFloat(elemenTeks.style.left) || 0;
-posisiAwalY = parseFloat(elemenTeks.style.top) || 0;
+    /* Ambil posisi layout asli, bukan kotak yang sudah diputar */
+    posisiAwalX = elemenTeks.offsetLeft;
+    posisiAwalY = elemenTeks.offsetTop;
 
-    const parentRect =
-        foto.parentElement.getBoundingClientRect();
+    /* Ubah bottom ke top TANPA membuang transform */
+    elemenTeks.style.left = posisiAwalX + "px";
+    elemenTeks.style.top = posisiAwalY + "px";
+    elemenTeks.style.bottom = "auto";
 
-    const rect =
-        elemenTeks.getBoundingClientRect();
-
-    /* Simpan posisi yang BENAR-BENAR terlihat di layar */
-    const posisiX =
-        rect.left - parentRect.left;
-
-    const posisiY =
-        rect.top - parentRect.top;
+    elemenTeks.setPointerCapture(e.pointerId);
+});
 
     /* Baru ubah ke sistem left/top */
     elemenTeks.style.left =
@@ -1602,47 +1605,26 @@ elemenTeks.style.top = y + "px";
 
 });
 
-elemenTeks.addEventListener("pointerup", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+elemenTeks.addEventListener("pointermove", function (e) {
+    if (!sedangGeser) return;
 
-    sedangGeser = false;
+    const deltaX = e.clientX - mulaiX;
+    const deltaY = e.clientY - mulaiY;
 
-    if (!sudahBergerak) {
-        elemenTeksAktif = elemenTeks;
-
-       textInput.value =
-    elemenTeks.querySelector(".isi-teks")?.textContent || "";
-        textColor.value = elemenTeks.style.color || "#ffffff";
-
-        textPanel.style.display = "block";
-        document.querySelector(".toolbar").style.display = "none";
-
-        setTimeout(function () {
-            textInput.focus();
-        }, 100);
+    if (
+        Math.abs(deltaX) < 25 &&
+        Math.abs(deltaY) < 25
+    ) {
+        return;
     }
-});
-elemenTeks.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-});
-elemenTeks.addEventListener("pointercancel", function () {
-    sedangGeser = false;
-});
-textPanel.style.display = "none";
-document.querySelector(".toolbar").style.display = "flex";
-textInput.blur();
-});
-textInput.addEventListener("input", function () {
-    if (!elemenTeksAktif) return;
 
-    const isiTeksAktif =
-    elemenTeksAktif.querySelector(".isi-teks");
+    sudahBergerak = true;
 
-if (isiTeksAktif) {
-    isiTeksAktif.textContent = textInput.value;
-}
+    elemenTeks.style.left =
+        (posisiAwalX + deltaX) + "px";
+
+    elemenTeks.style.top =
+        (posisiAwalY + deltaY) + "px";
 });
 
     document
