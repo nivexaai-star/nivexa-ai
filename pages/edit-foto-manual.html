@@ -930,6 +930,11 @@ const textInput =
 const fontOptions =
     document.querySelector(".font-options");
 
+    textInput.addEventListener("focus", function () {
+    document.querySelector(".font-category-row").style.display = "none";
+    fontOptions.style.display = "none";
+});
+
     const fontButtons =
     document.querySelectorAll(".font-btn");
 
