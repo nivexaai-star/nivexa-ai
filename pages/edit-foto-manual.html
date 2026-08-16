@@ -1543,6 +1543,14 @@ document
         }
 
         cropBox.style.display = "block";
+
+        cropBox.style.resize = "both";
+cropBox.style.overflow = "hidden";
+cropBox.style.minWidth = "80px";
+cropBox.style.minHeight = "80px";
+cropBox.style.maxWidth = "90%";
+cropBox.style.maxHeight = "90%";
+
         cropActions.style.display = "flex";
     });
    let cropDragging = false;
