@@ -461,6 +461,32 @@ grid-column: 1 / -1;
     flex-shrink: 0;
 }
 
+.font-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.font-btn {
+    height: 40px;
+    padding: 0 8px;
+
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+
+    background: rgba(20,20,25,0.72);
+    color: white;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.font-btn.active {
+    border: 2px solid white;
+    background: rgba(255,255,255,0.12);
+}
+
 /* Pilihan warna baru */
 .text-color-options {
     display: flex;
@@ -735,6 +761,25 @@ grid-column: 1 / -1;
 
         </aside>
 <div id="textPanel" style="display:none;">
+
+<div class="font-options">
+    <button type="button" class="font-btn active" data-font="Arial">
+        Default
+    </button>
+
+    <button type="button" class="font-btn" data-font="Georgia">
+        Classic
+    </button>
+
+    <button type="button" class="font-btn" data-font="Trebuchet MS">
+        Modern
+    </button>
+
+    <button type="button" class="font-btn" data-font="Courier New">
+        Retro
+    </button>
+</div>
+
     <div class="text-input-row">
     <input
         type="text"
@@ -827,6 +872,30 @@ grid-column: 1 / -1;
 
 const textInput =
     document.getElementById("textInput");
+
+    const fontButtons =
+    document.querySelectorAll(".font-btn");
+
+let fontDipilih = "Arial";
+
+fontButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+
+        fontDipilih =
+            this.getAttribute("data-font");
+
+        fontButtons.forEach(function (item) {
+            item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        if (elemenTeksAktif) {
+            elemenTeksAktif.style.fontFamily =
+                fontDipilih;
+        }
+    });
+});
 
 const textColor =
     document.getElementById("textColor");
@@ -1542,6 +1611,7 @@ elemenTeks.className = "teks-tambahan";
         elemenTeks.style.color = warna;
         elemenTeks.style.fontSize = "32px";
         elemenTeks.style.fontWeight = "bold";
+        elemenTeks.style.fontFamily = fontDipilih;
         elemenTeks.style.textShadow = "0 2px 6px black";
         elemenTeks.style.zIndex = "10";
 
