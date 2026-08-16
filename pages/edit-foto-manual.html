@@ -805,21 +805,40 @@ const textColor =
     document.querySelectorAll(".text-color-dot");
 
 textColorDots.forEach(function(dot) {
+
+    dot.addEventListener("pointerdown", function(e) {
+        e.stopPropagation();
+    });
+
     dot.addEventListener("click", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
         const warnaDipilih =
             this.getAttribute("data-color");
 
         textColor.value = warnaDipilih;
 
         if (elemenTeksAktif) {
-    elemenTeksAktif.style.setProperty(
-        "color",
-        warnaDipilih,
-        "important"
-    );
-}
+
+            elemenTeksAktif.style.setProperty(
+                "color",
+                warnaDipilih,
+                "important"
+            );
+
+            const isiTeksAktif =
+                elemenTeksAktif.querySelector(".isi-teks");
+
+            if (isiTeksAktif) {
+                isiTeksAktif.style.setProperty(
+                    "color",
+                    warnaDipilih,
+                    "important"
+                );
+            }
+        }
 
         textColorDots.forEach(function(item) {
             item.classList.remove("active");
@@ -828,7 +847,6 @@ textColorDots.forEach(function(dot) {
         this.classList.add("active");
     });
 });
-
 const addTextBtn =
     document.getElementById("addTextBtn");
 
@@ -1420,6 +1438,14 @@ elemenTeks.className = "teks-tambahan";
         foto.parentElement.appendChild(elemenTeks);
         elemenTeks.style.cursor = "move";
 elemenTeks.style.touchAction = "none";
+
+elemenTeks.style.userSelect = "none";
+elemenTeks.style.webkitUserSelect = "none";
+elemenTeks.style.webkitTouchCallout = "none";
+
+elemenTeks.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+});
 
 const resizeHandle = document.createElement("div");
 
