@@ -1549,8 +1549,8 @@ document
 resizeHandle.id = "cropResizeHandle";
 
 resizeHandle.style.position = "absolute";
-resizeHandle.style.right = "-14px";
-resizeHandle.style.bottom = "-14px";
+resizeHandle.style.right = "-8px";
+resizeHandle.style.bottom = "-8px";
 resizeHandle.style.width = "30px";
 resizeHandle.style.height = "30px";
 resizeHandle.style.borderRadius = "50%";
@@ -1578,7 +1578,15 @@ document.addEventListener("pointerdown", function (e) {
 if (e.target.id === "cropResizeHandle") return;
 
 // Sentuh bagian mana pun di dalam kotak = boleh digeser
-if (!cropBox.contains(e.target)) return;
+const rect = cropBox.getBoundingClientRect();
+
+const diDalamKotak =
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+
+if (!diDalamKotak) return;
 
     cropDragging = true;
 
