@@ -1528,6 +1528,10 @@ let offsetX = 0;
 let offsetY = 0;
 let mulaiX = 0;
 let mulaiY = 0;
+let posisiAwalX = 0;
+let posisiAwalY = 0;
+let pusatAwalX = 0;
+let pusatAwalY = 0;
 
 elemenTeks.addEventListener("pointerdown", function (e) {
     e.preventDefault();
@@ -1538,6 +1542,9 @@ elemenTeks.addEventListener("pointerdown", function (e) {
 
     mulaiX = e.clientX;
     mulaiY = e.clientY;
+
+    posisiAwalX = parseFloat(elemenTeks.style.left) || 0;
+posisiAwalY = parseFloat(elemenTeks.style.top) || 0;
 
     const parentRect =
         foto.parentElement.getBoundingClientRect();
@@ -1584,21 +1591,15 @@ if (jarakX < 25 && jarakY < 25) return;
 
 sudahBergerak = true;
 
-    const parentRect =
-        foto.parentElement.getBoundingClientRect();
+    const deltaX = e.clientX - mulaiX;
+const deltaY = e.clientY - mulaiY;
 
-    let x =
-        e.clientX -
-        parentRect.left -
-        offsetX;
+const x = posisiAwalX + deltaX;
+const y = posisiAwalY + deltaY;
 
-    let y =
-        e.clientY -
-        parentRect.top -
-        offsetY;
+elemenTeks.style.left = x + "px";
+elemenTeks.style.top = y + "px";
 
-    elemenTeks.style.left = x + "px";
-    elemenTeks.style.top = y + "px";
 });
 
 elemenTeks.addEventListener("pointerup", function (e) {
