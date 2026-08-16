@@ -462,6 +462,33 @@ grid-column: 1 / -1;
     border: 3px solid #ffffff;
 }
 
+.resize-handle {
+    position: absolute;
+    right: -22px;
+    bottom: -22px;
+
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+
+    background: rgba(20, 25, 40, 0.9);
+    border: 2px solid white;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: nwse-resize;
+    touch-action: none;
+    user-select: none;
+
+    z-index: 50;
+}
+
 /* Hilangkan bentuk tombol putih besar */
 #addTextBtn,
 #cancelTextBtn {
@@ -1343,6 +1370,58 @@ elemenTeks.className = "teks-tambahan";
         foto.parentElement.appendChild(elemenTeks);
         elemenTeks.style.cursor = "move";
 elemenTeks.style.touchAction = "none";
+
+const resizeHandle = document.createElement("div");
+
+resizeHandle.className = "resize-handle";
+resizeHandle.innerHTML = "↘";
+
+elemenTeks.appendChild(resizeHandle);
+
+resizeHandle.addEventListener("pointerdown", function (e) {
+    e.stopPropagation();
+
+    const startY = e.clientY;
+    const startSize =
+        parseFloat(
+            window.getComputedStyle(elemenTeks).fontSize
+        );
+
+    function resizeText(ev) {
+        const selisih = ev.clientY - startY;
+
+        let ukuranBaru =
+            startSize + selisih * 0.25;
+
+        ukuranBaru =
+            Math.max(14, Math.min(100, ukuranBaru));
+
+        elemenTeks.style.fontSize =
+            ukuranBaru + "px";
+    }
+
+    function stopResize() {
+        window.removeEventListener(
+            "pointermove",
+            resizeText
+        );
+
+        window.removeEventListener(
+            "pointerup",
+            stopResize
+        );
+    }
+
+    window.addEventListener(
+        "pointermove",
+        resizeText
+    );
+
+    window.addEventListener(
+        "pointerup",
+        stopResize
+    );
+});
 
 let sedangGeser = false;
 let sudahBergerak = false;
