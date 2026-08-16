@@ -936,21 +936,19 @@ let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
 overlayImage.style.touchAction = "none";
-currentOverlay.addEventListener("pointerdown", function (event) {
+elemenTeks.style.touchAction = "none";
+
+elemenTeks.addEventListener("pointerdown", function (event) {
     sedangGeser = true;
+    sudahBergerak = false;
 
-    const rect =
-        currentOverlay.getBoundingClientRect();
+    mulaiX = event.clientX;
+    mulaiY = event.clientY;
 
-    offsetX =
-        event.clientX - rect.left;
+    posisiAwalX = elemenTeks.offsetLeft;
+    posisiAwalY = elemenTeks.offsetTop;
 
-    offsetY =
-        event.clientY - rect.top;
-
-    currentOverlay.setPointerCapture(
-        event.pointerId
-    );
+    elemenTeks.setPointerCapture(event.pointerId);
 });
 
 elemenTeks.addEventListener("pointermove", function (e) {
@@ -974,6 +972,13 @@ elemenTeks.addEventListener("pointermove", function (e) {
         (posisiAwalY + deltaY) + "px";
 
     elemenTeks.style.bottom = "auto";
+});
+elemenTeks.addEventListener("pointerup", function (event) {
+    sedangGeser = false;
+
+    if (elemenTeks.hasPointerCapture(event.pointerId)) {
+        elemenTeks.releasePointerCapture(event.pointerId);
+    }
 });
 
 overlayImage.addEventListener("pointerup", function (event) {
