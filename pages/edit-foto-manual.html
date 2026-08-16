@@ -805,7 +805,9 @@ const textColor =
     document.querySelectorAll(".text-color-dot");
 
 textColorDots.forEach(function(dot) {
-    dot.addEventListener("click", function() {
+    dot.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
         const warnaDipilih =
             this.getAttribute("data-color");
 
