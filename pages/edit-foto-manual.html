@@ -1487,27 +1487,51 @@ isiTeks.textContent = teks;
 
 elemenTeks.appendChild(isiTeks);
 
-elemenTeks.addEventListener("click", function (e) {
-    if (sudahBergerak) return;
+let timerEditTeks = null;
+let posisiTekanX = 0;
+let posisiTekanY = 0;
 
-    e.stopPropagation();
+elemenTeks.addEventListener("pointerdown", function (e) {
+    posisiTekanX = e.clientX;
+    posisiTekanY = e.clientY;
 
-    elemenTeksAktif = elemenTeks;
+    clearTimeout(timerEditTeks);
 
-    const isiTeksLama =
-        elemenTeks.querySelector(".isi-teks");
+    timerEditTeks = setTimeout(function () {
+        elemenTeksAktif = elemenTeks;
 
-    if (isiTeksLama) {
-        textInput.value = isiTeksLama.textContent;
+        const isiTeksLama =
+            elemenTeks.querySelector(".isi-teks");
+
+        if (isiTeksLama) {
+            textInput.value = isiTeksLama.textContent;
+        }
+
+        textColor.value =
+            elemenTeks.style.color || "#ffffff";
+
+        textPanel.style.display = "block";
+        document.querySelector(".toolbar").style.display = "none";
+
+        textInput.focus();
+    }, 600);
+});
+
+elemenTeks.addEventListener("pointermove", function (e) {
+    const geserX = Math.abs(e.clientX - posisiTekanX);
+    const geserY = Math.abs(e.clientY - posisiTekanY);
+
+    if (geserX > 10 || geserY > 10) {
+        clearTimeout(timerEditTeks);
     }
+});
 
-    textColor.value =
-        elemenTeks.style.color || "#ffffff";
+elemenTeks.addEventListener("pointerup", function () {
+    clearTimeout(timerEditTeks);
+});
 
-    textPanel.style.display = "block";
-    document.querySelector(".toolbar").style.display = "none";
-
-    textInput.focus();
+elemenTeks.addEventListener("pointercancel", function () {
+    clearTimeout(timerEditTeks);
 });
 
 elemenTeks.className = "teks-tambahan";
