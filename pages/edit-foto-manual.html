@@ -489,6 +489,33 @@ grid-column: 1 / -1;
     z-index: 50;
 }
 
+.rotate-handle {
+    position: absolute;
+    right: -22px;
+    top: -22px;
+
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+
+    background: rgba(20, 25, 40, 0.9);
+    border: 2px solid white;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+
+    z-index: 51;
+}
+
 /* Hilangkan bentuk tombol putih besar */
 #addTextBtn,
 #cancelTextBtn {
@@ -1382,6 +1409,56 @@ resizeHandle.className = "resize-handle";
 resizeHandle.innerHTML = "↘";
 
 elemenTeks.appendChild(resizeHandle);
+
+const rotateHandle = document.createElement("div");
+
+rotateHandle.className = "rotate-handle";
+rotateHandle.innerHTML = "↻";
+
+elemenTeks.appendChild(rotateHandle);
+
+rotateHandle.addEventListener("pointerdown", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const rect = elemenTeks.getBoundingClientRect();
+
+    const tengahX = rect.left + rect.width / 2;
+    const tengahY = rect.top + rect.height / 2;
+
+    function putarTeks(ev) {
+        const sudut =
+            Math.atan2(
+                ev.clientY - tengahY,
+                ev.clientX - tengahX
+            ) * 180 / Math.PI;
+
+        elemenTeks.style.rotate =
+            (sudut + 90) + "deg";
+    }
+
+    function selesaiPutar() {
+        window.removeEventListener(
+            "pointermove",
+            putarTeks
+        );
+
+        window.removeEventListener(
+            "pointerup",
+            selesaiPutar
+        );
+    }
+
+    window.addEventListener(
+        "pointermove",
+        putarTeks
+    );
+
+    window.addEventListener(
+        "pointerup",
+        selesaiPutar
+    );
+});
 
 resizeHandle.addEventListener("pointerdown", function (e) {
     e.stopPropagation();
