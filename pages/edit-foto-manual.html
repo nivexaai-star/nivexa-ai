@@ -1433,8 +1433,10 @@ rotateHandle.addEventListener("pointerdown", function (e) {
                 ev.clientX - tengahX
             ) * 180 / Math.PI;
 
-        elemenTeks.style.rotate =
-            (sudut + 90) + "deg";
+        const sudutLembut = (sudut + 90) * 0.35;
+
+elemenTeks.style.rotate =
+    sudutLembut + "deg";
     }
 
     function selesaiPutar() {
