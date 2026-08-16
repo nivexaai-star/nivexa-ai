@@ -1487,6 +1487,29 @@ isiTeks.textContent = teks;
 
 elemenTeks.appendChild(isiTeks);
 
+elemenTeks.addEventListener("click", function (e) {
+    if (sudahBergerak) return;
+
+    e.stopPropagation();
+
+    elemenTeksAktif = elemenTeks;
+
+    const isiTeksLama =
+        elemenTeks.querySelector(".isi-teks");
+
+    if (isiTeksLama) {
+        textInput.value = isiTeksLama.textContent;
+    }
+
+    textColor.value =
+        elemenTeks.style.color || "#ffffff";
+
+    textPanel.style.display = "block";
+    document.querySelector(".toolbar").style.display = "none";
+
+    textInput.focus();
+});
+
 elemenTeks.className = "teks-tambahan";
         elemenTeks.style.position = "absolute";
         elemenTeks.style.left = "50%";
