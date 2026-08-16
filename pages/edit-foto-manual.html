@@ -1616,6 +1616,72 @@ document.addEventListener("pointermove", function (e) {
 document.addEventListener("pointerup", function () {
     cropDragging = false;
 });
+let cropResizing = false;
+let resizeStartX = 0;
+let resizeStartY = 0;
+let resizeStartWidth = 0;
+let resizeStartHeight = 0;
+
+document.addEventListener("pointerdown", function (e) {
+    if (e.target.id !== "cropResizeHandle") return;
+
+    e.stopPropagation();
+
+    const cropBox =
+        document.getElementById("cropBox");
+
+    if (!cropBox) return;
+
+    cropResizing = true;
+
+    resizeStartX = e.clientX;
+    resizeStartY = e.clientY;
+
+    resizeStartWidth = cropBox.offsetWidth;
+    resizeStartHeight = cropBox.offsetHeight;
+
+    e.target.setPointerCapture(e.pointerId);
+});
+
+document.addEventListener("pointermove", function (e) {
+    if (!cropResizing) return;
+
+    const cropBox =
+        document.getElementById("cropBox");
+
+    if (!cropBox) return;
+
+    const parent = cropBox.parentElement;
+
+    const dx = e.clientX - resizeStartX;
+    const dy = e.clientY - resizeStartY;
+
+    let width = resizeStartWidth + dx;
+    let height = resizeStartHeight + dy;
+
+    const maxWidth =
+        parent.clientWidth - cropBox.offsetLeft;
+
+    const maxHeight =
+        parent.clientHeight - cropBox.offsetTop;
+
+    width = Math.max(
+        80,
+        Math.min(width, maxWidth)
+    );
+
+    height = Math.max(
+        80,
+        Math.min(height, maxHeight)
+    );
+
+    cropBox.style.width = width + "px";
+    cropBox.style.height = height + "px";
+});
+
+document.addEventListener("pointerup", function () {
+    cropResizing = false;
+});
 
 let filterIndex = 0;
 
