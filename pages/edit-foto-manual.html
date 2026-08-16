@@ -1477,21 +1477,34 @@ document
         const foto =
             document.getElementById("fotoPreview");
 
-        if (!foto) {
+        if (!foto || !foto.src) {
             alert("Pilih foto terlebih dahulu.");
             return;
         }
 
-        if (foto.style.objectFit === "cover") {
-            foto.style.objectFit = "contain";
-            foto.style.width = "100%";
-            foto.style.height = "auto";
-        } else {
-            foto.style.objectFit = "cover";
-            foto.style.width = "100%";
-            foto.style.height = "350px";
+        let cropPanel =
+            document.getElementById("cropPanel");
+
+        if (!cropPanel) {
+            cropPanel = document.createElement("div");
+            cropPanel.id = "cropPanel";
+
+            cropPanel.innerHTML = `
+                <button type="button" data-ratio="free">Bebas</button>
+                <button type="button" data-ratio="1">1:1</button>
+                <button type="button" data-ratio="0.8">4:5</button>
+                <button type="button" data-ratio="0.5625">9:16</button>
+                <button type="button" data-ratio="1.7778">16:9</button>
+            `;
+
+            document
+                .querySelector(".toolbar")
+                .appendChild(cropPanel);
         }
+
+        cropPanel.style.display = "flex";
     });
+
 let filterIndex = 0;
 
 const daftarFilter = [
