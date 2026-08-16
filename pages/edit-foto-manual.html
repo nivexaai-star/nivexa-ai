@@ -1426,17 +1426,33 @@ rotateHandle.addEventListener("pointerdown", function (e) {
     const tengahX = rect.left + rect.width / 2;
     const tengahY = rect.top + rect.height / 2;
 
+    const sudutAwalJari =
+        Math.atan2(
+            e.clientY - tengahY,
+            e.clientX - tengahX
+        ) * 180 / Math.PI;
+
+    const rotasiAwal =
+        parseFloat(elemenTeks.dataset.rotasi || "0");
+
     function putarTeks(ev) {
-        const sudut =
+        const sudutSekarang =
             Math.atan2(
                 ev.clientY - tengahY,
                 ev.clientX - tengahX
             ) * 180 / Math.PI;
 
-        const sudutLembut = (sudut + 90) * 0.35;
+        const selisihSudut =
+            sudutSekarang - sudutAwalJari;
 
-elemenTeks.style.rotate =
-    sudutLembut + "deg";
+        const rotasiBaru =
+            rotasiAwal + selisihSudut;
+
+        elemenTeks.style.rotate =
+            rotasiBaru + "deg";
+
+        elemenTeks.dataset.rotasi =
+            rotasiBaru;
     }
 
     function selesaiPutar() {
