@@ -753,7 +753,11 @@ textColorDots.forEach(function(dot) {
         textColor.value = warnaDipilih;
 
         if (elemenTeksAktif) {
-    elemenTeksAktif.style.color = warnaDipilih;
+    elemenTeksAktif.style.setProperty(
+        "color",
+        warnaDipilih,
+        "important"
+    );
 }
 
         textColorDots.forEach(function(item) {
