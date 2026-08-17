@@ -18,7 +18,7 @@ pool.query(`
         nama TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        kredit INTEGER NOT NULL DEFAULT 1,
+        kredit INTEGER NOT NULL DEFAULT 0,
         dibuat_pada TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 `)
@@ -28,6 +28,19 @@ pool.query(`
 .catch((error) => {
     console.error(
         "❌ Gagal menyiapkan tabel users:",
+        error.message
+    );
+});
+pool.query(`
+    ALTER TABLE users
+    ALTER COLUMN kredit SET DEFAULT 0
+`)
+.then(() => {
+    console.log("✅ Default kredit akun baru = 0");
+})
+.catch((error) => {
+    console.error(
+        "❌ Gagal mengubah default kredit:",
         error.message
     );
 });
