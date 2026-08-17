@@ -1287,13 +1287,40 @@ overlayBtn.addEventListener("click", function () {
     overlayInput.click();
 });
 
-overlayInput.addEventListener("change", function () {
+overlayInput.addEventListener("change", async function () {
     const file = overlayInput.files[0];
 
     if (!file) {
         return;
     }
+const formDataOverlay = new FormData();
 
+formDataOverlay.append(
+    "photo",
+    file
+);
+
+let fileOverlayBersih = file;
+
+try {
+    const responseOverlay = await fetch(
+        "https://nivexa-ai-2.onrender.com/hapus-background",
+        {
+            method: "POST",
+            body: formDataOverlay
+        }
+    );
+
+    if (responseOverlay.ok) {
+        fileOverlayBersih =
+            await responseOverlay.blob();
+    }
+} catch (error) {
+    console.error(
+        "Gagal hapus background overlay:",
+        error
+    );
+}
 
     const foto =
         document.getElementById("fotoPreview");
@@ -1458,7 +1485,7 @@ currentOverlay.addEventListener("touchend", function (e) {
     }
 });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(fileOverlayBersih);
 });
     const ratioBtn = document.getElementById("ratioBtn");
 const ratioOptions = document.getElementById("ratioOptions");
