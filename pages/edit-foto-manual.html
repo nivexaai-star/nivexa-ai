@@ -1168,9 +1168,10 @@ cropActionsTampil:
         overlayParent: overlayImage
             ? overlayImage.parentElement
             : null,
-            teksElement: elemenTeksAktif,
-teksParent: elemenTeksAktif
-    ? elemenTeksAktif.parentElement
+          teksElement: document.querySelector(".teks-tambahan"),
+
+teksParent: document.querySelector(".teks-tambahan")
+    ? document.querySelector(".teks-tambahan").parentElement
     : null
     };
 }
@@ -1227,12 +1228,14 @@ if (cropActions) {
         }
     }
 }
+const teksSekarang =
+    document.querySelector(".teks-tambahan");
+
 if (
-    elemenTeksAktif &&
-    elemenTeksAktif !== state.teksElement &&
-    elemenTeksAktif.parentElement
+    teksSekarang &&
+    teksSekarang !== state.teksElement
 ) {
-    elemenTeksAktif.remove();
+    teksSekarang.remove();
 }
 
 elemenTeksAktif = state.teksElement || null;
