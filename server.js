@@ -390,8 +390,8 @@ const userJsonLama = dataUserLama.find(function (item) {
 });
 
 const kreditAwal = userJsonLama
-    ? Number(userJsonLama.kredit || 1)
-    : 1;
+    ? Number(userJsonLama.kredit || 0)
+    : 0;
         const passwordHash =
             await bcrypt.hash(password, 10);
 
@@ -459,8 +459,8 @@ app.post("/login-user", async function (req, res) {
                 password,
                 kredit
             FROM users
-            WHERE LOWER(email) = $1
-            LIMIT 1
+            WHERE LOWER(email) = $0
+            LIMIT 0
             `,
             [email]
         );
