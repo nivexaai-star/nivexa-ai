@@ -1292,12 +1292,13 @@ overlayInput.addEventListener("change", function () {
         overlayImage.style.cursor = "move";
 
         foto.parentElement.style.position =
-            "relative";
+    "relative";
 
-        foto.parentElement.appendChild(
-            overlayImage
-        );
-        simpanUndo();
+simpanUndo();
+
+foto.parentElement.appendChild(
+    overlayImage
+);
 let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
