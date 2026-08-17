@@ -1315,7 +1315,9 @@ currentOverlay.oncontextmenu = function (e) {
 currentOverlay.addEventListener("pointerdown", function (event) {
     if (event.pointerType === "touch" && !event.isPrimary) return;
 
+    if (event.pointerType !== "touch") {
     event.preventDefault();
+}
 
     sedangGeser = true;
     sudahBergerak = false;
@@ -1404,7 +1406,7 @@ currentOverlay.addEventListener("touchmove", function (e) {
 
         let lebarBaru = lebarAwal * skala;
 
-        lebarBaru = Math.max(40, Math.min(1200, lebarBaru));
+        lebarBaru = Math.max(50, Math.min(500, lebarBaru));
 
         currentOverlay.style.width =
     lebarBaru + "px";
