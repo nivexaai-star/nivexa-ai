@@ -1574,7 +1574,10 @@ document.addEventListener("pointerdown", function (e) {
 
    if (!cropBox) return;
 
-   e.preventDefault();
+   cropBox.oncontextmenu = function (e) {
+    e.preventDefault();
+    return false;
+};
 
 // Bulatan resize jangan ikut menggeser kotak
 if (e.target.id === "cropResizeHandle") return;
