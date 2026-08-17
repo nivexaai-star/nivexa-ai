@@ -672,6 +672,34 @@ grid-column: 1 / -1;
     user-select: none;
     -webkit-user-select: none;
 }
+.mirror-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-right: 6px;
+}
+
+.mirror-left,
+.mirror-right {
+    width: 8px;
+    height: 12px;
+    border: 2px solid currentColor;
+}
+
+.mirror-left {
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.mirror-right {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.mirror-line {
+    width: 2px;
+    height: 14px;
+    background: currentColor;
+    opacity: 0.8;
+}
 
     </style>
 </head>
@@ -714,7 +742,12 @@ grid-column: 1 / -1;
 </button>
 
             <button class="tool-btn" id="balikBtn">
-    ↔️ Balik Foto
+    <span class="mirror-icon">
+        <span class="mirror-left"></span>
+        <span class="mirror-line"></span>
+        <span class="mirror-right"></span>
+    </span>
+    Cermin
 </button>
 
             <div class="control-group">
@@ -1981,16 +2014,38 @@ document
     .getElementById("balikBtn")
     .addEventListener("click", function () {
 
-        const foto = document.getElementById("fotoPreview");
+        if (overlayImage && overlayImage.parentElement) {
+            simpanUndo();
+
+            const sudahCermin =
+                overlayImage.dataset.cermin === "true";
+
+            overlayImage.dataset.cermin =
+                sudahCermin ? "false" : "true";
+
+            const scaleX =
+                sudahCermin ? 1 : -1;
+
+            overlayImage.style.transform =
+                `translate(-50%, -50%) scaleX(${scaleX})`;
+
+            return;
+        }
+
+        const foto =
+            document.getElementById("fotoPreview");
 
         if (!foto) {
             alert("Pilih foto terlebih dahulu.");
             return;
         }
 
+        simpanUndo();
+
         balikX *= -1;
         updateTransformFoto();
     });
+
     const brightnessRange =
     document.getElementById("brightnessRange");
 
