@@ -1608,6 +1608,7 @@ if (!diDalamKotak) return;
 
 document.addEventListener("pointermove", function (e) {
     if (!cropDragging) return;
+    e.preventDefault();
 
     const cropBox = document.getElementById("cropBox");
     if (!cropBox) return;
