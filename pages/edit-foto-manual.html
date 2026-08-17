@@ -2507,6 +2507,11 @@ if (overlayImage) {
 
         canvas.toBlob(function (blob) {
 
+            if (!blob) {
+    alert("Foto gagal disimpan. Coba lagi.");
+    return;
+}
+
             const url =
                 URL.createObjectURL(blob);
 
