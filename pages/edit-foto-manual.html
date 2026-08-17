@@ -1640,6 +1640,74 @@ document.addEventListener("pointermove", function (e) {
 document.addEventListener("pointerup", function () {
     cropDragging = false;
 });
+document.addEventListener("click", function (e) {
+    if (e.target.id !== "applyCropBtn") return;
+
+    const foto = document.getElementById("fotoPreview");
+    const cropBox = document.getElementById("cropBox");
+
+    if (!foto || !cropBox) return;
+
+    const fotoRect = foto.getBoundingClientRect();
+    const cropRect = cropBox.getBoundingClientRect();
+
+    const naturalW = foto.naturalWidth;
+    const naturalH = foto.naturalHeight;
+
+    if (!naturalW || !naturalH) return;
+
+    // Karena fotoPreview memakai object-fit: cover
+    const scale = Math.max(
+        fotoRect.width / naturalW,
+        fotoRect.height / naturalH
+    );
+
+    const tampilW = naturalW * scale;
+    const tampilH = naturalH * scale;
+
+    const offsetX = (tampilW - fotoRect.width) / 2;
+    const offsetY = (tampilH - fotoRect.height) / 2;
+
+    const xDiFoto = cropRect.left - fotoRect.left;
+    const yDiFoto = cropRect.top - fotoRect.top;
+
+    const sourceX = (xDiFoto + offsetX) / scale;
+    const sourceY = (yDiFoto + offsetY) / scale;
+
+    const sourceW = cropRect.width / scale;
+    const sourceH = cropRect.height / scale;
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = Math.round(sourceW);
+    canvas.height = Math.round(sourceH);
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+        foto,
+        sourceX,
+        sourceY,
+        sourceW,
+        sourceH,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    foto.src = canvas.toDataURL("image/png");
+
+    cropBox.remove();
+
+    const cropActions =
+        document.getElementById("cropActions");
+
+    if (cropActions) {
+        cropActions.style.display = "none";
+    }
+});
+
 let cropResizing = false;
 let resizeStartX = 0;
 let resizeStartY = 0;
