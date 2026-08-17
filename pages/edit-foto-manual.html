@@ -1328,7 +1328,9 @@ currentOverlay.addEventListener("pointerdown", function (event) {
     posisiAwalX = currentOverlay.offsetLeft;
     posisiAwalY = currentOverlay.offsetTop;
 
+    if (event.pointerType !== "touch") {
     currentOverlay.setPointerCapture(event.pointerId);
+}
 });
 
 currentOverlay.addEventListener("pointermove", function (e) {
