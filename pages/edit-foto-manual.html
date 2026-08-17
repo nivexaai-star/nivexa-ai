@@ -1212,13 +1212,17 @@ if (cropActions) {
 
     overlayImage = state.overlayImage || null;
 
-    if (
-        overlayImage &&
-        state.overlayParent &&
-        !overlayImage.parentElement
-    ) {
-        state.overlayParent.appendChild(overlayImage);
+    if (overlayImage) {
+    if (state.overlayParent) {
+        if (!overlayImage.parentElement) {
+            state.overlayParent.appendChild(overlayImage);
+        }
+    } else {
+        if (overlayImage.parentElement) {
+            overlayImage.remove();
+        }
     }
+}
 }
 
 function simpanUndo() {
