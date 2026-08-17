@@ -2512,24 +2512,27 @@ if (overlayImage) {
     return;
 }
 
-            const url =
-                URL.createObjectURL(blob);
+            const url = URL.createObjectURL(blob);
 
-            const link =
-                document.createElement("a");
+const link = document.createElement("a");
+link.href = url;
+link.download = "nivexa-edit-foto.jpg";
+link.style.display = "none";
 
-            link.href = url;
-            link.download =
-                "nivexa-edit-foto.jpg";
+document.body.appendChild(link);
 
-            document.body.appendChild(link);
+link.dispatchEvent(
+    new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+    })
+);
 
-            link.click();
-            link.remove();
-
-            setTimeout(function () {
-                URL.revokeObjectURL(url);
-            }, 1000);
+setTimeout(function () {
+    link.remove();
+    URL.revokeObjectURL(url);
+}, 3000);
 
         }, "image/jpeg", 0.95);
     });
