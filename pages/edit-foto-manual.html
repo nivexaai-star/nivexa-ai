@@ -1301,23 +1301,35 @@ overlayInput.addEventListener("change", function () {
 let sedangGeser = false;
 let offsetX = 0;
 let offsetY = 0;
-overlayImage.style.touchAction = "none";
-elemenTeks.style.touchAction = "none";
 
-elemenTeks.addEventListener("pointerdown", function (event) {
+currentOverlay.style.touchAction = "none";
+currentOverlay.style.userSelect = "none";
+currentOverlay.style.webkitUserSelect = "none";
+currentOverlay.style.webkitTouchCallout = "none";
+
+currentOverlay.oncontextmenu = function (e) {
+    e.preventDefault();
+    return false;
+};
+
+currentOverlay.addEventListener("pointerdown", function (event) {
+    if (event.pointerType === "touch" && !event.isPrimary) return;
+
+    event.preventDefault();
+
     sedangGeser = true;
     sudahBergerak = false;
 
     mulaiX = event.clientX;
     mulaiY = event.clientY;
 
-    posisiAwalX = elemenTeks.offsetLeft;
-    posisiAwalY = elemenTeks.offsetTop;
+    posisiAwalX = currentOverlay.offsetLeft;
+    posisiAwalY = currentOverlay.offsetTop;
 
-    elemenTeks.setPointerCapture(event.pointerId);
+    currentOverlay.setPointerCapture(event.pointerId);
 });
 
-elemenTeks.addEventListener("pointermove", function (e) {
+currentOverlay.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
 
     const jarakX = Math.abs(e.clientX - mulaiX);
@@ -1331,13 +1343,13 @@ elemenTeks.addEventListener("pointermove", function (e) {
     const deltaX = e.clientX - mulaiX;
     const deltaY = e.clientY - mulaiY;
 
-    elemenTeks.style.left =
-        (posisiAwalX + deltaX) + "px";
+    currentOverlay.style.left =
+    (posisiAwalX + deltaX) + "px";
 
-    elemenTeks.style.top =
-        (posisiAwalY + deltaY) + "px";
+currentOverlay.style.top =
+    (posisiAwalY + deltaY) + "px";
 
-    elemenTeks.style.bottom = "auto";
+currentOverlay.style.bottom = "auto";
 });
 elemenTeks.addEventListener("pointerup", function (event) {
     sedangGeser = false;
