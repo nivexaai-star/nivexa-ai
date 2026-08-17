@@ -2063,6 +2063,7 @@ addTextBtn.addEventListener("click", function () {
     const warna = textColor.value;
 
     if (!foto) return;
+    simpanUndo();
 
 if (!teks && elemenTeksAktif) {
     elemenTeksAktif.remove();
