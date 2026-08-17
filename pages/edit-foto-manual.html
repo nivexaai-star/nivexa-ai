@@ -1139,43 +1139,79 @@ const overlayInput =
 let overlayImage = null;
 let elemenTeksAktif = null;
 
-function simpanUndo() {
-    if (!overlayImage) return;
+function ambilStateEditor() {
+    const foto = document.getElementById("fotoPreview");
 
-    undoStack.push({
+    return {
+        fotoSrc: foto ? foto.src : "",
+        rotasi: rotasi,
+        balikX: balikX,
         overlayImage: overlayImage,
-        parent: overlayImage.parentElement
-    });
+        overlayParent: overlayImage
+            ? overlayImage.parentElement
+            : null
+    };
+}
+
+function terapkanStateEditor(state) {
+    const foto = document.getElementById("fotoPreview");
+
+    if (foto && state.fotoSrc) {
+        foto.src = state.fotoSrc;
+    }
+
+    rotasi = state.rotasi;
+    balikX = state.balikX;
+
+    updateTransformFoto();
+
+    if (
+        overlayImage &&
+        overlayImage !== state.overlayImage &&
+        overlayImage.parentElement
+    ) {
+        overlayImage.remove();
+    }
+
+    overlayImage = state.overlayImage || null;
+
+    if (
+        overlayImage &&
+        state.overlayParent &&
+        !overlayImage.parentElement
+    ) {
+        state.overlayParent.appendChild(overlayImage);
+    }
+}
+
+function simpanUndo() {
+    undoStack.push(ambilStateEditor());
+
+    if (undoStack.length > 30) {
+        undoStack.shift();
+    }
 
     redoStack = [];
 }
+
 undoBtn.addEventListener("click", function () {
     if (undoStack.length === 0) return;
 
+    redoStack.push(ambilStateEditor());
+
     const state = undoStack.pop();
-    redoStack.push(state);
 
-    if (state.overlayImage) {
-        state.overlayImage.remove();
-    }
-
-    overlayImage =
-        undoStack.length > 0
-            ? undoStack[undoStack.length - 1].overlayImage
-            : null;
+    terapkanStateEditor(state);
 });
 
 redoBtn.addEventListener("click", function () {
     if (redoStack.length === 0) return;
 
+    undoStack.push(ambilStateEditor());
+
     const state = redoStack.pop();
 
-    if (state.overlayImage && state.parent) {
-        state.parent.appendChild(state.overlayImage);
-        overlayImage = state.overlayImage;
-
-        undoStack.push(state);
-    }
+    terapkanStateEditor(state);
 });
 
 overlayBtn.addEventListener("click", function () {
@@ -1469,6 +1505,7 @@ document
             alert("Pilih foto terlebih dahulu.");
             return;
         }
+        simpanUndo();
 
         rotasi = (rotasi + 90) % 360;
         updateTransformFoto();
@@ -1527,9 +1564,6 @@ document
             cropActions.id = "cropActions";
 
             cropActions.innerHTML = `
-                <button type="button" id="cancelCropBtn">
-                    Batal
-                </button>
 
                 <button type="button" id="applyCropBtn">
                     ✓ Terapkan
