@@ -1312,57 +1312,56 @@ currentOverlay.oncontextmenu = function (e) {
     return false;
 };
 
-currentOverlay.addEventListener("pointerdown", function (event) {
-    if (event.pointerType === "touch" && !event.isPrimary) return;
+let mulaiX = 0;
+let mulaiY = 0;
+let posisiAwalX = 0;
+let posisiAwalY = 0;
 
-    if (event.pointerType !== "touch") {
-    event.preventDefault();
-}
+currentOverlay.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "touch" && !e.isPrimary) {
+        sedangGeser = false;
+        return;
+    }
 
     sedangGeser = true;
-    sudahBergerak = false;
 
-    mulaiX = event.clientX;
-    mulaiY = event.clientY;
+    mulaiX = e.clientX;
+    mulaiY = e.clientY;
 
-    const rectOverlay = currentOverlay.getBoundingClientRect();
-const rectParent = currentOverlay.offsetParent.getBoundingClientRect();
+    posisiAwalX = currentOverlay.offsetLeft;
+    posisiAwalY = currentOverlay.offsetTop;
 
-posisiAwalX = rectOverlay.left - rectParent.left;
-posisiAwalY = rectOverlay.top - rectParent.top;
-
-    if (event.pointerType !== "touch") {
-    currentOverlay.setPointerCapture(event.pointerId);
-}
+    currentOverlay.setPointerCapture(e.pointerId);
 });
 
 currentOverlay.addEventListener("pointermove", function (e) {
     if (!sedangGeser) return;
 
-    const jarakX = Math.abs(e.clientX - mulaiX);
-    const jarakY = Math.abs(e.clientY - mulaiY);
-
-    if (!sudahBergerak) {
-        if (jarakX < 15 && jarakY < 15) return;
-        sudahBergerak = true;
-    }
-
     const deltaX = e.clientX - mulaiX;
     const deltaY = e.clientY - mulaiY;
 
     currentOverlay.style.left =
-    (posisiAwalX + deltaX) + "px";
+        (posisiAwalX + deltaX) + "px";
 
-currentOverlay.style.top =
-    (posisiAwalY + deltaY) + "px";
+    currentOverlay.style.top =
+        (posisiAwalY + deltaY) + "px";
 
-currentOverlay.style.bottom = "auto";
+    currentOverlay.style.bottom = "auto";
 });
-elemenTeks.addEventListener("pointerup", function (event) {
+
+currentOverlay.addEventListener("pointerup", function (e) {
     sedangGeser = false;
 
-    if (elemenTeks.hasPointerCapture(event.pointerId)) {
-        elemenTeks.releasePointerCapture(event.pointerId);
+    if (currentOverlay.hasPointerCapture(e.pointerId)) {
+        currentOverlay.releasePointerCapture(e.pointerId);
+    }
+});
+
+currentOverlay.addEventListener("pointercancel", function (e) {
+    sedangGeser = false;
+
+    if (currentOverlay.hasPointerCapture(e.pointerId)) {
+        currentOverlay.releasePointerCapture(e.pointerId);
     }
 });
 
@@ -1374,14 +1373,6 @@ overlayImage.addEventListener("pointerup", function (event) {
     );
 });
 
-currentOverlay.addEventListener("pointerup", function (event) {
-    sedangGeser = false;
-    sudahBergerak = false;
-
-    if (currentOverlay.hasPointerCapture(event.pointerId)) {
-        currentOverlay.releasePointerCapture(event.pointerId);
-    }
-});
 let jarakAwal = 0;
 let lebarAwal = 0;
 
