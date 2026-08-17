@@ -2495,26 +2495,63 @@ if (overlayImage) {
 
     ctx.restore();
 }
-        const teksTambahan =
-            foto.parentElement.querySelectorAll(
-                ".teks-tambahan"
-            );
+         const teksTambahan =
+    foto.parentElement.querySelectorAll(
+        ".teks-tambahan"
+    );
 
-        teksTambahan.forEach(function (item) {
+const fotoRectTeks =
+    foto.getBoundingClientRect();
 
-            ctx.font = "bold 64px Arial";
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
+const scaleXTeks =
+    canvas.width / fotoRectTeks.width;
 
-            ctx.shadowColor = "black";
-            ctx.shadowBlur = 8;
+const scaleYTeks =
+    canvas.height / fotoRectTeks.height;
 
-            ctx.fillText(
-                item.textContent,
-                canvas.width / 2,
-                canvas.height - 80
-            );
-        });
+teksTambahan.forEach(function (item) {
+
+    const teksRect =
+        item.getBoundingClientRect();
+
+    const teksX =
+        (teksRect.left - fotoRectTeks.left + teksRect.width / 2)
+        * scaleXTeks;
+
+    const teksY =
+        (teksRect.top - fotoRectTeks.top + teksRect.height / 2)
+        * scaleYTeks;
+
+    const ukuranFont =
+        parseFloat(
+            window.getComputedStyle(item).fontSize
+        ) * scaleYTeks;
+
+    const gaya =
+        window.getComputedStyle(item);
+
+    ctx.save();
+
+    ctx.font =
+        `${gaya.fontWeight} ${ukuranFont}px ${gaya.fontFamily}`;
+
+    ctx.fillStyle =
+        gaya.color;
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.shadowColor = "rgba(0,0,0,0.55)";
+    ctx.shadowBlur = 8;
+
+    ctx.fillText(
+        item.textContent,
+        teksX,
+        teksY
+    );
+
+    ctx.restore();
+});
 
         canvas.toBlob(function (blob) {
 
