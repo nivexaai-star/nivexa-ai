@@ -1141,11 +1141,18 @@ let elemenTeksAktif = null;
 
 function ambilStateEditor() {
     const foto = document.getElementById("fotoPreview");
+    const cropBox = document.getElementById("cropBox");
+const cropActions = document.getElementById("cropActions");
 
     return {
         fotoSrc: foto ? foto.src : "",
         rotasi: rotasi,
         balikX: balikX,
+        cropBoxClone: cropBox ? cropBox.cloneNode(true) : null,
+cropParent: cropBox ? cropBox.parentElement : null,
+cropActionsTampil:
+    cropActions &&
+    cropActions.style.display !== "none",
         overlayImage: overlayImage,
         overlayParent: overlayImage
             ? overlayImage.parentElement
@@ -1155,6 +1162,8 @@ function ambilStateEditor() {
 
 function terapkanStateEditor(state) {
     const foto = document.getElementById("fotoPreview");
+    const cropBox = document.getElementById("cropBox");
+const cropActions = document.getElementById("cropActions");
 
     if (foto && state.fotoSrc) {
         foto.src = state.fotoSrc;
@@ -1164,6 +1173,23 @@ function terapkanStateEditor(state) {
     balikX = state.balikX;
 
     updateTransformFoto();
+
+    // Kembalikan keadaan Crop saat Undo / Redo
+if (cropBox) {
+    cropBox.remove();
+}
+
+if (state.cropBoxClone && state.cropParent) {
+    const cropBoxBaru =
+        state.cropBoxClone.cloneNode(true);
+
+    state.cropParent.appendChild(cropBoxBaru);
+}
+
+if (cropActions) {
+    cropActions.style.display =
+        state.cropActionsTampil ? "flex" : "none";
+}
 
     if (
         overlayImage &&
