@@ -788,6 +788,10 @@ grid-column: 1 / -1;
     🖼️ Overlay
 </button>
 
+<button class="tool-btn" id="hapusBgOverlayBtn">
+    ✂️ Hapus BG Overlay
+</button>
+
 <input
     type="file"
     id="overlayInput"
@@ -1143,6 +1147,8 @@ const undoBtn = document.getElementById("undoBtn");
 const redoBtn = document.getElementById("redoBtn");
     const overlayBtn =
     document.getElementById("overlayBtn");
+    const hapusBgOverlayBtn =
+    document.getElementById("hapusBgOverlayBtn");
 
 const overlayInput =
     document.getElementById("overlayInput");
@@ -1286,6 +1292,53 @@ redoBtn.addEventListener("click", function () {
 overlayBtn.addEventListener("click", function () {
     overlayInput.click();
 });
+hapusBgOverlayBtn.addEventListener("click", async function () {
+    if (!overlayImage || !overlayImage.src) {
+        alert("Pilih foto overlay terlebih dahulu.");
+        return;
+    }
+
+    try {
+        hapusBgOverlayBtn.disabled = true;
+        hapusBgOverlayBtn.textContent = "⏳ Menghapus BG...";
+
+        const responseGambar = await fetch(overlayImage.src);
+        const blobOverlay = await responseGambar.blob();
+
+        const formData = new FormData();
+        formData.append(
+            "photo",
+            blobOverlay,
+            "overlay.png"
+        );
+
+        simpanUndo();
+
+        const response = await fetch(
+            "https://nivexa-ai-2.onrender.com/hapus-background",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Gagal menghapus background overlay.");
+        }
+
+        const hasilBlob = await response.blob();
+        const hasilUrl = URL.createObjectURL(hasilBlob);
+
+        overlayImage.src = hasilUrl;
+
+    } catch (error) {
+        console.error(error);
+        alert("Gagal menghapus background overlay.");
+    } finally {
+        hapusBgOverlayBtn.disabled = false;
+        hapusBgOverlayBtn.textContent = "✂️ Hapus BG Overlay";
+    }
+});
 
 overlayInput.addEventListener("change", async function () {
     const file = overlayInput.files[0];
@@ -1293,34 +1346,6 @@ overlayInput.addEventListener("change", async function () {
     if (!file) {
         return;
     }
-const formDataOverlay = new FormData();
-
-formDataOverlay.append(
-    "photo",
-    file
-);
-
-let fileOverlayBersih = file;
-
-try {
-    const responseOverlay = await fetch(
-        "https://nivexa-ai-2.onrender.com/hapus-background",
-        {
-            method: "POST",
-            body: formDataOverlay
-        }
-    );
-
-    if (responseOverlay.ok) {
-        fileOverlayBersih =
-            await responseOverlay.blob();
-    }
-} catch (error) {
-    console.error(
-        "Gagal hapus background overlay:",
-        error
-    );
-}
 
     const foto =
         document.getElementById("fotoPreview");
@@ -1485,7 +1510,7 @@ currentOverlay.addEventListener("touchend", function (e) {
     }
 });
     };
-    reader.readAsDataURL(fileOverlayBersih);
+    reader.readAsDataURL(file);
 });
     const ratioBtn = document.getElementById("ratioBtn");
 const ratioOptions = document.getElementById("ratioOptions");
