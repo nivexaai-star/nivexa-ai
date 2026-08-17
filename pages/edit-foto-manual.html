@@ -1167,7 +1167,11 @@ cropActionsTampil:
         overlayImage: overlayImage,
         overlayParent: overlayImage
             ? overlayImage.parentElement
-            : null
+            : null,
+            teksElement: elemenTeksAktif,
+teksParent: elemenTeksAktif
+    ? elemenTeksAktif.parentElement
+    : null
     };
 }
 
@@ -1220,6 +1224,27 @@ if (cropActions) {
     } else {
         if (overlayImage.parentElement) {
             overlayImage.remove();
+        }
+    }
+}
+if (
+    elemenTeksAktif &&
+    elemenTeksAktif !== state.teksElement &&
+    elemenTeksAktif.parentElement
+) {
+    elemenTeksAktif.remove();
+}
+
+elemenTeksAktif = state.teksElement || null;
+
+if (elemenTeksAktif) {
+    if (state.teksParent) {
+        if (!elemenTeksAktif.parentElement) {
+            state.teksParent.appendChild(elemenTeksAktif);
+        }
+    } else {
+        if (elemenTeksAktif.parentElement) {
+            elemenTeksAktif.remove();
         }
     }
 }
