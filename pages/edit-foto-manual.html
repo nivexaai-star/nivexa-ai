@@ -737,6 +737,12 @@ grid-column: 1 / -1;
 
             <h3>Alat Edit</h3>
 
+            <div id="mainTools">
+
+            <button class="tool-btn" id="sesuaikanBtn">
+    ✨ Sesuaikan
+</button>
+
            <button class="tool-btn" id="cropBtn">
                 ✂️ Crop / Potong
             </button>
@@ -753,6 +759,8 @@ grid-column: 1 / -1;
     </span>
     Cermin
 </button>
+</div>
+<div id="adjustPanel" style="display: none;">
 
             <div class="control-group">
     <label for="brightnessRange">
@@ -815,6 +823,7 @@ grid-column: 1 / -1;
     <button class="tool-btn" id="effectBtn">
         ✨ Efek
     </button>
+    </div>
 
 </div>
            <button class="tool-btn" id="textBtn">
@@ -1182,6 +1191,20 @@ const cancelTextBtn =
 let redoStack = [];
 const undoBtn = document.getElementById("undoBtn");
 const redoBtn = document.getElementById("redoBtn");
+const sesuaikanBtn =
+    document.getElementById("sesuaikanBtn");
+
+const adjustPanel =
+    document.getElementById("adjustPanel");
+
+const toolbar =
+    document.querySelector(".toolbar");
+    const mainTools =
+    document.getElementById("mainTools");
+    sesuaikanBtn.addEventListener("click", function () {
+    mainTools.style.display = "none";
+    adjustPanel.style.display = "block";
+});
     const overlayBtn =
     document.getElementById("overlayBtn");
     const hapusBgOverlayBtn =
