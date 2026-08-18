@@ -854,6 +854,9 @@ grid-column: 1 / -1;
         value="100"
     >
 </div>
+<button class="tool-btn" id="selesaiAdjustBtn">
+    ✓
+</button>
 
 </div>
            <button class="tool-btn" id="textBtn">
@@ -1231,6 +1234,8 @@ const toolbar =
     document.querySelector(".toolbar");
     const mainTools =
     document.getElementById("mainTools");
+    const selesaiAdjustBtn =
+    document.getElementById("selesaiAdjustBtn");
     sesuaikanBtn.addEventListener("click", function () {
 
     Array.from(toolbar.children).forEach(function (item) {
@@ -1245,6 +1250,16 @@ const toolbar =
     });
 
     adjustPanel.style.display = "flex";
+});
+selesaiAdjustBtn.addEventListener("click", function () {
+    adjustPanel.style.display = "none";
+
+    Array.from(toolbar.children).forEach(function (item) {
+        if (item !== adjustPanel) {
+            item.style.display =
+                item.dataset.tampilanSebelum || "";
+        }
+    });
 });
     const overlayBtn =
     document.getElementById("overlayBtn");
