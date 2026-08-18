@@ -1202,7 +1202,18 @@ const toolbar =
     const mainTools =
     document.getElementById("mainTools");
     sesuaikanBtn.addEventListener("click", function () {
-    mainTools.style.display = "none";
+
+    Array.from(toolbar.children).forEach(function (item) {
+
+        if (item !== adjustPanel) {
+            item.dataset.tampilanSebelum =
+                item.style.display || "";
+
+            item.style.display = "none";
+        }
+
+    });
+
     adjustPanel.style.display = "block";
 });
     const overlayBtn =
