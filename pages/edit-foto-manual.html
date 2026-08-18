@@ -792,7 +792,28 @@ grid-column: 1 / -1;
 </div>
 <div id="adjustPanel" style="display: none;">
 
-            <div class="control-group">
+    <div class="effect-wrapper">
+    <div id="effectControl" style="display: none;">
+        <input
+            type="range"
+            id="effectRange"
+            min="0"
+            max="100"
+            value="0"
+        >
+        <span id="effectValue">0</span>
+    </div>
+
+    <button class="tool-btn" id="effectBtn">
+        ✨ Efek
+    </button>
+</div>
+
+<button class="tool-btn" id="filterBtn">
+    ✨ Filter
+</button>
+
+<div class="control-group">
     <label for="brightnessRange">
         ☀️ Kecerahan
     </label>
@@ -833,27 +854,6 @@ grid-column: 1 / -1;
         value="100"
     >
 </div>
-
-           <button class="tool-btn" id="filterBtn">
-    ✨ Filter
-</button>
-<div class="effect-wrapper">
-
-    <div id="effectControl" style="display: none;">
-        <input
-            type="range"
-            id="effectRange"
-            min="0"
-            max="100"
-            value="0"
-        >
-        <span id="effectValue">0</span>
-    </div>
-
-    <button class="tool-btn" id="effectBtn">
-        ✨ Efek
-    </button>
-    </div>
 
 </div>
            <button class="tool-btn" id="textBtn">
