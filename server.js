@@ -459,8 +459,8 @@ app.post("/login-user", async function (req, res) {
                 password,
                 kredit
             FROM users
-            WHERE LOWER(email) = $0
-            LIMIT 0
+            WHERE LOWER(email) = $1
+            LIMIT 1
             `,
             [email]
         );
