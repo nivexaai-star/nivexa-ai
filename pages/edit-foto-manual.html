@@ -308,6 +308,30 @@ margin-bottom: -20px;
 #mainTools {
     display: contents;
 }
+.adjust-menu-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    text-align: center;
+    width: 100%;
+}
+
+.adjust-menu-label .menu-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.adjust-menu-label .menu-label {
+    font-size: 12px;
+    line-height: 1.15;
+}
 
 #adjustPanel {
     position: relative;
@@ -880,8 +904,9 @@ grid-column: 1 / -1;
 </button>
 
 <div class="control-group">
-    <label for="brightnessRange">
-        ☀️ Kecerahan
+    <label for="brightnessRange" class="adjust-menu-label">
+        <span class="menu-icon">☀️</span>
+        <span class="menu-label">Kecerahan</span>
     </label>
 
     <input
