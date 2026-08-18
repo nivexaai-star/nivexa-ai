@@ -332,6 +332,55 @@ margin-bottom: -20px;
     font-size: 12px;
     line-height: 1.15;
 }
+#effectMenu {
+    display: none;
+    width: 100%;
+    align-items: center;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 8px 6px;
+    box-sizing: border-box;
+}
+
+#effectMenu .effect-choice {
+    flex: 0 0 76px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 4px;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+#effectMenu .effect-thumb {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+    background: rgba(255,255,255,0.08);
+}
+
+#effectMenu .effect-choice span {
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+#closeEffectMenu {
+    flex: 0 0 42px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+}
 
 #adjustPanel {
     position: relative;
@@ -904,6 +953,39 @@ grid-column: 1 / -1;
     <span class="menu-icon">✨</span>
     <span class="menu-label">Efek</span>
 </button>
+</div>
+
+<div id="effectMenu" style="display: none;">
+
+    <button class="effect-choice" data-effect="none">
+        <div class="effect-thumb">🖼️</div>
+        <span>Asli</span>
+    </button>
+
+    <button class="effect-choice" data-effect="warm">
+        <div class="effect-thumb">🌅</div>
+        <span>Hangat</span>
+    </button>
+
+    <button class="effect-choice" data-effect="cool">
+        <div class="effect-thumb">❄️</div>
+        <span>Dingin</span>
+    </button>
+
+    <button class="effect-choice" data-effect="bw">
+        <div class="effect-thumb">⚫</div>
+        <span>Hitam Putih</span>
+    </button>
+
+    <button class="effect-choice" data-effect="vintage">
+        <div class="effect-thumb">📷</div>
+        <span>Vintage</span>
+    </button>
+
+    <button id="closeEffectMenu" type="button">
+        ✓
+    </button>
+
 </div>
 
 <button class="tool-btn menu-icon-btn" id="filterBtn">
@@ -2306,12 +2388,23 @@ const effectControl = document.getElementById("effectControl");
 const effectRange = document.getElementById("effectRange");
 const effectValue = document.getElementById("effectValue");
 
+const effectMenu = document.getElementById("effectMenu");
+const closeEffectMenu = document.getElementById("closeEffectMenu");
+
 effectBtn.addEventListener("click", function () {
-    if (effectControl.style.display === "none") {
-        effectControl.style.display = "flex";
-    } else {
-        effectControl.style.display = "none";
-    }
+    Array.from(adjustPanel.children).forEach(function (item) {
+        item.style.display = "none";
+    });
+
+    effectMenu.style.display = "flex";
+});
+
+closeEffectMenu.addEventListener("click", function () {
+    effectMenu.style.display = "none";
+
+    Array.from(adjustPanel.children).forEach(function (item) {
+        item.style.display = "";
+    });
 });
 
 effectRange.addEventListener("input", function () {
