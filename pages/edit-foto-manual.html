@@ -275,6 +275,7 @@ margin-bottom: -20px;
     font-size: 12px;
 }
 #adjustPanel {
+    position: relative;
     display: none;
     flex-direction: row;
     align-items: stretch;
@@ -285,14 +286,26 @@ margin-bottom: -20px;
     padding-bottom: 4px;
 }
 #selesaiAdjustBtn {
-    position: sticky;
-    right: 0;
-    flex: 0 0 52px;
-    width: 52px;
-    min-width: 52px;
-    max-width: 52px;
-    z-index: 10;
-    font-size: 22px;
+    position: absolute;
+    top: -34px;
+    right: 8px;
+
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    font-size: 24px;
+    line-height: 1;
+    color: white;
+
+    z-index: 20;
 }
 
 #adjustPanel .control-group,
