@@ -2406,6 +2406,33 @@ closeEffectMenu.addEventListener("click", function () {
         item.style.display = "";
     });
 });
+document.querySelectorAll(".effect-choice").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        const effect = btn.dataset.effect;
+
+        if (effect === "none") {
+            filterTambahan = "";
+        }
+
+        if (effect === "warm") {
+            filterTambahan = "sepia(25%) saturate(130%) brightness(105%)";
+        }
+
+        if (effect === "cool") {
+            filterTambahan = "hue-rotate(180deg) saturate(90%)";
+        }
+
+        if (effect === "bw") {
+            filterTambahan = "grayscale(100%)";
+        }
+
+        if (effect === "vintage") {
+            filterTambahan = "sepia(45%) contrast(90%) saturate(80%)";
+        }
+
+        updateFilterFoto();
+    });
+});
 
 effectRange.addEventListener("input", function () {
     const nilai = Number(effectRange.value);
