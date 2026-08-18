@@ -274,6 +274,36 @@ margin-bottom: -20px;
     margin-bottom: 0;
     font-size: 12px;
 }
+#adjustPanel {
+    display: none;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    padding-bottom: 4px;
+}
+
+#adjustPanel .control-group,
+#adjustPanel .tool-btn,
+#adjustPanel .effect-wrapper {
+    flex: 0 0 105px;
+    width: 105px;
+    min-width: 105px;
+    max-width: 105px;
+    box-sizing: border-box;
+}
+
+#adjustPanel .control-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#adjustPanel input[type="range"] {
+    width: 100%;
+}
 .effect-wrapper {
     display: flex;
     flex-direction: column;
@@ -1214,7 +1244,7 @@ const toolbar =
 
     });
 
-    adjustPanel.style.display = "block";
+    adjustPanel.style.display = "flex";
 });
     const overlayBtn =
     document.getElementById("overlayBtn");
