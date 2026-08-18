@@ -375,11 +375,22 @@ margin-bottom: -20px;
 }
 
 #closeEffectMenu {
-    flex: 0 0 42px;
-    background: transparent;
+    position: sticky;
+    right: 0;
+    flex: 0 0 46px;
+    min-width: 46px;
+    height: 70px;
+
+    background: #171b31;
     border: none;
     color: white;
     font-size: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 20;
 }
 
 #adjustPanel {
@@ -957,30 +968,30 @@ grid-column: 1 / -1;
 
 <div id="effectMenu" style="display: none;">
 
-    <button class="effect-choice" data-effect="none">
-        <div class="effect-thumb">🖼️</div>
-        <span>Asli</span>
-    </button>
+    <button type="button" class="effect-choice" data-effect="none">
+    <div class="effect-thumb">🖼️</div>
+    <span>Asli</span>
+</button>
 
-    <button class="effect-choice" data-effect="warm">
-        <div class="effect-thumb">🌅</div>
-        <span>Hangat</span>
-    </button>
+<button type="button" class="effect-choice" data-effect="warm">
+    <div class="effect-thumb">🌅</div>
+    <span>Hangat</span>
+</button>
 
-    <button class="effect-choice" data-effect="cool">
-        <div class="effect-thumb">❄️</div>
-        <span>Dingin</span>
-    </button>
+<button type="button" class="effect-choice" data-effect="cool">
+    <div class="effect-thumb">❄️</div>
+    <span>Dingin</span>
+</button>
 
-    <button class="effect-choice" data-effect="bw">
-        <div class="effect-thumb">⚫</div>
-        <span>Hitam Putih</span>
-    </button>
+<button type="button" class="effect-choice" data-effect="bw">
+    <div class="effect-thumb">⚪</div>
+    <span>Hitam Putih</span>
+</button>
 
-    <button class="effect-choice" data-effect="vintage">
-        <div class="effect-thumb">📷</div>
-        <span>Vintage</span>
-    </button>
+<button type="button" class="effect-choice" data-effect="vintage">
+    <div class="effect-thumb">📷</div>
+    <span>Vintage</span>
+</button>
 
     <button id="closeEffectMenu" type="button">
         ✓
@@ -2410,6 +2421,13 @@ document.querySelectorAll(".effect-choice").forEach(function (btn) {
     btn.addEventListener("click", function () {
         const effect = btn.dataset.effect;
 
+        const foto = document.getElementById("fotoPreview");
+
+if (!foto || !foto.src) {
+    alert("Pilih foto terlebih dahulu.");
+    return;
+}
+
         if (effect === "none") {
             filterTambahan = "";
         }
@@ -2429,6 +2447,7 @@ document.querySelectorAll(".effect-choice").forEach(function (btn) {
         if (effect === "vintage") {
             filterTambahan = "sepia(45%) contrast(90%) saturate(80%)";
         }
+        effectControl.style.display = "flex";
 
         updateFilterFoto();
     });
