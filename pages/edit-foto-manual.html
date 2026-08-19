@@ -966,8 +966,7 @@ grid-column: 1 / -1;
         >
         <span id="effectValue">0</span>
     </div>
-
-    <button class="tool-btn menu-icon-btn" id="effectBtn">
+<button class="tool-btn menu-icon-btn" id="effectBtn">
     <span class="menu-icon">✨</span>
     <span class="menu-label">Efek</span>
 </button>
@@ -975,34 +974,35 @@ grid-column: 1 / -1;
 <div id="effectMenu" style="display: none;">
 
     <button type="button" class="effect-choice" data-effect="none">
-    <div class="effect-thumb">🖼️</div>
-    <span>Asli</span>
-</button>
+        <div class="effect-thumb">🖼️</div>
+        <span>Asli</span>
+    </button>
 
-<button type="button" class="effect-choice" data-effect="warm">
-    <div class="effect-thumb">🌅</div>
-    <span>Hangat</span>
-</button>
+    <button type="button" class="effect-choice" data-effect="warm">
+        <div class="effect-thumb">🌅</div>
+        <span>Hangat</span>
+    </button>
 
-<button type="button" class="effect-choice" data-effect="cool">
-    <div class="effect-thumb">❄️</div>
-    <span>Dingin</span>
-</button>
+    <button type="button" class="effect-choice" data-effect="cool">
+        <div class="effect-thumb">❄️</div>
+        <span>Dingin</span>
+    </button>
 
-<button type="button" class="effect-choice" data-effect="bw">
-    <div class="effect-thumb">⚪</div>
-    <span>Hitam Putih</span>
-</button>
+    <button type="button" class="effect-choice" data-effect="bw">
+        <div class="effect-thumb">⚪</div>
+        <span>Hitam Putih</span>
+    </button>
 
-<button type="button" class="effect-choice" data-effect="vintage">
-    <div class="effect-thumb">📷</div>
-    <span>Vintage</span>
-</button>
+    <button type="button" class="effect-choice" data-effect="vintage">
+        <div class="effect-thumb">📷</div>
+        <span>Vintage</span>
+    </button>
 
-<button id="closeEffectMenu" type="button">
+    <button id="closeEffectMenu" type="button">
         ✓
     </button>
-    </div>
+
+</div>
 
 <button class="tool-btn menu-icon-btn" id="filterBtn">
     <span class="menu-icon">✨</span>
@@ -1018,33 +1018,32 @@ grid-column: 1 / -1;
     <input
         type="range"
         id="brightnessRange"
-        min="50"
-        max="150"
+        min="0"
+        max="200"
         value="100"
     >
 </div>
 
 <div class="control-group">
-    
-      <label for="contrastRange" class="adjust-menu-label">
-    <span class="menu-icon">◐</span>
-    <span class="menu-label">Kontras</span>
-</label>
+    <label for="contrastRange" class="adjust-menu-label">
+        <span class="menu-icon">◐</span>
+        <span class="menu-label">Kontras</span>
+    </label>
 
     <input
         type="range"
         id="contrastRange"
-        min="50"
-        max="150"
+        min="0"
+        max="200"
         value="100"
     >
 </div>
 
 <div class="control-group">
     <label for="saturationRange" class="adjust-menu-label">
-    <span class="menu-icon">⚪</span>
-    <span class="menu-label">Saturasi</span>
-</label>
+        <span class="menu-icon">⚪</span>
+        <span class="menu-label">Saturasi</span>
+    </label>
 
     <input
         type="range"
@@ -1054,44 +1053,14 @@ grid-column: 1 / -1;
         value="100"
     >
 </div>
-<button class="tool-btn" id="selesaiAdjustBtn">
+
+<button id="selesaiAdjustBtn" type="button">
     ✓
 </button>
 
 </div>
-          <button class="tool-btn menu-icon-btn" id="textBtn">
-    <span class="menu-icon">T</span>
-    <span class="menu-label">Tambah Teks</span>
-</button>
-
-<button class="tool-btn menu-icon-btn" id="overlayBtn">
-    <span class="menu-icon">🖼️</span>
-    <span class="menu-label">Overlay</span>
-</button>
-
-<button class="tool-btn menu-icon-btn" id="hapusBgOverlayBtn">
-    <span class="menu-icon">✂️</span>
-    <span class="menu-label">Hapus BG Overlay</span>
-</button>
-
-<input
-    type="file"
-    id="overlayInput"
-    accept="image/jpeg,image/png,image/webp"
-    style="display:none;"
->
-
-<button class="tool-btn menu-icon-btn" id="ratioBtn">
-    <span class="menu-icon">◩</span>
-    <span class="menu-label">Rasio</span>
-</button>
-
-<button class="tool-btn menu-icon-btn" id="resetBtn">
-    <span class="menu-icon">↺</span>
-    <span class="menu-label">Reset</span>
-</button>
-
-        </aside>
+</div>
+</aside>
 <div id="textPanel" style="display:none;">
 
     <div class="font-category-row">
