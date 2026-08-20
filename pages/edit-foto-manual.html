@@ -1894,7 +1894,12 @@ ratioOptions
 const kotakFoto = document.querySelector(".upload-box");
 
 if (rasio === "Asli") {
+    kotakFoto.style.width = "100%";
+    kotakFoto.style.height = "auto";
+    kotakFoto.style.minHeight = "";
+    kotakFoto.style.maxHeight = "";
     kotakFoto.style.aspectRatio = "auto";
+    kotakFoto.style.overflow = "visible";
 
     foto.style.width = "100%";
     foto.style.height = "auto";
@@ -1909,18 +1914,20 @@ if (rasio === "Asli") {
     const tinggi = Number(bagian[1]);
 
     kotakFoto.style.width = "100%";
-    kotakFoto.style.height = "auto";
-    kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+    kotakFoto.style.minHeight = "0";
+    kotakFoto.style.maxHeight = "none";
+    kotakFoto.style.height =
+        (kotakFoto.clientWidth * tinggi / lebar) + "px";
+    kotakFoto.style.aspectRatio = "auto";
     kotakFoto.style.overflow = "hidden";
 
     foto.style.width = "100%";
     foto.style.height = "100%";
     foto.style.maxWidth = "none";
     foto.style.maxHeight = "none";
+    foto.style.aspectRatio = "auto";
     foto.style.objectFit = "cover";
 }
-
-           
 
             ratioOptions.classList.remove("show");
             document.getElementById("mainTools").style.display = "contents";
