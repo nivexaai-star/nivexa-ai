@@ -1910,24 +1910,22 @@ if (rasio === "Asli") {
     foto.style.objectFit = "contain";
 
 } else {
-    kotakFoto.style.setProperty("min-height", "0", "important");
     const bagian = rasio.split(":");
     const lebar = Number(bagian[0]);
     const tinggi = Number(bagian[1]);
 
+    kotakFoto.style.setProperty("min-height", "0", "important");
     kotakFoto.style.width = "100%";
-kotakFoto.style.height = "auto";
-kotakFoto.style.minHeight = "0";
-kotakFoto.style.maxHeight = "none";
-kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
-kotakFoto.style.overflow = "hidden";
+    kotakFoto.style.height = "auto";
+    kotakFoto.style.maxHeight = "none";
+    kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+    kotakFoto.style.overflow = "hidden";
 
-    foto.style.width = "100%";
-    foto.style.height = "100%";
-    foto.style.maxWidth = "none";
-    foto.style.maxHeight = "none";
-    foto.style.aspectRatio = "auto";
-    foto.style.objectFit = "contain";
+    foto.style.setProperty("width", "100%", "important");
+    foto.style.setProperty("height", "100%", "important");
+    foto.style.setProperty("max-width", "100%", "important");
+    foto.style.setProperty("max-height", "none", "important");
+    foto.style.setProperty("object-fit", "contain", "important");
 }
 
             ratioOptions.classList.remove("show");
