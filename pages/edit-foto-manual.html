@@ -1962,7 +1962,60 @@ if (rasio === "Asli") {
             document.getElementById("mainTools").style.display = "contents";
         });
     });
-    
+    let sedangGeserFoto = false;
+let mulaiFotoX = 0;
+let mulaiFotoY = 0;
+let posisiFotoX = 50;
+let posisiFotoY = 50;
+let posisiAwalFotoX = 50;
+let posisiAwalFotoY = 50;
+
+foto.addEventListener("pointerdown", function (e) {
+    if (foto.dataset.rasioAktif !== "true") return;
+
+    e.preventDefault();
+
+    sedangGeserFoto = true;
+    mulaiFotoX = e.clientX;
+    mulaiFotoY = e.clientY;
+
+    posisiAwalFotoX = posisiFotoX;
+    posisiAwalFotoY = posisiFotoY;
+
+    foto.setPointerCapture(e.pointerId);
+});
+
+foto.addEventListener("pointermove", function (e) {
+    if (!sedangGeserFoto) return;
+    if (foto.dataset.rasioAktif !== "true") return;
+
+    e.preventDefault();
+
+    const kotak = foto.parentElement.getBoundingClientRect();
+
+    const deltaX = e.clientX - mulaiFotoX;
+    const deltaY = e.clientY - mulaiFotoY;
+
+    posisiFotoX =
+        posisiAwalFotoX - (deltaX / kotak.width) * 100;
+
+    posisiFotoY =
+        posisiAwalFotoY - (deltaY / kotak.height) * 100;
+
+    posisiFotoX = Math.max(0, Math.min(100, posisiFotoX));
+    posisiFotoY = Math.max(0, Math.min(100, posisiFotoY));
+
+    foto.style.objectPosition =
+        posisiFotoX + "% " + posisiFotoY + "%";
+});
+
+foto.addEventListener("pointerup", function () {
+    sedangGeserFoto = false;
+});
+
+foto.addEventListener("pointercancel", function () {
+    sedangGeserFoto = false;
+});
     
     const fotoInput = document.getElementById("fotoInput");
     const uploadBox = document.querySelector(".upload-box");
