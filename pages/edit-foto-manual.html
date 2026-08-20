@@ -1894,37 +1894,24 @@ ratioOptions
 button.classList.add("active");
 
             if (rasio === "Asli") {
-                foto.style.aspectRatio = "auto";
-                foto.style.objectFit = "contain";
-            }
+    foto.style.width = "auto";
+    foto.style.height = "auto";
+    foto.style.maxWidth = "100%";
+    foto.style.maxHeight = "430px";
+    foto.style.aspectRatio = "auto";
+    foto.style.objectFit = "contain";
+} else {
+    const bagian = rasio.split(":");
+    const lebar = Number(bagian[0]);
+    const tinggi = Number(bagian[1]);
 
-            if (rasio === "1:1") {
-                foto.style.aspectRatio = "1 / 1";
-                foto.style.objectFit = "cover";
-            }
-
-            if (rasio === "4:5") {
-                foto.style.aspectRatio = "4 / 5";
-                foto.style.objectFit = "cover";
-            }
-            if (rasio === "3:4") {
-               foto.style.aspectRatio = "3 / 4";
-               foto.style.objectFit = "cover";
-            }
-
-            if (rasio === "9:16") {
-                foto.style.aspectRatio = "9 / 16";
-                foto.style.objectFit = "cover";
-            }
-
-            if (rasio === "16:9") {
-                foto.style.aspectRatio = "16 / 9";
-                foto.style.objectFit = "cover";
-            }
-            if (rasio === "3:2") {
-                foto.style.aspectRatio = "3 / 2";
-                foto.style.objectFit = "cover";
-            }
+    foto.style.width = "100%";
+    foto.style.height = "auto";
+    foto.style.maxWidth = "100%";
+    foto.style.maxHeight = "none";
+    foto.style.aspectRatio = lebar + " / " + tinggi;
+    foto.style.objectFit = "cover";
+}
 
             ratioOptions.classList.remove("show");
             document.getElementById("mainTools").style.display = "contents";
