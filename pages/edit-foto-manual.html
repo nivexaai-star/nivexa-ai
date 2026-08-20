@@ -1971,75 +1971,6 @@ if (rasio === "Asli") {
             document.getElementById("mainTools").style.display = "contents";
         });
     });
-    const fotoGeser = document.getElementById("fotoPreview");
-
-let geserFotoAktif = false;
-let awalGeserX = 0;
-let awalGeserY = 0;
-
-let posisiObjekX = 50;
-let posisiObjekY = 50;
-
-let posisiMulaiX = 50;
-let posisiMulaiY = 50;
-
-fotoGeser.addEventListener("pointerdown", function (e) {
-
-    // Hanya bisa digeser setelah memilih rasio
-    if (fotoGeser.dataset.rasioAktif !== "true") return;
-
-    e.preventDefault();
-
-    geserFotoAktif = true;
-
-    awalGeserX = e.clientX;
-    awalGeserY = e.clientY;
-
-    posisiMulaiX = posisiObjekX;
-    posisiMulaiY = posisiObjekY;
-
-    fotoGeser.setPointerCapture(e.pointerId);
-});
-
-fotoGeser.addEventListener("pointermove", function (e) {
-
-    if (!geserFotoAktif) return;
-    if (fotoGeser.dataset.rasioAktif !== "true") return;
-
-    e.preventDefault();
-
-    const kotak = fotoGeser.parentElement.getBoundingClientRect();
-
-    const geserX = e.clientX - awalGeserX;
-    const geserY = e.clientY - awalGeserY;
-
-    posisiObjekX =
-        posisiMulaiX - (geserX / kotak.width) * 100;
-
-    posisiObjekY =
-        posisiMulaiY - (geserY / kotak.height) * 100;
-
-    posisiObjekX = Math.max(0, Math.min(100, posisiObjekX));
-    posisiObjekY = Math.max(0, Math.min(100, posisiObjekY));
-
-    fotoGeser.style.objectPosition =
-        posisiObjekX + "% " + posisiObjekY + "%";
-});
-
-fotoGeser.addEventListener("pointerup", function (e) {
-
-    if (!geserFotoAktif) return;
-
-    geserFotoAktif = false;
-
-    if (fotoGeser.hasPointerCapture(e.pointerId)) {
-        fotoGeser.releasePointerCapture(e.pointerId);
-    }
-});
-
-fotoGeser.addEventListener("pointercancel", function () {
-    geserFotoAktif = false;
-});
     
     const fotoInput = document.getElementById("fotoInput");
     const uploadBox = document.querySelector(".upload-box");
@@ -2071,6 +2002,69 @@ fotoInput.addEventListener("change", function () {
             foto.style.objectPosition = "50% 50%";
             foto.style.borderRadius = "14px";
             uploadBox.appendChild(foto);
+            foto.style.touchAction = "none";
+
+let sedangGeserFoto = false;
+let mulaiXFoto = 0;
+let mulaiYFoto = 0;
+let mulaiPosisiX = 50;
+let mulaiPosisiY = 50;
+
+foto.addEventListener("pointerdown", function (e) {
+    if (foto.dataset.rasioAktif !== "true") return;
+
+    e.preventDefault();
+
+    sedangGeserFoto = true;
+    mulaiXFoto = e.clientX;
+    mulaiYFoto = e.clientY;
+
+    const posisiSekarang =
+        foto.style.objectPosition || "50% 50%";
+
+    const bagian = posisiSekarang.split(" ");
+
+    mulaiPosisiX = parseFloat(bagian[0]) || 50;
+    mulaiPosisiY = parseFloat(bagian[1]) || 50;
+
+    foto.setPointerCapture(e.pointerId);
+});
+
+foto.addEventListener("pointermove", function (e) {
+    if (!sedangGeserFoto) return;
+    if (foto.dataset.rasioAktif !== "true") return;
+
+    e.preventDefault();
+
+    const kotak = uploadBox.getBoundingClientRect();
+
+    const deltaX = e.clientX - mulaiXFoto;
+    const deltaY = e.clientY - mulaiYFoto;
+
+    let posisiX =
+        mulaiPosisiX - (deltaX / kotak.width) * 100;
+
+    let posisiY =
+        mulaiPosisiY - (deltaY / kotak.height) * 100;
+
+    posisiX = Math.max(0, Math.min(100, posisiX));
+    posisiY = Math.max(0, Math.min(100, posisiY));
+
+    foto.style.objectPosition =
+        posisiX + "% " + posisiY + "%";
+});
+
+foto.addEventListener("pointerup", function (e) {
+    sedangGeserFoto = false;
+
+    if (foto.hasPointerCapture(e.pointerId)) {
+        foto.releasePointerCapture(e.pointerId);
+    }
+});
+
+foto.addEventListener("pointercancel", function () {
+    sedangGeserFoto = false;
+});
         }
 
         const tombolPilih = uploadBox.querySelector(".upload-btn");
