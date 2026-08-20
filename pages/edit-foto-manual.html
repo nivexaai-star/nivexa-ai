@@ -126,7 +126,7 @@
         }
 
         .tool-btn:hover {
-            background: #2b3550;
+            background: #20283a;
         }
 
         .workspace {
@@ -307,6 +307,19 @@ margin-bottom: -20px;
 }
 #mainTools {
     display: contents;
+}
+#mainTools > .tool-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+#mainTools > .tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
 }
 .adjust-menu-label {
     display: flex;
