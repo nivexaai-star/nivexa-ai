@@ -543,7 +543,7 @@ body {
 
 .upload-box {
     position: relative;
-    min-height: 520px !important;
+    min-height: 0 !important;
 }
 
 #fotoPreview {
@@ -1914,12 +1914,11 @@ if (rasio === "Asli") {
     const tinggi = Number(bagian[1]);
 
     kotakFoto.style.width = "100%";
-    kotakFoto.style.minHeight = "0";
-    kotakFoto.style.maxHeight = "none";
-    kotakFoto.style.height =
-        (kotakFoto.clientWidth * tinggi / lebar) + "px";
-    kotakFoto.style.aspectRatio = "auto";
-    kotakFoto.style.overflow = "hidden";
+kotakFoto.style.height = "auto";
+kotakFoto.style.minHeight = "0";
+kotakFoto.style.maxHeight = "none";
+kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+kotakFoto.style.overflow = "hidden";
 
     foto.style.width = "100%";
     foto.style.height = "100%";
