@@ -1862,7 +1862,8 @@ const pilihanRasio = [
 let ratioIndex = 0;
 
 ratioBtn.addEventListener("click", function () {
-    ratioOptions.classList.toggle("show");
+    document.getElementById("mainTools").style.display = "none";
+    ratioOptions.classList.add("show");
 });
 ratioOptions
     .querySelectorAll("button")
