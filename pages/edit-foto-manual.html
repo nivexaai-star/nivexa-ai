@@ -1198,8 +1198,10 @@ grid-column: 1 / -1;
     <button type="button" data-ratio="Asli">Asli</button>
     <button type="button" data-ratio="1:1">1:1</button>
     <button type="button" data-ratio="4:5">4:5</button>
+    <button type="button" data-ratio="3:4">3:4</button>
     <button type="button" data-ratio="9:16">9:16</button>
     <button type="button" data-ratio="16:9">16:9</button>
+    <button type="button" data-ratio="3:2">3:2</button>
 </div>
 
 <section class="workspace">
@@ -1855,8 +1857,10 @@ const pilihanRasio = [
     "Asli",
     "1:1",
     "4:5",
+    "3:4",
     "9:16",
-    "16:9"
+    "16:9",
+    "3:2"
 ];
 
 let ratioIndex = 0;
@@ -1903,6 +1907,10 @@ button.classList.add("active");
                 foto.style.aspectRatio = "4 / 5";
                 foto.style.objectFit = "cover";
             }
+            if (rasio === "3:4") {
+               foto.style.aspectRatio = "3 / 4";
+               foto.style.objectFit = "cover";
+            }
 
             if (rasio === "9:16") {
                 foto.style.aspectRatio = "9 / 16";
@@ -1913,8 +1921,13 @@ button.classList.add("active");
                 foto.style.aspectRatio = "16 / 9";
                 foto.style.objectFit = "cover";
             }
+            if (rasio === "3:2") {
+                foto.style.aspectRatio = "3 / 2";
+                foto.style.objectFit = "cover";
+            }
 
             ratioOptions.classList.remove("show");
+            document.getElementById("mainTools").style.display = "contents";
         });
     });
     
