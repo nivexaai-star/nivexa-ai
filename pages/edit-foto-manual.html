@@ -1954,12 +1954,15 @@ if (rasio === "Asli") {
     foto.style.setProperty("max-width", "100%", "important");
     foto.style.setProperty("max-height", "none", "important");
     foto.style.setProperty("object-fit", "cover", "important");
-}
+    foto.dataset.rasioAktif = "true";
+    foto.style.objectPosition = "50% 50%";
+   }
 
             ratioOptions.classList.remove("show");
             document.getElementById("mainTools").style.display = "contents";
         });
     });
+    
     
     const fotoInput = document.getElementById("fotoInput");
     const uploadBox = document.querySelector(".upload-box");
@@ -1987,6 +1990,8 @@ fotoInput.addEventListener("change", function () {
             foto.style.maxWidth = "100%";
             foto.style.maxHeight = "430px";
             foto.style.objectFit = "contain";
+            foto.dataset.rasioAktif = "false";
+            foto.style.objectPosition = "50% 50%";
             foto.style.borderRadius = "14px";
             uploadBox.appendChild(foto);
         }
