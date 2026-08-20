@@ -338,7 +338,7 @@ margin-bottom: -20px;
     align-items: center;
     gap: 14px;
     overflow-x: auto;
-    padding: 8px 6px;
+    padding: 38px 6px 8px;
     box-sizing: border-box;
     position: relative;
 }
@@ -377,8 +377,8 @@ margin-bottom: -20px;
 
 #closeEffectMenu {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 8px;
+    top: 4px;
     min-width: 50px;
     height: 50px;
 
@@ -892,7 +892,25 @@ grid-column: 1 / -1;
     border-radius: 2px;
 }
 
-    </style>
+    
+@media (max-width: 800px) {
+    #mainTools > #textBtn,
+    #mainTools > #overlayBtn,
+    #mainTools > #hapusBgOverlayBtn,
+    #mainTools > #ratioBtn,
+    #mainTools > #resetBtn {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: none;
+        min-width: 100%;
+        text-align: left;
+        background: #20283a;
+        padding: 13px 18px;
+        border-radius: 10px;
+    }
+}
+
+</style>
 </head>
 
 <body>
@@ -952,6 +970,34 @@ grid-column: 1 / -1;
 
     <span class="menu-label">Cermin</span>
 </button>
+
+<button class="tool-btn" id="textBtn" type="button">
+    T Tambah Teks
+</button>
+
+<button class="tool-btn" id="overlayBtn" type="button">
+    🖼️ Overlay
+</button>
+
+<input
+    type="file"
+    id="overlayInput"
+    accept="image/jpeg,image/png,image/webp"
+    style="display:none;"
+>
+
+<button class="tool-btn" id="hapusBgOverlayBtn" type="button">
+    ✂️ Hapus BG Overlay
+</button>
+
+<button class="tool-btn" id="ratioBtn" type="button">
+    ◩ Rasio
+</button>
+
+<button class="tool-btn" id="resetBtn" type="button">
+    ↻ Reset
+</button>
+
 </div>
 <div id="adjustPanel" style="display: none;">
 
@@ -966,11 +1012,10 @@ grid-column: 1 / -1;
         >
         <span id="effectValue">0</span>
     </div>
-<button class="tool-btn menu-icon-btn" id="effectBtn">
+<button class="tool-btn menu-icon-btn" id="effectBtn" type="button">
     <span class="menu-icon">✨</span>
     <span class="menu-label">Efek</span>
 </button>
-
 </div>
 
 <div id="effectMenu" style="display: none;">
@@ -1875,15 +1920,14 @@ button.classList.add("active");
     const fotoInput = document.getElementById("fotoInput");
     const uploadBox = document.querySelector(".upload-box");
 
-    fotoInput.addEventListener("change", function () {
-    const file = fotoInput.files[0];
+fotoInput.addEventListener("change", function () {
+    const file = fotoInput.files && fotoInput.files[0];
 
-    if (!file) {
-        return;
-    }
+    if (!file) return;
 
     if (!file.type.startsWith("image/")) {
         alert("File harus berupa gambar.");
+        fotoInput.value = "";
         return;
     }
 
@@ -1895,17 +1939,22 @@ button.classList.add("active");
         if (!foto) {
             foto = document.createElement("img");
             foto.id = "fotoPreview";
-
+            foto.alt = "Foto yang sedang diedit";
             foto.style.maxWidth = "100%";
             foto.style.maxHeight = "430px";
             foto.style.objectFit = "contain";
             foto.style.borderRadius = "14px";
-
             uploadBox.appendChild(foto);
-            
         }
 
+        const tombolPilih = uploadBox.querySelector(".upload-btn");
+        if (tombolPilih) tombolPilih.style.display = "none";
+
         foto.src = event.target.result;
+    };
+
+    reader.onerror = function () {
+        alert("Foto gagal dibaca. Silakan pilih foto lain.");
     };
 
     reader.readAsDataURL(file);
