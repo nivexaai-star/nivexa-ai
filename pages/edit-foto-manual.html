@@ -1502,6 +1502,8 @@ const cropActions = document.getElementById("cropActions");
 
     return {
         fotoSrc: foto ? foto.src : "",
+        kotakFotoStyle: kotakFoto ? kotakFoto.getAttribute("style") : null,
+fotoStyle: foto ? foto.getAttribute("style") : null,
         rotasi: rotasi,
         balikX: balikX,
         cropBoxClone: cropBox ? cropBox.cloneNode(true) : null,
@@ -1523,12 +1525,28 @@ teksParent: document.querySelector(".teks-tambahan")
 
 function terapkanStateEditor(state) {
     const foto = document.getElementById("fotoPreview");
+    const kotakFoto = document.querySelector(".upload-box");
     const cropBox = document.getElementById("cropBox");
 const cropActions = document.getElementById("cropActions");
 
     if (foto && state.fotoSrc) {
         foto.src = state.fotoSrc;
     }
+    if (kotakFoto) {
+    if (state.kotakFotoStyle !== null) {
+        kotakFoto.setAttribute("style", state.kotakFotoStyle);
+    } else {
+        kotakFoto.removeAttribute("style");
+    }
+}
+
+if (foto) {
+    if (state.fotoStyle !== null) {
+        foto.setAttribute("style", state.fotoStyle);
+    } else {
+        foto.removeAttribute("style");
+    }
+}
 
     rotasi = state.rotasi;
     balikX = state.balikX;
