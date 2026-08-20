@@ -578,9 +578,11 @@ body {
     border-radius: 10px;
     margin-bottom: 10px;
 
-    position: sticky;
-    bottom: calc(12px + env(safe-area-inset-bottom));
-    z-index: 120;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 999;
 }
 
 .control-group label {
