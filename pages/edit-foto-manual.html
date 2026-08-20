@@ -1890,28 +1890,37 @@ ratioOptions
     .forEach(function (item) {
         item.classList.remove("active");
     });
+    button.classList.add("active");
+const kotakFoto = document.querySelector(".upload-box");
 
-button.classList.add("active");
+if (rasio === "Asli") {
+    kotakFoto.style.aspectRatio = "auto";
 
-            if (rasio === "Asli") {
-    foto.style.width = "auto";
+    foto.style.width = "100%";
     foto.style.height = "auto";
     foto.style.maxWidth = "100%";
     foto.style.maxHeight = "430px";
     foto.style.aspectRatio = "auto";
     foto.style.objectFit = "contain";
+
 } else {
     const bagian = rasio.split(":");
     const lebar = Number(bagian[0]);
     const tinggi = Number(bagian[1]);
 
+    kotakFoto.style.width = "100%";
+    kotakFoto.style.height = "auto";
+    kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+    kotakFoto.style.overflow = "hidden";
+
     foto.style.width = "100%";
-    foto.style.height = "auto";
-    foto.style.maxWidth = "100%";
+    foto.style.height = "100%";
+    foto.style.maxWidth = "none";
     foto.style.maxHeight = "none";
-    foto.style.aspectRatio = lebar + " / " + tinggi;
     foto.style.objectFit = "cover";
 }
+
+           
 
             ratioOptions.classList.remove("show");
             document.getElementById("mainTools").style.display = "contents";
