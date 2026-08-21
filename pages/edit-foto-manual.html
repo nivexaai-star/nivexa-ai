@@ -1989,6 +1989,13 @@ if (rasio === "Asli") {
     kotakFoto.style.height = "auto";
     kotakFoto.style.maxHeight = "none";
     kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+    if (rasio === "9:16") {
+    kotakFoto.style.width = "auto";
+    kotakFoto.style.height = "520px";
+    kotakFoto.style.maxHeight = "520px";
+    kotakFoto.style.aspectRatio = "9 / 16";
+    kotakFoto.style.margin = "0 auto";
+}
     kotakFoto.style.overflow = "hidden";
 
     foto.style.setProperty("width", "100%", "important");
