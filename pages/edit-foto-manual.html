@@ -2210,8 +2210,12 @@ document
             `;
 
             cropActions.style.display = "flex";
-            cropActions.style.gap = "10px";
-            cropActions.style.marginTop = "10px";
+cropActions.style.gap = "10px";
+cropActions.style.position = "absolute";
+cropActions.style.bottom = "70px";
+cropActions.style.left = "50%";
+cropActions.style.transform = "translateX(-50%)";
+cropActions.style.zIndex = "9999";
 
             document
                 .querySelector(".editor-layout")
