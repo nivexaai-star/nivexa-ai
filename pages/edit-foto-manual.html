@@ -510,11 +510,17 @@ overflow-y: auto;
     box-shadow: none !important;
 }
 .effect-wrapper .tool-btn {
-    order: 1;
+    order: 1 !important;
 }
 
 #effectControl {
-    order: 2;
+    order: 2 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#effectRange {
+    width: 100px !important;
 }
 #effectControl {
     flex-direction: column;
