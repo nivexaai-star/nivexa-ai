@@ -1031,6 +1031,12 @@ grid-column: 1 / -1;
 <div id="adjustPanel" style="display: none;">
 
     <div class="effect-wrapper">
+
+    <button class="tool-btn menu-icon-btn" id="effectBtn" type="button">
+        <span class="menu-icon">✨</span>
+        <span class="menu-label">Efek</span>
+    </button>
+
     <div id="effectControl" style="display: none;">
         <input
             type="range"
@@ -1039,6 +1045,10 @@ grid-column: 1 / -1;
             max="100"
             value="0"
         >
+        <span id="effectValue">0</span>
+    </div>
+
+</div>
         <span id="effectValue">0</span>
     </div>
 <button class="tool-btn menu-icon-btn" id="effectBtn" type="button">
