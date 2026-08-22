@@ -1959,13 +1959,6 @@ ratioOptions
 
             const rasio =
                 button.getAttribute("data-ratio");
-                const fotoPreview = document.getElementById("fotoPreview");
-
-if (rasio === "16:9") {
-    fotoPreview.style.top = "120px";
-} else {
-    fotoPreview.style.top = "0";
-}
                 simpanUndo();
                 ratioOptions
     .querySelectorAll("button")
@@ -2001,6 +1994,10 @@ if (rasio === "Asli") {
     kotakFoto.style.height = "auto";
     kotakFoto.style.maxHeight = "none";
     kotakFoto.style.aspectRatio = lebar + " / " + tinggi;
+    kotakFoto.style.marginTop = "0";
+if (rasio === "16:9") {
+    kotakFoto.style.marginTop = "110px";
+}
     if (rasio === "9:16") {
     kotakFoto.style.width = "auto";
     kotakFoto.style.height = "530px";
