@@ -1959,6 +1959,13 @@ ratioOptions
 
             const rasio =
                 button.getAttribute("data-ratio");
+                const fotoPreview = document.getElementById("fotoPreview");
+
+if (rasio === "16:9") {
+    fotoPreview.style.top = "120px";
+} else {
+    fotoPreview.style.top = "0";
+}
                 simpanUndo();
                 ratioOptions
     .querySelectorAll("button")
