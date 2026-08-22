@@ -1111,7 +1111,27 @@ grid-column: 1 / -1;
     <span class="menu-icon">👤</span>
     <span class="menu-label">Wajah</span>
 </button>
+<div id="faceMenu" style="display: none;">
+    <button type="button" class="face-choice">
+        <div class="face-thumb">🙂</div>
+        <span>Natural</span>
+    </button>
 
+    <button type="button" class="face-choice">
+        <div class="face-thumb">😊</div>
+        <span>Lembut</span>
+    </button>
+
+    <button type="button" class="face-choice">
+        <div class="face-thumb">✨</div>
+        <span>Glow</span>
+    </button>
+
+    <button type="button" class="face-choice">
+        <div class="face-thumb">🌸</div>
+        <span>Cerah</span>
+    </button>
+</div>
 <button class="tool-btn menu-icon-btn" id="filterBtn">
     <span class="menu-icon">🎨</span>
     <span class="menu-label">Filter</span>
@@ -1297,6 +1317,13 @@ grid-column: 1 / -1;
 </main>
 
 <script>
+    const faceBtn = document.getElementById("faceBtn");
+const faceMenu = document.getElementById("faceMenu");
+
+faceBtn.addEventListener("click", function () {
+    faceMenu.style.display =
+        faceMenu.style.display === "none" ? "flex" : "none";
+});
    const textPanel =
     document.getElementById("textPanel");
 
